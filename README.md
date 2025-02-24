@@ -28,3 +28,11 @@ En fin projet, vous devrez faire une présentation orale de votre application.
 o Projet : fonctionnalités couvertes, reste à faire
 o Personnel : Bilan sur ce que vous a apporté la réalisation du projet
 Durée : 20’ + 10’ de questions / réponses
+
+
+
+
+
+## Gestion de projet
+
+Lien vers le [tableau de bord](https://miro.com/welcomeonboard/d0l6U3N3RG02QzlZTEJFR3JPVTNKWWh6TUZZd2p3dXVxQUR3bGZycXlxK1g0WExXNDZyQTVMU1VSZENhWFZGRkxjdEZoV0RjanoxVmFWR240bm5uaHBkaGNyaXJ5SGZIbDI5eDBidDRiVWRhTjVuMWtvUXVkbXF4K2E1Z0wvM2J3VHhHVHd5UWtSM1BidUtUYmxycDRnPT0hdjE=?share_link_id=205320194813)
