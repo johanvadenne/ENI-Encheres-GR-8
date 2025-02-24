@@ -1,121 +1,76 @@
--- Script de création de la base de données ENCHERES
---   type :      SQL Server 2012
---
+CREATE DATABASE encheres;
 
-
-
+-- Création de la table CATEGORIES
 CREATE TABLE CATEGORIES (
-    no_categorie   INTEGER IDENTITY(1,1) NOT NULL,
-    libelle        VARCHAR(30) NOT NULL
-)
+    no_categorie SERIAL PRIMARY KEY, -- SERIAL pour l'auto-incrémentation
+    libelle      VARCHAR(30) NOT NULL
+);
 
-ALTER TABLE CATEGORIES ADD constraint categorie_pk PRIMARY KEY (no_categorie)
-
-
-
+-- Création de la table UTILISATEURS
 CREATE TABLE UTILISATEURS (
-    no_utilisateur   INTEGER IDENTITY(1,1) NOT NULL,
-    pseudo           VARCHAR(30) NOT NULL,
-    nom              VARCHAR(30) NOT NULL,
-    prenom           VARCHAR(30) NOT NULL,
-    email            VARCHAR(50) NOT NULL,
-    telephone        VARCHAR(15),
-    rue              VARCHAR(30) NOT NULL,
-    code_postal      VARCHAR(10) NOT NULL,
-    ville            VARCHAR(50) NOT NULL,
-    mot_de_passe     VARCHAR(30) NOT NULL,
-    credit           INTEGER NOT NULL,
-    administrateur   bit NOT NULL
-)
+    no_utilisateur SERIAL PRIMARY KEY, -- SERIAL pour l'auto-incrémentation
+    pseudo         VARCHAR(30) NOT NULL,
+    nom            VARCHAR(30) NOT NULL,
+    prenom         VARCHAR(30) NOT NULL,
+    email          VARCHAR(50) NOT NULL,
+    telephone      VARCHAR(15),
+    rue            VARCHAR(30) NOT NULL,
+    code_postal    VARCHAR(10) NOT NULL,
+    ville          VARCHAR(50) NOT NULL,
+    mot_de_passe   VARCHAR(30) NOT NULL,
+    credit         INTEGER NOT NULL,
+    administrateur BOOLEAN NOT NULL -- Utilisation de BOOLEAN pour le type bit
+);
 
-ALTER TABLE UTILISATEURS ADD constraint utilisateur_pk PRIMARY KEY (no_utilisateur)
-
-
+-- Création de la table ARTICLES_VENDUS
 CREATE TABLE ARTICLES_VENDUS (
-    no_article                    INTEGER IDENTITY(1,1) NOT NULL,
-    nom_article                   VARCHAR(30) NOT NULL,
-    description                   VARCHAR(300) NOT NULL,
-	date_debut_encheres           DATE NOT NULL,
-    date_fin_encheres             DATE NOT NULL,
-    prix_initial                  INTEGER,
-    prix_vente                    INTEGER,
-    no_utilisateur                INTEGER NOT NULL,
-    no_categorie                  INTEGER NOT NULL
-)
+    no_article        SERIAL PRIMARY KEY, -- SERIAL pour l'auto-incrémentation
+    nom_article       VARCHAR(30) NOT NULL,
+    description       VARCHAR(300) NOT NULL,
+    date_debut_encheres DATE NOT NULL,
+    date_fin_encheres DATE NOT NULL,
+    prix_initial      INTEGER,
+    prix_vente        INTEGER,
+    no_utilisateur    INTEGER NOT NULL,
+    no_categorie      INTEGER NOT NULL,
+    CONSTRAINT articles_vendus_categories_fk FOREIGN KEY (no_categorie) REFERENCES CATEGORIES (no_categorie) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT ventes_utilisateur_fk FOREIGN KEY (no_utilisateur) REFERENCES UTILISATEURS (no_utilisateur) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
 
-
-
-ALTER TABLE ARTICLES_VENDUS ADD constraint articles_vendus_pk PRIMARY KEY (no_article)
-
-
+-- Création de la table RETRAITS
 CREATE TABLE RETRAITS (
-	no_article       INTEGER NOT NULL,
-    rue              VARCHAR(30) NOT NULL,
-    code_postal      VARCHAR(15) NOT NULL,
-    ville            VARCHAR(30) NOT NULL
-)
+    no_article   INTEGER NOT NULL PRIMARY KEY,
+    rue          VARCHAR(30) NOT NULL,
+    code_postal  VARCHAR(15) NOT NULL,
+    ville        VARCHAR(30) NOT NULL,
+    CONSTRAINT retrait_article_fk FOREIGN KEY (no_article) REFERENCES ARTICLES_VENDUS (no_article) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
 
-ALTER TABLE RETRAITS ADD constraint retrait_pk PRIMARY KEY  (no_article)
-ALTER TABLE RETRAITS
-    ADD CONSTRAINT retrait_article_fk FOREIGN KEY ( no_article ) REFERENCES  ARTICLES_VENDUS (no_article)
-ON DELETE NO ACTION
-    ON UPDATE no action
+-- Création de la table ENCHERES
+CREATE TABLE ENCHERES (
+    no_enchere    SERIAL PRIMARY KEY, -- SERIAL pour l'auto-incrémentation
+    date_enchere  TIMESTAMP NOT NULL, -- Utilisation de TIMESTAMP pour datetime
+    montant_enchere INTEGER NOT NULL,
+    no_article     INTEGER NOT NULL,
+    no_utilisateur INTEGER NOT NULL,
+    CONSTRAINT encheres_utilisateur_fk FOREIGN KEY (no_utilisateur) REFERENCES UTILISATEURS (no_utilisateur) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT encheres_no_article_fk FOREIGN KEY (no_article) REFERENCES ARTICLES_VENDUS (no_article) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
 
+-- Création de l'utilisateur PostgreSQL avec droits
+-- Cette partie nécessite des privilèges administratifs dans PostgreSQL pour fonctionner
 
-CREATE TABLE ENCHERES(
-	no_enchere  INTEGER IDENTITY(1,1) NOT NULL,
-	date_enchere datetime NOT NULL,
-	montant_enchere INTEGER NOT NULL,
-	no_article INTEGER NOT NULL,
-	no_utilisateur INTEGER NOT NULL
- )
+-- Créer un rôle avec un mot de passe
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'admin') THEN
+        CREATE ROLE admin LOGIN PASSWORD 'admin';
+    END IF;
+END $$;
 
-ALTER TABLE ENCHERES ADD constraint enchere_pk PRIMARY KEY ( no_enchere)
-
-ALTER TABLE ENCHERES
-    ADD CONSTRAINT encheres_utilisateur_fk FOREIGN KEY ( no_utilisateur ) REFERENCES UTILISATEURS ( no_utilisateur )
-ON DELETE NO ACTION
-    ON UPDATE no action
-
-ALTER TABLE ENCHERES
-    ADD CONSTRAINT encheres_no_article_fk FOREIGN KEY ( no_article ) REFERENCES ARTICLES_VENDUS ( no_article )
-ON DELETE NO ACTION
-    ON UPDATE no action
-
-
-ALTER TABLE ARTICLES_VENDUS
-    ADD CONSTRAINT articles_vendus_categories_fk FOREIGN KEY ( no_categorie )
-        REFERENCES categories ( no_categorie )
-ON DELETE NO ACTION
-    ON UPDATE no action
-
-ALTER TABLE ARTICLES_VENDUS
-    ADD CONSTRAINT ventes_utilisateur_fk FOREIGN KEY ( no_utilisateur )
-        REFERENCES utilisateurs ( no_utilisateur )
-ON DELETE NO ACTION
-    ON UPDATE no action
-
-
-
-
--- Ajout d'un utilisateur pour accès à la base de données posgresql (admin / admin)
-CREATE LOGIN admin WITH
-    PASSWORD = 'admin',
-    DEFAULT_DATABASE = ENCHERES,
-    CHECK_POLICY = OFF,
-    CHECK_EXPIRATION = OFF
-
--- Création de l'utilisateur
-CREATE USER admin FOR LOGIN admin
-
--- Attribution des droits à l'utilisateur pour toutes les tables
-GRANT SELECT, INSERT, UPDATE, DELETE ON CATEGORIES TO admin
-GRANT SELECT, INSERT, UPDATE, DELETE ON UTILISATEURS TO admin
-GRANT SELECT, INSERT, UPDATE, DELETE ON ARTICLES_VENDUS TO admin
-GRANT SELECT, INSERT, UPDATE, DELETE ON RETRAITS TO admin
-GRANT SELECT, INSERT, UPDATE, DELETE ON ENCHERES TO admin
-
-
-
-
-
+-- Attribution des privilèges sur les tables
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE CATEGORIES TO admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE UTILISATEURS TO admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ARTICLES_VENDUS TO admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE RETRAITS TO admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ENCHERES TO admin;
