@@ -96,3 +96,26 @@ ON DELETE NO ACTION
     ON UPDATE no action
 
 
+
+
+-- Ajout d'un utilisateur pour accès à la base de données posgresql (admin / admin)
+CREATE LOGIN admin WITH
+    PASSWORD = 'admin',
+    DEFAULT_DATABASE = ENCHERES,
+    CHECK_POLICY = OFF,
+    CHECK_EXPIRATION = OFF
+
+-- Création de l'utilisateur
+CREATE USER admin FOR LOGIN admin
+
+-- Attribution des droits à l'utilisateur pour toutes les tables
+GRANT SELECT, INSERT, UPDATE, DELETE ON CATEGORIES TO admin
+GRANT SELECT, INSERT, UPDATE, DELETE ON UTILISATEURS TO admin
+GRANT SELECT, INSERT, UPDATE, DELETE ON ARTICLES_VENDUS TO admin
+GRANT SELECT, INSERT, UPDATE, DELETE ON RETRAITS TO admin
+GRANT SELECT, INSERT, UPDATE, DELETE ON ENCHERES TO admin
+
+
+
+
+
