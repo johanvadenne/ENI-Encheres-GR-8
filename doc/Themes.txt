@@ -1,0 +1,10 @@
+
+- Architecture (en couches / design patterns...)
+- Organisation du code front end ( html / css / js  - design system ? - fragments )
+- Front end : Responsive Web Design (RWD)
+- Sécurité
+- Accessibilité
+- Performance
+- Qualité ( tests )
+- Gestion de projet ( organisation des tâches )
+- Green IT
