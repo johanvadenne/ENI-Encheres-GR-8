@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html
+    lang="fr"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8" />
+    <!--
+      Le layout:fragment="title" permettra aux pages enfants de substituer le titre
+      si elles le souhaitent.
+    -->
+    <title>ENI-Enchères :: <span layout:fragment="title">Titre par défaut</span></title>
+
+    <!-- Feuilles de style, librairies, etc. -->
+    <link rel="stylesheet" href="@{/css/styles.css}" />
+</head>
+<body>
+
+    <!-- Header commun -->
+    <header>
+        <h1>ENI-Enchères</h1>
+        <nav>
+            <a href="#" th:href="@{/inscription}">S'inscrire</a> |
+            <a href="#" th:href="@{/connexion}">Se connecter</a>
+        </nav>
+    </header>
+
+    <!-- Contenu principal (placeHolder) -->
+    <main layout:fragment="content">
+        <!-- Cette zone sera remplacée par le contenu des pages enfants -->
+        <h2>Contenu par défaut</h2>
+    </main>
+
+    <!-- Pied de page commun -->
+    <footer layout:fragment="footer">
+        <p>&copy; 2025 ENI-Encheres</p>
+    </footer>
+
+</body>
+</html>
