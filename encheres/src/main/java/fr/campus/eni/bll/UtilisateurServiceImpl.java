@@ -3,6 +3,8 @@ package fr.campus.eni.bll;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import fr.campus.eni.bo.Utilisateur;
 import fr.campus.eni.dal.UtilisateurRepositoryImpl;
 import fr.campus.eni.exceptions.ExeptionEchere;
@@ -12,19 +14,12 @@ public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
     private final UtilisateurRepositoryImpl UtilisateurRepositoryImpl;
     private final PasswordEncoder passwordEncoder;
 
-
-    @Autowired
     public UtilisateurServiceImpl(
         UtilisateurRepositoryImpl utilisateurRepositoryImpl,
         PasswordEncoder passwordEncoder
     ) {
-        this.utilisateurRepositoryImpl = utilisateurRepositoryImpl;
+        this.UtilisateurRepositoryImpl = utilisateurRepositoryImpl;
         this.passwordEncoder = passwordEncoder;
-    }
-
-
-    public UtilisateurServiceImpl(fr.campus.eni.dal.UtilisateurRepositoryImpl utilisateurRepositoryImpl) {
-        UtilisateurRepositoryImpl = utilisateurRepositoryImpl;
     }
 
     @Override
@@ -75,6 +70,6 @@ public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
     }
 
     public Optional<Utilisateur> getByPseudoAndMdp(String username, String mdp) throws Exception {
-        return UtilisateurRepositoryImpl.getByPseudoAndMdp(username, mdp);
+        return UtilisateurRepositoryImpl.getByPseudoAndMdp(username, passwordEncoder.encode(mdp));
     }
 }
