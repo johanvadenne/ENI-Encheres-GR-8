@@ -18,11 +18,11 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/styles.css", "/utilisateur/inscrire", "/utilisateur/connexion", "/utilisateur/enregistrer").permitAll()
+				.requestMatchers("/styles.css", "/utilisateur/inscrire", "/utilisateur/connexion", "/utilisateur/login", "/utilisateur/enregistrer").permitAll()
 				.anyRequest().authenticated()
 			)
 			.formLogin((form) -> form
-				.loginPage("pages/utilisateurs/formulaire-connexion.html")
+				.loginPage("/utilisateur/login")
 				.defaultSuccessUrl("/", true) 
 				.permitAll()
 			)
