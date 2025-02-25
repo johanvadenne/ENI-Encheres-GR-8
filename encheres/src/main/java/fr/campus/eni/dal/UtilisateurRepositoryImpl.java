@@ -28,10 +28,15 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
 
     @Override
     public void add(Utilisateur unUtilisateur) {
-        String sql = "insert into encheres (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur)"
-				+ " values (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :credit, :administrateur)";
-		namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(unUtilisateur));
+        String sql = """
+            INSERT INTO utilisateurs
+                (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur)
+             VALUES
+                (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :credit, :administrateur)
+        """;
+        namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(unUtilisateur));
     }
+
 
     @Override
     public List<Utilisateur> getAll() {
@@ -39,7 +44,7 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
 				+ " from utilisateurs";
 		List<Utilisateur> utilisateurs = namedParameterJdbcTemplate.query(sql,
 				new BeanPropertyRowMapper<>(Utilisateur.class));
-				
+
 		return utilisateurs;
     }
 
@@ -50,12 +55,12 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
         Utilisateur utilisateur = null;
 		try {
             utilisateur = jdbcTemplate.queryForObject(sql,
-				new BeanPropertyRowMapper<>(Utilisateur.class), id);				
+				new BeanPropertyRowMapper<>(Utilisateur.class), id);
 		}catch(DataAccessException exc) {
 			exc.printStackTrace();
 			logger.warn(exc.getMessage());
 		}
-				
+
 		return Optional.ofNullable(utilisateur);
     }
 
