@@ -40,7 +40,7 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
 
     @Override
     public List<Utilisateur> getAll() {
-        String sql = "select no_utilisateur as noUtilisateur, nom, prenom, email, telephone, rue, code_postal as codePostal, ville, mot_de_passe as motDePasse, credit, administrateur"
+        String sql = "select no_utilisateur as noUtilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal as codePostal, ville, mot_de_passe as motDePasse, credit, administrateur"
 				+ " from utilisateurs";
 		List<Utilisateur> utilisateurs = namedParameterJdbcTemplate.query(sql,
 				new BeanPropertyRowMapper<>(Utilisateur.class));
@@ -50,7 +50,7 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
 
     @Override
     public Optional<Utilisateur> getById(int id) {
-        String sql = "select no_utilisateur as noUtilisateur, nom, prenom, email, telephone, rue, code_postal as codePostal, ville, mot_de_passe as motDePasse, credit, administrateur"
+        String sql = "select no_utilisateur as noUtilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal as codePostal, ville, mot_de_passe as motDePasse, credit, administrateur"
 				+ " from utilisateurs where no_utilisateur = ?";
         Utilisateur utilisateur = null;
 		try {
@@ -66,7 +66,7 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
 
     @Override
     public void update(Utilisateur utilisateur) {
-        String sql = "update utilisateurs set nom=:nom, prenom=:prenom, email=:email, telephone=:telephone, "
+        String sql = "update utilisateurs set pseudo=:pseudo, nom=:nom, prenom=:prenom, email=:email, telephone=:telephone, "
 				+ "rue=:rue, code_postal=:codePostal, ville=:ville, mot_de_passe=:motDePasse, credit=:credit, administrateur=:administrateur where no_utilisateur = :noUtilisateur";
 		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(utilisateur));
 		if(nbRows != 1) {
@@ -83,4 +83,18 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
 		}
     }
 
+    public Optional<Utilisateur> getByPseudoAndMdp(String pseudo, String motDePasse) {
+        String sql = "select no_utilisateur as noUtilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal as codePostal, ville, mot_de_passe as motDePasse, credit, administrateur"
+				+ " from utilisateurs where pseudo = ? and mot_de_passe = ?";
+        Utilisateur utilisateur = null;
+		try {
+            utilisateur = jdbcTemplate.queryForObject(sql,
+				new BeanPropertyRowMapper<>(Utilisateur.class), pseudo, motDePasse);
+		}catch(DataAccessException exc) {
+			exc.printStackTrace();
+			logger.warn(exc.getMessage());
+		}
+
+		return Optional.ofNullable(utilisateur);
+    }
 }
