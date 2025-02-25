@@ -13,23 +13,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/styles.css", "/utilisateur/inscrire", "/clients/connexion", "/clients/enregistrer").permitAll()
+				.requestMatchers(
+					// Fichiers statiques
+					"/styles.css",
+					// Les URL pour inscription
+					"/utilisateurs/inscrire",
+					"/utilisateurs/enregistrer",
+					// La page de login
+					"/login"
+				).permitAll()
+				// Toute autre requête => user authentifié
 				.anyRequest().authenticated()
 			)
 			.formLogin((form) -> form
-				.loginPage("/login")
-				.defaultSuccessUrl("/", true) 
+				.loginPage("/login")            // GET /login => AuthController
+				.defaultSuccessUrl("/", true)   // redirection après login réussi
 				.permitAll()
 			)
 			.logout((logout) -> logout.permitAll());
 
 		return http.build();
 	}
+
 
 	@Bean
 	public UserDetailsService userDetailsService() {
@@ -42,5 +51,11 @@ public class WebSecurityConfig {
 
 		return new InMemoryUserDetailsManager(user);
 	}
-	
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+
 }

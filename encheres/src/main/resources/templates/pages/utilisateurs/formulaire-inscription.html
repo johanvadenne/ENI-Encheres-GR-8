@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout.html">
+<head>
+    <title layout:fragment="title">Inscription</title>
+</head>
+<body>
+<section layout:fragment="content">
+
+    <h2>Inscription</h2>
+
+    <form th:action="@{/utilisateurs/enregistrer}" method="post"
+          th:object="${utilisateur}">
+
+        <div>
+            <label for="pseudo">Pseudo :</label>
+            <input id="pseudo" th:field="*{pseudo}" />
+        </div>
+        <div>
+            <label for="nom">Nom :</label>
+            <input id="nom" th:field="*{nom}" />
+        </div>
+        <div>
+            <label for="prenom">Prénom :</label>
+            <input id="prenom" th:field="*{prenom}" />
+        </div>
+        <div>
+            <label for="email">Email :</label>
+            <input id="email" th:field="*{email}" type="email" />
+        </div>
+        <div>
+            <label for="telephone">Téléphone :</label>
+            <input id="telephone" th:field="*{telephone}" />
+        </div>
+        <div>
+            <label for="rue">Rue :</label>
+            <input id="rue" th:field="*{rue}" />
+        </div>
+        <div>
+            <label for="codePostal">Code Postal :</label>
+            <input id="codePostal" th:field="*{codePostal}" />
+        </div>
+        <div>
+            <label for="ville">Ville :</label>
+            <input id="ville" th:field="*{ville}" />
+        </div>
+        <div>
+            <label for="motDePasse">Mot de passe :</label>
+            <input id="motDePasse" th:field="*{motDePasse}" type="password"/>
+        </div>
+
+        <button type="submit">Créer mon compte</button>
+    </form>
+
+</section>
+</body>
+</html>
