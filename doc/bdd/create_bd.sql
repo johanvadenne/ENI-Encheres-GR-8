@@ -17,7 +17,7 @@ CREATE TABLE UTILISATEURS (
     rue            VARCHAR(30) NOT NULL,
     code_postal    VARCHAR(10) NOT NULL,
     ville          VARCHAR(50) NOT NULL,
-    mot_de_passe   VARCHAR(30) NOT NULL,
+    mot_de_passe   VARCHAR(256) NOT NULL,
     credit         INTEGER NOT NULL,
     administrateur BOOLEAN NOT NULL -- Utilisation de BOOLEAN pour le type bit
 );
