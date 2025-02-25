@@ -56,21 +56,3 @@ CREATE TABLE ENCHERES (
     CONSTRAINT encheres_utilisateur_fk FOREIGN KEY (no_utilisateur) REFERENCES UTILISATEURS (no_utilisateur) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT encheres_no_article_fk FOREIGN KEY (no_article) REFERENCES ARTICLES_VENDUS (no_article) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
-
--- Création de l'utilisateur PostgreSQL avec droits
--- Cette partie nécessite des privilèges administratifs dans PostgreSQL pour fonctionner
-
--- Créer un rôle avec un mot de passe
-DO $$ 
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'admin') THEN
-        CREATE ROLE admin LOGIN PASSWORD 'admin';
-    END IF;
-END $$;
-
--- Attribution des privilèges sur les tables
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE CATEGORIES TO admin;
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE UTILISATEURS TO admin;
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ARTICLES_VENDUS TO admin;
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE RETRAITS TO admin;
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ENCHERES TO admin;
