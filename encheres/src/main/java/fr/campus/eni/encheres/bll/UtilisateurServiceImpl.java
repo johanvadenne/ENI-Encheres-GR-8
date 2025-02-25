@@ -1,14 +1,16 @@
-package fr.campus.eni.bll;
+package fr.campus.eni.encheres.bll;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import fr.campus.eni.bo.Utilisateur;
-import fr.campus.eni.dal.UtilisateurRepositoryImpl;
-import fr.campus.eni.exceptions.ExeptionEchere;
+import fr.campus.eni.encheres.bo.Utilisateur;
+import fr.campus.eni.encheres.dal.UtilisateurRepositoryImpl;
+import fr.campus.eni.encheres.exceptions.ExeptionEchere;
 
+@Service
 public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
 
     private final UtilisateurRepositoryImpl UtilisateurRepositoryImpl;

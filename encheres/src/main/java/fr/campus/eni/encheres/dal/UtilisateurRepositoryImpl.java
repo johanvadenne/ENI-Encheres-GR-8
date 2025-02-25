@@ -1,4 +1,4 @@
-package fr.campus.eni.dal;
+package fr.campus.eni.encheres.dal;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +10,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import fr.campus.eni.bo.Utilisateur;
+import fr.campus.eni.encheres.bo.Utilisateur;
 
+@Repository
 public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
     Logger logger = LoggerFactory.getLogger(UtilisateurRepositoryImpl.class);
 

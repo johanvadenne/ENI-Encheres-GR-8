@@ -1,4 +1,4 @@
-package fr.campus.eni.bll;
+package fr.campus.eni.encheres.bll;
 
 import java.util.List;
 import java.util.Optional;

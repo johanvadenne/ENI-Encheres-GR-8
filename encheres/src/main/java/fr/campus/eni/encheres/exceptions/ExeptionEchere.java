@@ -1,4 +1,4 @@
-package fr.campus.eni.exceptions;
+package fr.campus.eni.encheres.exceptions;
 
 public class ExeptionEchere extends RuntimeException  {
     

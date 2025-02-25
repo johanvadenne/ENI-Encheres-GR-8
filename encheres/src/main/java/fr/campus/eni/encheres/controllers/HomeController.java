@@ -1,4 +1,4 @@
-package fr.campus.eni.controllers;
+package fr.campus.eni.encheres.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

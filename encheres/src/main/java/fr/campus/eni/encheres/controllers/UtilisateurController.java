@@ -1,4 +1,4 @@
-package fr.campus.eni.controllers;
+package fr.campus.eni.encheres.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import fr.campus.eni.bll.UtilisateurServiceImpl;
-import fr.campus.eni.bo.Utilisateur;
+import fr.campus.eni.encheres.bll.UtilisateurServiceImpl;
+import fr.campus.eni.encheres.bo.Utilisateur;
 import jakarta.validation.Valid;
 
 @Controller

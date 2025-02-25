@@ -1,4 +1,4 @@
-package fr.campus.eni.bo;
+package fr.campus.eni.encheres.bo;
 
 public class Retrait {
     private String rue;

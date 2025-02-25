@@ -1,5 +1,5 @@
 
-package fr.campus.eni.bo;
+package fr.campus.eni.encheres.bo;
 
 public class Utilisateur {
     private Integer noUtilisateur;
