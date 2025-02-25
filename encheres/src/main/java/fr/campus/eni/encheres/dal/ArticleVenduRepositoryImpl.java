@@ -15,7 +15,8 @@ import org.springframework.stereotype.Repository;
 import fr.campus.eni.encheres.bo.ArticleVendu;
 
 @Repository
-public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>{
+public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu> {
+
     Logger logger = LoggerFactory.getLogger(ArticleVenduRepositoryImpl.class);
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -25,8 +26,6 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
         this.jdbcTemplate = namedParameterJdbcTemplate.getJdbcTemplate();
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
-
-
 
     @Override
     public void add(ArticleVendu unArticleVendu) {
@@ -39,7 +38,6 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
         namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(unArticleVendu));
     }
 
-
     @Override
     public List<ArticleVendu> getAll() {
         String sql = """
@@ -47,10 +45,10 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
           no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
 				from 
           articleVendus""";
-		List<ArticleVendu> articleVendus = namedParameterJdbcTemplate.query(sql,
-				new BeanPropertyRowMapper<>(ArticleVendu.class));
+        List<ArticleVendu> articleVendus = namedParameterJdbcTemplate.query(sql,
+                new BeanPropertyRowMapper<>(ArticleVendu.class));
 
-		return articleVendus;
+        return articleVendus;
     }
 
     @Override
@@ -62,15 +60,15 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
           articleVendus where no_article = ?
         """;
         ArticleVendu articleVendu = null;
-		try {
+        try {
             articleVendu = jdbcTemplate.queryForObject(sql,
-				new BeanPropertyRowMapper<>(ArticleVendu.class), id);
-		}catch(DataAccessException exc) {
-			exc.printStackTrace();
-			logger.warn(exc.getMessage());
-		}
+                    new BeanPropertyRowMapper<>(ArticleVendu.class), id);
+        } catch (DataAccessException exc) {
+            exc.printStackTrace();
+            logger.warn(exc.getMessage());
+        }
 
-		return Optional.ofNullable(articleVendu);
+        return Optional.ofNullable(articleVendu);
     }
 
     @Override
@@ -89,18 +87,18 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
 	          no_categorie=:no_categorie
           where no_articleVendu = :noArticleVendu
         """;
-		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(articleVendu));
-		if(nbRows != 1) {
-			throw new RuntimeException("La modification du client a échouée : " + articleVendu );
-		}
+        int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(articleVendu));
+        if (nbRows != 1) {
+            throw new RuntimeException("La modification du client a échouée : " + articleVendu);
+        }
     }
 
     @Override
     public void delete(int id) {
         String sql = "delete from articleVendus where no_article = ? ";
-		int nbRows = jdbcTemplate.update(sql, id);
-		if(nbRows != 1) {
-			throw new RuntimeException("La suppression de l'articleVendu a échouée : id= " +id );
-		}
+        int nbRows = jdbcTemplate.update(sql, id);
+        if (nbRows != 1) {
+            throw new RuntimeException("La suppression de l'articleVendu a échouée : id= " + id);
+        }
     }
 }
