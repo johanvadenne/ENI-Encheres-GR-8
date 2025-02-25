@@ -52,4 +52,10 @@ public class WebSecurityConfig {
 		return new InMemoryUserDetailsManager(user);
 	}
 
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+
 }
