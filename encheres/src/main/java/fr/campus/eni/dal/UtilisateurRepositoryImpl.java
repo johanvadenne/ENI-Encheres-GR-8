@@ -28,7 +28,7 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
 
     @Override
     public void add(Utilisateur unUtilisateur) {
-        String sql = "insert into encheres (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur)"
+        String sql = "insert into utilisateurs (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur)"
 				+ " values (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :credit, :administrateur)";
 		namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(unUtilisateur));
     }
