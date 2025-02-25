@@ -23,10 +23,9 @@ public class UtilisateurController {
     }
 
     @GetMapping("/inscrire")
-    public String formulaireIncriptionUtilisateur(Model model) {
+    public String formulaireInscription(Model model) {
         model.addAttribute("utilisateur", new Utilisateur());
-        model.addAttribute("body", "pages/utilisateurs/formulaire-utilisateur");
-        return "index";
+        return "pages/utilisateurs/formulaire-inscription";
     }
 
     @GetMapping("/connexion")
@@ -40,7 +39,7 @@ public class UtilisateurController {
     public String enregistrerNouvelUtilisateur(Model model,  @Valid @ModelAttribute("utilisateur") Utilisateur utilisateur, BindingResult resultatValidation) {
     	if(resultatValidation.hasErrors()) {
     		model.addAttribute("body", "pages/utilisateurs/formulaire-inscription");
-            return "index"; 
+            return "index";
     	}
         UtilisateurServiceImpl.save(utilisateur);
         return "redirect:/utilisateurs";
