@@ -22,6 +22,12 @@ public class UtilisateurController {
         this.UtilisateurServiceImpl = UtilisateurServiceImpl;
     }
 
+    @GetMapping("/login")
+        public String showLoginForm() {
+        return "pages/utilisateurs/formulaire-connexion";  // Pas besoin de mettre .html
+    }
+
+
     @GetMapping("/inscrire")
     public String formulaireInscription(Model model) {
         model.addAttribute("utilisateur", new Utilisateur());
@@ -31,7 +37,7 @@ public class UtilisateurController {
     @GetMapping("/connexion")
     public String formulaireConnexionUtilisateur(Model model) {
         model.addAttribute("utilisateur", new Utilisateur());
-        model.addAttribute("body", "pages/utilisateurs/formulaire-utilisateur");
+        model.addAttribute("body", "pages/utilisateurs/formulaire-connexion");
         return "index";
     }
 
