@@ -10,6 +10,18 @@ import fr.campus.eni.exceptions.ExeptionEchere;
 public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
 
     private final UtilisateurRepositoryImpl UtilisateurRepositoryImpl;
+    private final PasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    public UtilisateurServiceImpl(
+        UtilisateurRepositoryImpl utilisateurRepositoryImpl,
+        PasswordEncoder passwordEncoder
+    ) {
+        this.utilisateurRepositoryImpl = utilisateurRepositoryImpl;
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
     public UtilisateurServiceImpl(fr.campus.eni.dal.UtilisateurRepositoryImpl utilisateurRepositoryImpl) {
         UtilisateurRepositoryImpl = utilisateurRepositoryImpl;
@@ -47,12 +59,16 @@ public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
 
     @Override
     public void save(Utilisateur entity) {
-
+        // On vérifie si c'est une création
         if (entity.getNoUtilisateur() == null) {
+            // Hachage
+            if (entity.getMotDePasse() != null) {
+                String hashed = passwordEncoder.encode(entity.getMotDePasse());
+                entity.setMotDePasse(hashed);
+            }
             this.add(entity);
-            return;
+        } else {
+            this.update(entity);
         }
-        this.update(entity);
-
     }
 }
