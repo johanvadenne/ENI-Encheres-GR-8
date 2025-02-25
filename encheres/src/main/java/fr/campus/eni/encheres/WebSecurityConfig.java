@@ -21,7 +21,7 @@ public class WebSecurityConfig {
 		http
 			.authorizeHttpRequests((requests) -> requests
 				.requestMatchers("/login").permitAll()
-				.anyRequest().permitAll()
+				.anyRequest().authenticated()
 			)
 			.formLogin((form) -> form
 				.loginPage("/login")
@@ -32,7 +32,7 @@ public class WebSecurityConfig {
 
 		return http.build();
 	}
-	
+
 	@Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();  // Utilisation de BCrypt pour encoder les mots de passe
