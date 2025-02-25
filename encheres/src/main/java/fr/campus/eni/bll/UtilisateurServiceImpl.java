@@ -30,6 +30,7 @@ public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
         return UtilisateurRepositoryImpl.getById(id);
     }
 
+    @Override
     public void update(Utilisateur client) {
         Optional<Utilisateur> clientOpt = getById(client.getNoUtilisateur());
         if (clientOpt.isPresent()) {
@@ -38,13 +39,13 @@ public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
             //TODO gerer l'erreur
             throw new ExeptionEchere();
         }
-
     }
 
+    @Override
     public void delete(int id) {
         UtilisateurRepositoryImpl.delete(id);
     }
-
+    
     @Override
     public void save(Utilisateur entity) {
 
@@ -53,6 +54,9 @@ public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
             return;
         }
         this.update(entity);
+    }
 
+    public Optional<Utilisateur> getByPseudoAndMdp(String username, String mdp) throws Exception {
+        return UtilisateurRepositoryImpl.getByPseudoAndMdp(username, mdp);
     }
 }
