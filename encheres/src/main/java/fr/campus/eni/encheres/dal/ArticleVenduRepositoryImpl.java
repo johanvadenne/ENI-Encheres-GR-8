@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import fr.campus.eni.encheres.bo.ArticleVendu;
@@ -45,8 +47,23 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
                 (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie)
              VALUES
                 (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, 17, :no_categorie)
+            RETURNING no_article
         """;
-        namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(unArticleVendu));
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        
+        namedParameterJdbcTemplate.update(
+                sql,
+                new BeanPropertySqlParameterSource(unArticleVendu),
+                keyHolder,
+                new String[]{"no_article"}
+        );
+
+        // Récupère l'ID généré et le définit dans l'objet
+        Number generatedId = keyHolder.getKey();
+        if (generatedId != null) {
+            unArticleVendu.setNoArticle(generatedId.intValue());
+        }
     }
 
     @Override
