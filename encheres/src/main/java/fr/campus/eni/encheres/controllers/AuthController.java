@@ -44,8 +44,6 @@ public class AuthController {
         // Sauvegarde
         UtilisateurServiceImpl.save(utilisateur);
 
-        System.out.println("Utilisateur enregistré : " + utilisateur.getPrenom() + " " + utilisateur.getNom());
-
         // Redirection login
         return "redirect:/login";
     }
