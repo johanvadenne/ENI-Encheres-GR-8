@@ -1,13 +1,17 @@
 package fr.campus.eni.encheres.bo;
 
+import java.util.Date;
+
 public class ArticleVendu {
     private Integer noArticle;
     private String nomArticle;
     private String description;
+    private Integer no_categorie;
     private Categorie categorie;
-    private Integer miseAPrix;
-    private String dateDebutEncheres;
-    private String dateFinEncheres;
+    private Integer prixInitial;
+    private Integer prixVente;
+    private Date dateDebutEncheres;
+    private Date dateFinEncheres;
     private Utilisateur vendeur;
     private Retrait retrait;
 
@@ -16,18 +20,20 @@ public class ArticleVendu {
     }
     
     public ArticleVendu(Integer noArticle, String nomArticle, String description, Categorie categorie,
-            Integer miseAPrix, String dateDebutEncheres, String dateFinEncheres, Utilisateur vendeur,
+            Integer prixInitial, String dateDebutEncheres, String dateFinEncheres, Utilisateur vendeur,
             Retrait retrait) {
         this.noArticle = noArticle;
         this.nomArticle = nomArticle;
         this.description = description;
         this.categorie = categorie;
-        this.miseAPrix = miseAPrix;
+        this.prixInitial = prixInitial;
         this.dateDebutEncheres = dateDebutEncheres;
         this.dateFinEncheres = dateFinEncheres;
         this.vendeur = vendeur;
         this.retrait = retrait;
     }
+
+    
 
     public Integer getNoArticle() {
         return noArticle;
@@ -61,12 +67,12 @@ public class ArticleVendu {
         this.categorie = categorie;
     }
 
-    public Integer getMiseAPrix() {
-        return miseAPrix;
+    public Integer getPrixInitial() {
+        return prixInitial;
     }
 
-    public void setMiseAPrix(Integer miseAPrix) {
-        this.miseAPrix = miseAPrix;
+    public void setPrixInitial(Integer miseAPrix) {
+        this.prixInitial = prixInitial;
     }
 
     public String getDateDebutEncheres() {
@@ -104,8 +110,24 @@ public class ArticleVendu {
     @Override
     public String toString() {
         return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
-                + ", categorie=" + categorie + ", miseAPrix=" + miseAPrix + ", dateDebutEncheres=" + dateDebutEncheres
+                + ", categorie=" + categorie + ", miseAPrix=" + prixInitial + ", dateDebutEncheres=" + dateDebutEncheres
                 + ", dateFinEncheres=" + dateFinEncheres + ", vendeur=" + vendeur + ", retrait=" + retrait + "]";
+    }
+
+    public Integer getNo_categorie() {
+        return no_categorie;
+    }
+
+    public void setNo_categorie(Integer no_categorie) {
+        this.no_categorie = no_categorie;
+    }
+
+    public Integer getPrixVente() {
+        return prixVente;
+    }
+
+    public void setPrixVente(Integer prixVente) {
+        this.prixVente = prixVente;
     }
 }
 
