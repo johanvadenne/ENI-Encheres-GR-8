@@ -3,6 +3,7 @@ package fr.campus.eni.encheres.controllers;
 import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -15,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.campus.eni.encheres.bll.ArticleVenduServiceImpl;
 import fr.campus.eni.encheres.bll.CategorieServiceImpl;
+import fr.campus.eni.encheres.bll.EnchereServiceImpl;
 import fr.campus.eni.encheres.bll.RetraitServiceImpl;
 import fr.campus.eni.encheres.bll.UtilisateurServiceImpl;
 import fr.campus.eni.encheres.bo.ArticleVendu;
 import fr.campus.eni.encheres.bo.Categorie;
+import fr.campus.eni.encheres.bo.Enchere;
 import fr.campus.eni.encheres.bo.Retrait;
+import fr.campus.eni.encheres.bo.Utilisateur;
 
 @Controller
 public class ArticleVenduController {
@@ -27,12 +31,16 @@ public class ArticleVenduController {
     private final ArticleVenduServiceImpl articleService;
     private final CategorieServiceImpl categorieService;
     private final RetraitServiceImpl retraitServiceImpl;
+    private final EnchereServiceImpl enchereServiceImpl;
+    private UtilisateurServiceImpl utilisateurService;
 
     public ArticleVenduController(ArticleVenduServiceImpl articleService, CategorieServiceImpl categorieService,
-            UtilisateurServiceImpl utilisateurService, RetraitServiceImpl retraitServiceImpl) {
+            UtilisateurServiceImpl utilisateurService, RetraitServiceImpl retraitServiceImpl, EnchereServiceImpl enchereServiceImpl) {
         this.articleService = articleService;
         this.categorieService = categorieService;
         this.retraitServiceImpl = retraitServiceImpl;
+        this.enchereServiceImpl = enchereServiceImpl;
+        this.utilisateurService = utilisateurService;
     }
 
     @GetMapping("/listeVentes")
@@ -95,5 +103,28 @@ public class ArticleVenduController {
         ArticleVendu article = articleService.getById(id).get();
         model.addAttribute("article", article);
         return "pages/ventes/detailVente"; // Nom du template HTML (detailsVente.html)
+    }
+
+    
+    // 💰 Traitement de l'enchère
+    @PostMapping("/vente/{noArticle}/encherir")
+
+    public String creerEnchere(@PathVariable Integer noArticle,
+                               @RequestParam Integer montantEnchere,
+                               Principal principal) {
+        ArticleVendu article = articleService.getById(noArticle).get();
+        Utilisateur utilisateur = utilisateurService.getById(17).get();
+
+        Enchere enchere = new Enchere();
+        enchere.setArticle(article);
+        enchere.setNoArticle(noArticle);
+        enchere.setNoUtilisateur(17);
+        enchere.setUtilisateur(utilisateur);
+        enchere.setMontantEnchere(montantEnchere);
+        enchere.setDateEnchere(new Date());
+
+        enchereServiceImpl.save(enchere);
+
+        return "redirect:/vente/" + noArticle; // 🔄 Redirection vers la page de détails
     }
 }
