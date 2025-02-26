@@ -76,6 +76,7 @@ public class ArticleVenduController {
 
         model.addAttribute("lesArticlesVendus", lesArticles);
         model.addAttribute("categories", categorieService.getAll());
+        model.addAttribute("selectedCategorie", categorie);
         return "pages/ventes/listeVente"; // Le nom de votre fichier HTML
     }
 
