@@ -7,19 +7,23 @@ public class Enchere {
     private Integer noEnchere;
     private Date dateEnchere;
     private Integer montantEnchere;
+    private Integer noArticle;
     private ArticleVendu article;
+    private Integer noUtilisateur;
     private Utilisateur utilisateur;
 
     public Enchere() {
     }
 
     public Enchere(Integer noEnchere, Date dateEnchere, Integer montantEnchere, ArticleVendu article,
-            Utilisateur utilisateur) {
+            Utilisateur utilisateur, Integer noArticle, Integer noUtilisateur) {
         this.noEnchere = noEnchere;
         this.dateEnchere = dateEnchere;
         this.montantEnchere = montantEnchere;
         this.article = article;
         this.utilisateur = utilisateur;
+        this.noArticle = noArticle;
+        this.noUtilisateur = noUtilisateur;
     }
 
     public Integer getNoEnchere() {
@@ -60,6 +64,22 @@ public class Enchere {
 
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
+    }
+
+    public Integer getNoArticle() {
+        return noArticle;
+    }
+
+    public void setNoArticle(Integer noArticle) {
+        this.noArticle = noArticle;
+    }
+
+    public Integer getNoUtilisateur() {
+        return noUtilisateur;
+    }
+
+    public void setNoUtilisateur(Integer noUtilisateur) {
+        this.noUtilisateur = noUtilisateur;
     }
 
 }
