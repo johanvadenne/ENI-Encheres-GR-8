@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import fr.campus.eni.encheres.bll.ArticleVenduServiceImpl;
 import fr.campus.eni.encheres.bll.CategorieServiceImpl;
+import fr.campus.eni.encheres.bll.RetraitServiceImpl;
 import fr.campus.eni.encheres.bll.UtilisateurServiceImpl;
 import fr.campus.eni.encheres.bo.ArticleVendu;
 import fr.campus.eni.encheres.bo.Categorie;
@@ -27,12 +28,12 @@ public class ArticleVenduController {
 
     private final ArticleVenduServiceImpl articleService;
     private final CategorieServiceImpl categorieService;
-    private final UtilisateurServiceImpl utilisateurService;
+    private final RetraitServiceImpl retraitServiceImpl;
 
-    public ArticleVenduController(ArticleVenduServiceImpl articleService, CategorieServiceImpl categorieService, UtilisateurServiceImpl utilisateurService) {
+    public ArticleVenduController(ArticleVenduServiceImpl articleService, CategorieServiceImpl categorieService, RetraitServiceImpl retraitServiceImpl) {
         this.articleService = articleService;
         this.categorieService = categorieService;
-        this.utilisateurService = utilisateurService;
+        this.retraitServiceImpl = retraitServiceImpl;
     }
 
     @GetMapping("/listeVentes")
@@ -61,9 +62,10 @@ public class ArticleVenduController {
     }
 
     @PostMapping("/creer-vente")
-    public String soumettreArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu) {
-        System.out.println(articleVendu);
+    public String soumettreArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute("retrait") Retrait retrait) {
         articleService.save(articleVendu);
+        retrait.setNoCategorie(articleVendu.getNoArticle());
+        retraitServiceImpl.save(retrait);
         return "redirect:/listeVentes";
     }
 }
