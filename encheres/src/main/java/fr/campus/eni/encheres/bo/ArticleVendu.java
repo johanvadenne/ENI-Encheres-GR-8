@@ -2,6 +2,8 @@ package fr.campus.eni.encheres.bo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class ArticleVendu {
     private Integer noArticle;
     private String nomArticle;
@@ -10,7 +12,9 @@ public class ArticleVendu {
     private Categorie categorie;
     private Integer prixInitial;
     private Integer prixVente;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateDebutEncheres;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateFinEncheres;
     private Utilisateur vendeur;
     private Retrait retrait;
