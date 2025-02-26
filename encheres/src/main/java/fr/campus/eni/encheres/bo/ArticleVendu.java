@@ -20,7 +20,7 @@ public class ArticleVendu {
     }
     
     public ArticleVendu(Integer noArticle, String nomArticle, String description, Categorie categorie,
-            Integer prixInitial, String dateDebutEncheres, String dateFinEncheres, Utilisateur vendeur,
+            Integer prixInitial, Date dateDebutEncheres, Date dateFinEncheres, Utilisateur vendeur,
             Retrait retrait) {
         this.noArticle = noArticle;
         this.nomArticle = nomArticle;
@@ -75,19 +75,19 @@ public class ArticleVendu {
         this.prixInitial = prixInitial;
     }
 
-    public String getDateDebutEncheres() {
+    public Date getDateDebutEncheres() {
         return dateDebutEncheres;
     }
 
-    public void setDateDebutEncheres(String dateDebutEncheres) {
+    public void setDateDebutEncheres(Date dateDebutEncheres) {
         this.dateDebutEncheres = dateDebutEncheres;
     }
 
-    public String getDateFinEncheres() {
+    public Date getDateFinEncheres() {
         return dateFinEncheres;
     }
 
-    public void setDateFinEncheres(String dateFinEncheres) {
+    public void setDateFinEncheres(Date dateFinEncheres) {
         this.dateFinEncheres = dateFinEncheres;
     }
 
