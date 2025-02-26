@@ -1,5 +1,6 @@
 package fr.campus.eni.encheres.controllers;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,14 @@ public class ArticleVenduController {
     @Autowired
     private ArticleVenduServiceImpl articleVenduServiceImpl;
 
-   @GetMapping("/listeVentes")
+    @GetMapping("/listeVentes")
     public String listerVentes(Model model) {
         List<ArticleVendu> articles = articleVenduServiceImpl.getAll();
-        System.out.println(articles);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        for (ArticleVendu article : articles) {
+            article.setDateDebutEncheres(article.getDateDebutEncheres().formatted(formatter));
+            article.setDateFinEncheres(article.getDateFinEncheres().formatted(formatter));
+        }
         model.addAttribute("lesArticlesVendus", articles);
         return "pages/ventes/listeVente";  // Le nom de votre fichier HTML
     }
