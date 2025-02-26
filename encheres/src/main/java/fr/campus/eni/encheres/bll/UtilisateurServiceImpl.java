@@ -69,7 +69,18 @@ public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
         }
     }
 
-    public Optional<Utilisateur> getByPseudoAndMdp(String username, String mdp) throws Exception {
-        return UtilisateurRepositoryImpl.getByPseudoAndMdp(username, passwordEncoder.encode(mdp));
+    public Optional<Utilisateur> getByPseudoAndMdp(String pseudo, String mdp) throws Exception {
+        Optional<Utilisateur> utilisateurOpt = UtilisateurRepositoryImpl.getByPseudo(pseudo);
+
+    if (utilisateurOpt.isPresent()) {
+        Utilisateur utilisateur = utilisateurOpt.get();
+        
+        // ✅ Vérification du mot de passe avec matches (ne pas encoder le mot de passe ici)
+        if (passwordEncoder.matches(mdp, utilisateur.getMotDePasse())) {
+            return Optional.of(utilisateur);  // Connexion réussie
+        }
+    }
+
+    return Optional.empty();
     }
 }
