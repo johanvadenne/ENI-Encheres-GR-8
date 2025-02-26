@@ -56,3 +56,28 @@ CREATE TABLE ENCHERES (
     CONSTRAINT encheres_utilisateur_fk FOREIGN KEY (no_utilisateur) REFERENCES UTILISATEURS (no_utilisateur) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT encheres_no_article_fk FOREIGN KEY (no_article) REFERENCES ARTICLES_VENDUS (no_article) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
+
+
+
+‎doc/create_bd.sql
++23
+Original file line number	Original file line	Diff line number	Diff line change
+@@ -96,3 +96,26 @@ ON DELETE NO ACTION
+    ON UPDATE no action
+
+
+-- Ajout d'un utilisateur pour accès à la base de données posgresql (admin / admin)
+CREATE LOGIN admin WITH
+    PASSWORD = 'admin',
+    DEFAULT_DATABASE = ENCHERES,
+    CHECK_POLICY = OFF,
+    CHECK_EXPIRATION = OFF
+-- Création de l'utilisateur
+CREATE USER admin FOR LOGIN admin
+-- Attribution des droits à l'utilisateur pour toutes les tables
+GRANT SELECT, INSERT, UPDATE, DELETE ON CATEGORIES TO admin
+GRANT SELECT, INSERT, UPDATE, DELETE ON UTILISATEURS TO admin
+GRANT SELECT, INSERT, UPDATE, DELETE ON ARTICLES_VENDUS TO admin
+GRANT SELECT, INSERT, UPDATE, DELETE ON RETRAITS TO admin
+GRANT SELECT, INSERT, UPDATE, DELETE ON ENCHERES TO admin
+GRANT USAGE, SELECT, UPDATE ON SEQUENCE utilisateurs_no_utilisateur_seq TO admin;
