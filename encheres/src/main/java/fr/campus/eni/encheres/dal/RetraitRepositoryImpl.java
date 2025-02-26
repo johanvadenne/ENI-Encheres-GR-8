@@ -53,7 +53,7 @@ public class RetraitRepositoryImpl implements ICrudRepository<Retrait>{
     @Override
     public Optional<Retrait> getById(int id) {
         String sql = "select no_article, rue, code_postal, ville"
-				+ " from retraits where no_retrait = ?";
+				+ " from retraits where no_article = ?";
         Retrait retrait = null;
 		try {
             retrait = jdbcTemplate.queryForObject(sql,
@@ -69,7 +69,7 @@ public class RetraitRepositoryImpl implements ICrudRepository<Retrait>{
     @Override
     public void update(Retrait retrait) {
         String sql = "update retraits set rue=:rue, code_postal=:code_postal, ville=:ville "
-				+ " where no_retrait = :noRetrait";
+				+ " where no_article = :noArticle";
 		int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(retrait));
 		if(nbRows != 1) {
 			throw new RuntimeException("La modification du client a échouée : " + retrait );
