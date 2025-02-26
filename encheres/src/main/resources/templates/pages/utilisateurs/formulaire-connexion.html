@@ -11,12 +11,12 @@
     <h2 class="text-2xl font-bold mb-4">Connexion</h2>
     <form th:action="@{/login}" method="post" class="space-y-4">
         <div>
-            <label for="username" class="block text-gray-700">Pseudo ou Email :</label>
-            <input id="username" name="username" type="text" class="w-full p-2 border rounded" />
+            <label for="pseudo" class="block text-gray-700">Pseudo ou Email :</label>
+            <input id="pseudo" name="pseudo" type="text" class="w-full p-2 border rounded" />
         </div>
         <div>
-            <label for="password" class="block text-gray-700">Mot de passe :</label>
-            <input id="password" name="password" type="password" class="w-full p-2 border rounded" />
+            <label for="motDePasse" class="block text-gray-700">Mot de passe :</label>
+            <input id="motDePasse" name="motDePasse" type="password" class="w-full p-2 border rounded" />
         </div>
         <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-400 transition">Se connecter</button>
     </form>
