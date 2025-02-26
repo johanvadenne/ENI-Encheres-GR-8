@@ -23,7 +23,7 @@
                     <th:block th:each="cat : ${categories}">
                         <option th:value="${cat.noCategorie}" 
                                 th:text="${cat.libelle}"
-                                th:selected="${cat.noCategorie == param.categorie}"></option>
+                                th:selected="${cat.noCategorie == selectedCategorie}"></option>
                     </th:block>
                 </select>
             </div>
