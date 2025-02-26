@@ -37,8 +37,6 @@ public class ArticleVendu {
         this.retrait = retrait;
     }
 
-    
-
     public Integer getNoArticle() {
         return noArticle;
     }
