@@ -9,6 +9,27 @@
 <body>
 <section layout:fragment="content" class="max-w-7xl mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6">Liste des Ventes</h1>
+    <form method="get" action="/listeVentes" class="mb-6">
+        <div class="flex gap-4">
+            <div>
+                <label for="nomArticle" class="block font-medium">Nom de l'Article</label>
+                <input type="text" id="nomArticle" name="nomArticle" 
+                       th:value="${param.nomArticle}" class="border p-2 rounded">
+            </div>
+            <div>
+                <label for="categorie" class="block font-medium">Catégorie</label>
+                <select id="categorie" name="categorie" class="border p-2 rounded">
+                    <option value="">--Toutes les catégories--</option>
+                    <th:block th:each="cat : ${categories}">
+                        <option th:value="${cat.noCategorie}" 
+                                th:text="${cat.libelle}"
+                                th:selected="${cat.noCategorie == param.categorie}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-6">Filtrer</button>
+        </div>
+    </form>
     <table class="min-w-full border-collapse border border-gray-300">
         <thead>
             <tr class="bg-gray-100">
