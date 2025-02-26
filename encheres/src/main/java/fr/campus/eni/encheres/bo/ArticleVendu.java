@@ -13,6 +13,10 @@ public class ArticleVendu {
     private LocalDateTime dateFinEncheres;
     private Utilisateur vendeur;
     private Retrait retrait;
+
+    public ArticleVendu() {
+            // constructeur par défaut
+    }
     
     public ArticleVendu(Integer noArticle, String nomArticle, String description, Categorie categorie,
             Integer miseAPrix, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, Utilisateur vendeur,
@@ -100,6 +104,11 @@ public class ArticleVendu {
         this.retrait = retrait;
     }
 
-    
+    @Override
+    public String toString() {
+        return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
+                + ", categorie=" + categorie + ", miseAPrix=" + miseAPrix + ", dateDebutEncheres=" + dateDebutEncheres
+                + ", dateFinEncheres=" + dateFinEncheres + ", vendeur=" + vendeur + ", retrait=" + retrait + "]";
+    }
 }
 
