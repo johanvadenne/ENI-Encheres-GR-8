@@ -27,8 +27,8 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String afficherFormulaireRegister() {
-        // Retourne la vue Thymeleaf du formulaire de connexion
+    public String afficherFormulaireRegister(Model model) {
+        model.addAttribute("utilisateur", new Utilisateur());
         return "pages/utilisateurs/formulaire-inscription";
     }
 
@@ -43,8 +43,6 @@ public class AuthController {
         }
         // Sauvegarde
         UtilisateurServiceImpl.save(utilisateur);
-
-        System.out.println("Utilisateur enregistré : " + utilisateur.getPrenom() + " " + utilisateur.getNom());
 
         // Redirection login
         return "redirect:/login";

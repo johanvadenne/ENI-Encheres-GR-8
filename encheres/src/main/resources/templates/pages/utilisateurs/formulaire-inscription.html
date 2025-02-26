@@ -1,66 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout.html">
 <head>
     <title layout:fragment="title">Inscription</title>
 </head>
 <body>
-<section layout:fragment="content">
+<section layout:fragment="content" class="max-w-2xl mx-auto p-6 bg-white rounded shadow mt-6">
+    <h2 class="text-2xl font-bold mb-6 text-center">Inscription</h2>
 
-    <h2>Inscription</h2>
-
-    <form th:action="@{/utilisateurs/register}" method="post"
-          th:object="${utilisateur}">
-
+    <form th:action="@{/register}" method="post" th:object="${utilisateur}" class="space-y-4">
         <div>
-            <label for="pseudo">Pseudo :</label>
-            <input id="pseudo" th:field="*{pseudo}" />
+            <label for="pseudo" class="block text-gray-700">Pseudo :</label>
+            <input id="pseudo" th:field="*{pseudo}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
         </div>
         <div>
-            <label for="nom">Nom :</label>
-            <input id="nom" th:field="*{nom}" />
+            <label for="nom" class="block text-gray-700">Nom :</label>
+            <input id="nom" th:field="*{nom}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
         </div>
         <div>
-            <label for="prenom">Prénom :</label>
-            <input id="prenom" th:field="*{prenom}" />
+            <label for="prenom" class="block text-gray-700">Prénom :</label>
+            <input id="prenom" th:field="*{prenom}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
         </div>
         <div>
-            <label for="email">Email :</label>
-            <input id="email" th:field="*{email}" type="email" />
+            <label for="email" class="block text-gray-700">Email :</label>
+            <input id="email" type="email" th:field="*{email}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
         </div>
         <div>
-            <label for="telephone">Téléphone :</label>
-            <input id="telephone" th:field="*{telephone}" />
+            <label for="telephone" class="block text-gray-700">Téléphone :</label>
+            <input id="telephone" th:field="*{telephone}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
         </div>
         <div>
-            <label for="rue">Rue :</label>
-            <input id="rue" th:field="*{rue}" />
+            <label for="rue" class="block text-gray-700">Rue :</label>
+            <input id="rue" th:field="*{rue}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
         </div>
         <div>
-            <label for="codePostal">Code Postal :</label>
-            <input id="codePostal" th:field="*{codePostal}" />
+            <label for="codePostal" class="block text-gray-700">Code Postal :</label>
+            <input id="codePostal" th:field="*{codePostal}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
         </div>
         <div>
-            <label for="ville">Ville :</label>
-            <input id="ville" th:field="*{ville}" />
+            <label for="ville" class="block text-gray-700">Ville :</label>
+            <input id="ville" th:field="*{ville}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
         </div>
         <div>
-            <label for="motDePasse">Mot de passe :</label>
-            <input id="motDePasse" th:field="*{motDePasse}" type="password"/>
+            <label for="motDePasse" class="block text-gray-700">Mot de passe :</label>
+            <input id="motDePasse" type="password" th:field="*{motDePasse}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
         </div>
         <div>
-            <label for="credit">crédit :</label>
-            <input id="credit" th:field="*{credit}" type="number"/>
+            <label for="credit" class="block text-gray-700">Crédit :</label>
+            <input id="credit" type="number" th:field="*{credit}" class="mt-1 w-full p-2 border border-gray-300 rounded" />
+        </div>
+        <div class="flex items-center">
+            <input id="administrateur" type="checkbox" th:field="*{administrateur}" class="mr-2" />
+            <label for="administrateur" class="text-gray-700">Administrateur</label>
         </div>
         <div>
-            <label for="administrateur">administarteur :</label>
-            <input id="administrateur" th:field="*{administrateur}" type="checkbox"/>
+            <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+                Créer mon compte
+            </button>
         </div>
-
-        <button type="submit">Créer mon compte</button>
     </form>
-
 </section>
 </body>
 </html>
