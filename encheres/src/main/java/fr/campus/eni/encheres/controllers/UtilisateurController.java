@@ -23,40 +23,4 @@ public class UtilisateurController {
     UtilisateurController(UtilisateurServiceImpl UtilisateurServiceImpl) {
         this.UtilisateurServiceImpl = UtilisateurServiceImpl;
     }
-
-    @GetMapping("/login")
-        public String showLoginForm() {
-        return "pages/utilisateurs/formulaire-connexion";  // Pas besoin de mettre .html
-    }
-
-    // @GetMapping("/login")
-    // public String formulaireConnexionUtilisateur(Model model) {
-    //     model.addAttribute("utilisateur", new Utilisateur());
-    //     model.addAttribute("body", "pages/utilisateurs/formulaire-connexion");
-    //     return "index";
-    // }
-
-    @GetMapping("/register")
-    public String formulaireInscription(Model model) {
-        model.addAttribute("utilisateur", new Utilisateur());
-        return "pages/utilisateurs/formulaire-inscription";
-    }
-
-    @PostMapping("/register")
-    public String enregistrerNouvelUtilisateur(
-            Model model,
-            @Valid @ModelAttribute("utilisateur") Utilisateur utilisateur,
-            BindingResult resultatValidation
-    ) {
-        if (resultatValidation.hasErrors()) {
-            return "pages/utilisateurs/formulaire-inscription";
-        }
-        // Sauvegarde
-        UtilisateurServiceImpl.save(utilisateur);
-
-        System.out.println("Utilisateur enregistré : " + utilisateur.getPrenom() + " " + utilisateur.getNom());
-
-        // Redirection login
-        return "redirect:/login";
-    }
 }
