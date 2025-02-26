@@ -23,7 +23,8 @@ public class WebSecurityConfig {
 						.requestMatchers(
 								"/login",
 								"/logout",
-								"/register")
+								"/register",
+								"/images/**")
 						.permitAll()
 						.anyRequest().authenticated())
 				.formLogin(form -> form
