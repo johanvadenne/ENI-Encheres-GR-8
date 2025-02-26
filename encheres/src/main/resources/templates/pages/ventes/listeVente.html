@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Ventes</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h1>Liste des Ventes</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom de l'Article</th>
+            <th>Description</th>
+            <th>Catégorie</th>
+            <th>Mise à Prix</th>
+            <th>Début des Enchères</th>
+            <th>Fin des Enchères</th>
+            <th>Vendeur</th>
+            <th>Lieu de la vente</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Parcours de la liste des articles -->
+        <tr th:each="article : ${lesArticlesVendus}">
+            <td th:text="${article.nomArticle}"></td>
+            <td th:text="${article.description}"></td>
+            <td th:text="${article.categorie.libelle}"></td>
+            <td th:text="${article.miseAPrix}"></td>
+            <td th:text="${article.dateDebutEncheres}"></td>
+            <td th:text="${article.dateFinEncheres}"></td>
+            <td th:text="${article.vendeur.prenom + ' ' + article.vendeur.nom}"></td>
+            <td th:text="${article.retrait.rue + ' ' + article.retrait.codePostal + ' ' + article.retrait.ville}"></td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
