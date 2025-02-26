@@ -31,9 +31,9 @@ public class EnchereRepositoryImpl implements ICrudRepository<Enchere> {
     public void add(Enchere unEnchere) {
         String sql = """
             INSERT INTO encheres
-                (no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur)
+                (date_enchere, montant_enchere, no_article, no_utilisateur)
              VALUES
-                (:no_enchere, :date_enchere, :montant_enchere, :no_article, :no_utilisateur)
+                (:dateEnchere, :montantEnchere, :noArticle, :noUtilisateur)
         """;
         namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(unEnchere));
     }
