@@ -34,7 +34,7 @@ public class RetraitRepositoryImpl implements ICrudRepository<Retrait>{
             INSERT INTO retraits
                 (no_article, rue, code_postal, ville)
              VALUES
-                (:no_article, :rue, :code_postal, :ville)
+                (:noCategorie, :rue, :codePostal, :ville)
         """;
         namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(unRetrait));
     }
