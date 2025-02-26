@@ -1,41 +1,79 @@
 <!DOCTYPE html>
-<html
-    lang="fr"
-    xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
->
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="UTF-8" />
-    <!--
-      Le layout:fragment="title" permettra aux pages enfants de substituer le titre
-      si elles le souhaitent.
-    -->
-    <title>ENI-Enchères :: <span layout:fragment="title">Titre par défaut</span></title>
-
-    <!-- Feuilles de style, librairies, etc. -->
-    <link rel="stylesheet" href="@{/css/styles.css}" />
+    <meta charset="UTF-8">
+    <title>ENI-Encheres :: <span layout:fragment="title">Titre par défaut</span></title>
+    <!-- Intégration de Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100">
+    <!-- Barre de menu -->
+    <nav class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center">
+          <!-- Logo et liens principaux -->
+          <div class="flex items-center space-x-4">
+            <a href="/" class="flex items-center py-5 px-2 text-gray-700 hover:text-gray-900">
+              <svg class="h-6 w-6 mr-1 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 4v16m8-8H4"/>
+              </svg>
+              <span class="font-bold">ENI-Encheres</span>
+            </a>
+            <!-- Liens de navigation principaux -->
+            <div class="hidden md:flex items-center space-x-1">
+              <a href="/encheres" class="py-5 px-3 text-gray-700 hover:text-gray-900">Enchères</a>
+              <a href="/profile" class="py-5 px-3 text-gray-700 hover:text-gray-900">Profil</a>
+              <!-- Ajouter d'autres liens si nécessaire -->
+            </div>
+          </div>
+          <!-- Liens secondaires -->
+          <div class="hidden md:flex items-center space-x-1">
+            <a href="/login" class="py-2 px-3 bg-blue-500 text-white rounded hover:bg-blue-400 transition duration-300">Connexion</a>
+            <a href="/utilisateurs/inscrire" class="py-2 px-3 bg-green-500 text-white rounded hover:bg-green-400 transition duration-300">Inscription</a>
+          </div>
+          <!-- Bouton mobile (à implémenter si besoin) -->
+          <div class="md:hidden flex items-center">
+            <button class="mobile-menu-button">
+              <svg class="w-6 h-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Menu mobile (caché par défaut) -->
+      <div class="mobile-menu hidden md:hidden">
+        <a href="/encheres" class="block py-2 px-4 text-sm hover:bg-gray-200">Enchères</a>
+        <a href="/profile" class="block py-2 px-4 text-sm hover:bg-gray-200">Profil</a>
+        <a href="/login" class="block py-2 px-4 text-sm hover:bg-gray-200">Connexion</a>
+        <a href="/utilisateurs/inscrire" class="block py-2 px-4 text-sm hover:bg-gray-200">Inscription</a>
+      </div>
+    </nav>
 
-    <!-- Header commun -->
-    <header>
-        <h1>ENI-Enchères</h1>
-        <nav>
-            <a href="#" th:href="@{/inscription}">S'inscrire</a> |
-            <a href="#" th:href="@{/connexion}">Se connecter</a>
-        </nav>
-    </header>
-
-    <!-- Contenu principal (placeHolder) -->
-    <main layout:fragment="content">
-        <!-- Cette zone sera remplacée par le contenu des pages enfants -->
-        <h2>Contenu par défaut</h2>
+    <!-- Zone de contenu principale -->
+    <main class="max-w-7xl mx-auto p-6" layout:fragment="content">
+        <!-- Contenu par défaut (sera remplacé dans les vues enfants) -->
+        <p>Contenu par défaut...</p>
     </main>
 
-    <!-- Pied de page commun -->
-    <footer layout:fragment="footer">
-        <p>&copy; 2025 ENI-Encheres</p>
+    <!-- Pied de page -->
+    <footer class="bg-white text-center py-4 shadow mt-6">
+        <p>&copy; 2025 ENI-Encheres. Tous droits réservés.</p>
     </footer>
 
+    <!-- Script pour le menu mobile (optionnel) -->
+    <script>
+      const btn = document.querySelector(".mobile-menu-button");
+      const menu = document.querySelector(".mobile-menu");
+      btn.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+      });
+    </script>
 </body>
 </html>
