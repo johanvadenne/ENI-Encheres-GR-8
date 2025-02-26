@@ -30,35 +30,6 @@ public class AuthController {
         return "pages/utilisateurs/formulaire-connexion";
     }
 
-    // @PostMapping("/login")
-    // public String connecterUtilisateur(
-    // @RequestParam("pseudo") String pseudo,
-    // @RequestParam("motDePasse") String motDePasse,
-    // Model model,
-    // HttpSession session // Injection de la session
-    // ) {
-    // try {
-    // Optional<Utilisateur> utilisateurOpt =
-    // UtilisateurServiceImpl.getByPseudoAndMdp(pseudo, motDePasse);
-
-    // if (utilisateurOpt.isPresent()) {
-    // Utilisateur utilisateur = utilisateurOpt.get();
-
-    // // 🗝️ Création de la session utilisateur
-    // session.setAttribute("utilisateurConnecte", utilisateur);
-
-    // return "redirect:/"; // Redirection après connexion réussie
-    // } else {
-    // model.addAttribute("erreur", "Identifiants invalides");
-    // return "pages/utilisateurs/formulaire-connexion";
-    // }
-
-    // } catch (Exception e) {
-    // model.addAttribute("erreur", "Une erreur est survenue. Veuillez réessayer.");
-    // return "pages/utilisateurs/formulaire-connexion";
-    // }
-    // }
-
     @GetMapping("/register")
     public String afficherFormulaireRegister(Model model) {
         model.addAttribute("utilisateur", new Utilisateur());
