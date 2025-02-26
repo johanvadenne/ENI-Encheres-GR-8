@@ -1,5 +1,7 @@
 package fr.campus.eni.encheres.controllers;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,6 +53,8 @@ public class UtilisateurController {
         }
         // Sauvegarde
         UtilisateurServiceImpl.save(utilisateur);
+
+        System.out.println("Utilisateur enregistré : " + utilisateur.getPrenom() + " " + utilisateur.getNom());
 
         // Redirection login
         return "redirect:/login";
