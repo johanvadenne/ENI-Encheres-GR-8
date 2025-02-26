@@ -20,7 +20,7 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/utilisateurs/login", "/utilisateurs/register").permitAll()
+				.requestMatchers("/utilisateurs/login", "/utilisateurs/register", "/utilisateurs/test").permitAll()
 				.anyRequest().authenticated()
 			)
 			.formLogin((form) -> form
