@@ -23,15 +23,16 @@ public class WebSecurityConfig {
 						.requestMatchers(
 								"/login",
 								"/logout",
-								"/register"
-						).permitAll()
+								"/register")
+						.permitAll()
 						.anyRequest().authenticated())
-				.formLogin((form) -> form
+				.formLogin(form -> form
 						.loginPage("/login")
 						.loginProcessingUrl("/auth/login")
 						.failureUrl("/login?error=true")
 						.defaultSuccessUrl("/", true)
 						.permitAll())
+
 				.logout((logout) -> logout.permitAll());
 
 		return http.build();
@@ -42,14 +43,14 @@ public class WebSecurityConfig {
 		return new BCryptPasswordEncoder(); // Utilisation de BCrypt pour encoder les mots de passe
 	}
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		UserDetails user = User.withDefaultPasswordEncoder()
-				.username("user")
-				.password("password")
-				.roles("USER")
-				.build();
+	// @Bean
+	// public UserDetailsService userDetailsService() {
+	// UserDetails user = User.withDefaultPasswordEncoder()
+	// .username("user")
+	// .password("password")
+	// .roles("USER")
+	// .build();
 
-		return new InMemoryUserDetailsManager(user);
-	}
+	// return new InMemoryUserDetailsManager(user);
+	// }
 }

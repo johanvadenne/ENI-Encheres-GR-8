@@ -30,33 +30,34 @@ public class AuthController {
         return "pages/utilisateurs/formulaire-connexion";
     }
 
-    @PostMapping("/login")
-public String connecterUtilisateur(
-        @RequestParam("pseudo") String pseudo,
-        @RequestParam("motDePasse") String motDePasse,
-        Model model,
-        HttpSession session // Injection de la session
-) {
-    try {
-        Optional<Utilisateur> utilisateurOpt = UtilisateurServiceImpl.getByPseudoAndMdp(pseudo, motDePasse);
-        
-        if (utilisateurOpt.isPresent()) {
-            Utilisateur utilisateur = utilisateurOpt.get();
+    // @PostMapping("/login")
+    // public String connecterUtilisateur(
+    // @RequestParam("pseudo") String pseudo,
+    // @RequestParam("motDePasse") String motDePasse,
+    // Model model,
+    // HttpSession session // Injection de la session
+    // ) {
+    // try {
+    // Optional<Utilisateur> utilisateurOpt =
+    // UtilisateurServiceImpl.getByPseudoAndMdp(pseudo, motDePasse);
 
-            // 🗝️ Création de la session utilisateur
-            session.setAttribute("utilisateurConnecte", utilisateur);
+    // if (utilisateurOpt.isPresent()) {
+    // Utilisateur utilisateur = utilisateurOpt.get();
 
-            return "redirect:/"; // Redirection après connexion réussie
-        } else {
-            model.addAttribute("erreur", "Identifiants invalides");
-            return "pages/utilisateurs/formulaire-connexion";
-        }
+    // // 🗝️ Création de la session utilisateur
+    // session.setAttribute("utilisateurConnecte", utilisateur);
 
-    } catch (Exception e) {
-        model.addAttribute("erreur", "Une erreur est survenue. Veuillez réessayer.");
-        return "pages/utilisateurs/formulaire-connexion";
-    }
-}
+    // return "redirect:/"; // Redirection après connexion réussie
+    // } else {
+    // model.addAttribute("erreur", "Identifiants invalides");
+    // return "pages/utilisateurs/formulaire-connexion";
+    // }
+
+    // } catch (Exception e) {
+    // model.addAttribute("erreur", "Une erreur est survenue. Veuillez réessayer.");
+    // return "pages/utilisateurs/formulaire-connexion";
+    // }
+    // }
 
     @GetMapping("/register")
     public String afficherFormulaireRegister(Model model) {
@@ -68,8 +69,7 @@ public String connecterUtilisateur(
     public String enregistrerNouvelUtilisateur(
             Model model,
             @Valid @ModelAttribute("utilisateur") Utilisateur utilisateur,
-            BindingResult resultatValidation
-    ) {
+            BindingResult resultatValidation) {
         if (resultatValidation.hasErrors()) {
             return "pages/utilisateurs/formulaire-inscription";
         }
