@@ -19,6 +19,7 @@ import fr.campus.eni.encheres.bll.RetraitServiceImpl;
 import fr.campus.eni.encheres.bll.UtilisateurServiceImpl;
 import fr.campus.eni.encheres.bo.ArticleVendu;
 import fr.campus.eni.encheres.bo.Categorie;
+import fr.campus.eni.encheres.bo.Retrait;
 
 @Controller
 public class ArticleVenduController {
@@ -31,7 +32,7 @@ public class ArticleVenduController {
     private final RetraitServiceImpl retraitServiceImpl;
 
     public ArticleVenduController(ArticleVenduServiceImpl articleService, CategorieServiceImpl categorieService,
-            UtilisateurServiceImpl utilisateurService) {
+            UtilisateurServiceImpl utilisateurService, RetraitServiceImpl retraitServiceImpl) {
         this.articleService = articleService;
         this.categorieService = categorieService;
         this.retraitServiceImpl = retraitServiceImpl;
@@ -62,8 +63,8 @@ public class ArticleVenduController {
             }
 
             if (matchNom && matchCategorie) {
-                article.setDateDebutEncheres(article.getDateDebutEncheres().formatted(formatter));
-                article.setDateFinEncheres(article.getDateFinEncheres().formatted(formatter));
+                // article.setDateDebutEncheres(article.getDateDebutEncheres().formatted(formatter));
+                // article.setDateFinEncheres(article.getDateFinEncheres().formatted(formatter));
                 lesArticles.add(article);
             }
         }
