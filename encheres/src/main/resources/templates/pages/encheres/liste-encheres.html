@@ -9,42 +9,33 @@
 <body>
 <section layout:fragment="content" class="max-w-7xl mx-auto p-6">
     <h2 class="text-2xl font-bold mb-4">Liste des enchères</h2>
-
-    <!-- (Optionnel) Formulaire de recherche / filtres ici -->
-
-    <!-- Grille d'enchères -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <!-- Itération Thymeleaf sur la liste -->
-        <div th:each="enchere : ${listeEncheres}"
-             class="bg-white rounded shadow p-4">
-
-            <!-- Image placeholder ou un champ image si tu l'as -->
-            <div class="mb-4 h-40 bg-gray-200 flex items-center justify-center">
-                <span class="text-gray-500">Image</span>
-            </div>
-
-            <!-- Exemple d'affichage d'attributs
-                 Adapte selon les champs réels de ta classe Enchere -->
-            <h3 class="text-lg font-bold mb-1"
-                th:text="${enchere.nomArticle}">
-                Nom de l'article
-            </h3>
-            <p class="text-gray-700">
-                Prix :
-                <span class="font-semibold"
-                      th:text="${enchere.miseAPrix}">210</span>
-                points
-            </p>
-            <p class="text-gray-700">
-                Fin de l'enchère :
-                <span th:text="${enchere.dateFinEncheres}">10/08/2018</span>
-            </p>
-            <p class="text-gray-700">
-                Vendeur :
-                <span th:text="${enchere.vendeur}">jojo44</span>
-            </p>
+    <div th:each="enchere : ${listeEncheres}" class="bg-white rounded shadow p-4">
+        <!-- Image placeholder -->
+        <div class="mb-4 h-40 bg-gray-200 flex items-center justify-center">
+            <span class="text-gray-500"
+                  th:text="${enchere.article != null ? 'Image' : 'Pas d''image'}">Image</span>
         </div>
-        <!-- Fin du th:each -->
+        <!-- Nom de l'article -->
+        <h3 class="text-lg font-bold mb-1"
+            th:text="${enchere.article?.nomArticle ?: 'Nom non défini'}">
+            Nom de l'article
+        </h3>
+        <!-- Prix -->
+        <p class="text-gray-700">
+            Prix : <span class="font-semibold"
+                        th:text="${enchere.article?.miseAPrix ?: 'N/A'}">210</span>
+            points
+        </p>
+        <!-- Date fin enchère -->
+        <p class="text-gray-700">
+            Fin de l'enchère :
+            <span th:text="${enchere.article?.dateFinEncheres ?: 'N/A'}">10/08/2018</span>
+        </p>
+        <!-- Vendeur -->
+        <p class="text-gray-700">
+            Vendeur :
+            <span th:text="${enchere.article?.utilisateur?.pseudo ?: 'Inconnu'}">jojo44</span>
+        </p>
     </div>
 </section>
 </body>
