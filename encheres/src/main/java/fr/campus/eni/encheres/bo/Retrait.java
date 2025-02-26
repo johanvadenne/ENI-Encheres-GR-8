@@ -1,6 +1,7 @@
 package fr.campus.eni.encheres.bo;
 
 public class Retrait {
+    private Integer noCategorie;
     private String rue;
     private String codePostal;
     private String ville;
@@ -37,5 +38,13 @@ public class Retrait {
 
     public void setVille(String ville) {
         this.ville = ville;
+    }
+
+    public Integer getNoCategorie() {
+        return noCategorie;
+    }
+
+    public void setNoCategorie(Integer noCategorie) {
+        this.noCategorie = noCategorie;
     }
 }
