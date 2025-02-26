@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout.html">
+<head>
+    <title layout:fragment="title">Page d'accueil</title>
+</head>
+<body>
+<section layout:fragment="content" class="max-w-7xl mx-auto p-6">
+<h1>Détails de la vente</h1>
+
+    <div th:if="${article != null}">
+        <p><strong>Nom de l'article :</strong> <span th:text="${article.nomArticle}"></span></p>
+        <p><strong>Description :</strong> <span th:text="${article.description}"></span></p>
+        <p><strong>Date de début :</strong> <span th:text="${#dates.format(article.dateDebutEncheres, 'dd/MM/yyyy')}"></span></p>
+        <p><strong>Date de fin :</strong> <span th:text="${#dates.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span></p>
+        <p><strong>Prix initial :</strong> <span th:text="${article.prixInitial} + ' €'"></span></p>
+        <p><strong>Prix de vente :</strong> <span th:text="${article.prixVente} + ' €'"></span></p>
+    </div>
+
+    <div th:if="${article == null}">
+        <p>Aucun article trouvé pour cet ID.</p>
+    </div>
+
+    <a th:href="@{/listeVentes}">Retour à la liste des ventes</a>
+</section>
+</body>
+</html>
