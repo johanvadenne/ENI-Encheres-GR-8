@@ -85,18 +85,25 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur>{
 		}
     }
 
-    public Optional<Utilisateur> getByPseudoAndMdp(String pseudo, String motDePasse) {
-        String sql = "select no_utilisateur as noUtilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal as codePostal, ville, mot_de_passe as motDePasse, credit, administrateur"
-				+ " from utilisateurs where pseudo = ? and mot_de_passe = ?";
-        Utilisateur utilisateur = null;
-		try {
-            utilisateur = jdbcTemplate.queryForObject(sql,
-				new BeanPropertyRowMapper<>(Utilisateur.class), pseudo, motDePasse);
-		}catch(DataAccessException exc) {
-			exc.printStackTrace();
-			logger.warn(exc.getMessage());
-		}
+    public Optional<Utilisateur> getByPseudo(String pseudo) {
 
-		return Optional.ofNullable(utilisateur);
-    }
+      System.out.println("Recherche de l'utilisateur avec le pseudo : " + pseudo);
+  
+      String sql = "SELECT no_utilisateur AS noUtilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal AS codePostal, ville, mot_de_passe AS motDePasse, credit, administrateur " +
+                   "FROM utilisateurs WHERE pseudo = ?";
+  
+      Utilisateur utilisateur = null;
+      try {
+          utilisateur = jdbcTemplate.queryForObject(
+              sql,
+              new BeanPropertyRowMapper<>(Utilisateur.class),
+              pseudo
+          );
+      } catch (DataAccessException exc) {
+          exc.printStackTrace();
+          logger.warn("Utilisateur non trouvé : " + exc.getMessage());
+      }
+  
+      return Optional.ofNullable(utilisateur);
+  }
 }
