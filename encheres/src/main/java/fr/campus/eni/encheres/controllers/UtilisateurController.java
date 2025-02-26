@@ -27,21 +27,20 @@ public class UtilisateurController {
         return "pages/utilisateurs/formulaire-connexion";  // Pas besoin de mettre .html
     }
 
+    // @GetMapping("/login")
+    // public String formulaireConnexionUtilisateur(Model model) {
+    //     model.addAttribute("utilisateur", new Utilisateur());
+    //     model.addAttribute("body", "pages/utilisateurs/formulaire-connexion");
+    //     return "index";
+    // }
 
-    @GetMapping("/inscrire")
+    @GetMapping("/register")
     public String formulaireInscription(Model model) {
         model.addAttribute("utilisateur", new Utilisateur());
         return "pages/utilisateurs/formulaire-inscription";
     }
 
-    @GetMapping("/connexion")
-    public String formulaireConnexionUtilisateur(Model model) {
-        model.addAttribute("utilisateur", new Utilisateur());
-        model.addAttribute("body", "pages/utilisateurs/formulaire-connexion");
-        return "index";
-    }
-
-    @PostMapping("/enregistrer")
+    @PostMapping("/register")
     public String enregistrerNouvelUtilisateur(
             Model model,
             @Valid @ModelAttribute("utilisateur") Utilisateur utilisateur,
