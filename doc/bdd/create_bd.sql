@@ -58,26 +58,18 @@ CREATE TABLE ENCHERES (
 );
 
 
-
-‎doc/create_bd.sql
-+23
-Original file line number	Original file line	Diff line number	Diff line change
-@@ -96,3 +96,26 @@ ON DELETE NO ACTION
-    ON UPDATE no action
-
-
 -- Ajout d'un utilisateur pour accès à la base de données posgresql (admin / admin)
-CREATE LOGIN admin WITH
-    PASSWORD = 'admin',
-    DEFAULT_DATABASE = ENCHERES,
-    CHECK_POLICY = OFF,
-    CHECK_EXPIRATION = OFF
--- Création de l'utilisateur
-CREATE USER admin FOR LOGIN admin
--- Attribution des droits à l'utilisateur pour toutes les tables
-GRANT SELECT, INSERT, UPDATE, DELETE ON CATEGORIES TO admin
-GRANT SELECT, INSERT, UPDATE, DELETE ON UTILISATEURS TO admin
-GRANT SELECT, INSERT, UPDATE, DELETE ON ARTICLES_VENDUS TO admin
-GRANT SELECT, INSERT, UPDATE, DELETE ON RETRAITS TO admin
-GRANT SELECT, INSERT, UPDATE, DELETE ON ENCHERES TO admin
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'admin') THEN
+        CREATE ROLE admin LOGIN PASSWORD 'admin';
+    END IF;
+END $$;
+
+-- Attribution des privilèges sur les tables
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE CATEGORIES TO admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE UTILISATEURS TO admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ARTICLES_VENDUS TO admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE RETRAITS TO admin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ENCHERES TO admin;
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE utilisateurs_no_utilisateur_seq TO admin;
