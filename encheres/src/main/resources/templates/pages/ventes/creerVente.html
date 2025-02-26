@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout.html">
+<head>
+    <title layout:fragment="title">Page d'accueil</title>
+</head>
+<body>
+<section layout:fragment="content" class="max-w-7xl mx-auto p-6">
+<!-- Formulaire de vente d'article ENI-Enchères avec Tailwind CSS -->
+<div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-6 text-center">Vendre un article</h2>
+    <form th:action="@{/creer-vente}" method="POST" class="space-y-4">
+  
+      <!-- Nom de l'article -->
+      <div>
+        <label for="nomArticle" class="block text-sm font-medium text-gray-700">Nom de l'article</label>
+        <input type="text" id="nomArticle" name="nomArticle" required placeholder="Ex: Livre, Smartphone..." class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+      </div>
+  
+      <!-- Description -->
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea id="description" name="description" rows="4" required placeholder="Décrivez votre article" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"></textarea>
+      </div>
+  
+      <!-- Catégorie -->
+      <div>
+        <label for="categorie" class="block text-sm font-medium text-gray-700">Catégorie</label>
+        <select id="categorie" name="categorie" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+          <option value="" disabled selected>Choisissez une catégorie</option>
+          <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
+        </select>
+      </div>
+  
+      <!-- Mise à prix -->
+      <div>
+        <label for="miseAPrix" class="block text-sm font-medium text-gray-700">Mise à prix (points)</label>
+        <input type="number" id="miseAPrix" name="miseAPrix" min="1" required placeholder="Ex: 100" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+      </div>
+  
+      <!-- Dates et heures de la vente -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="dateDebutEncheres" class="block text-sm font-medium text-gray-700">Date et heure de début</label>
+          <input type="datetime-local" id="dateDebutEncheres" name="dateDebutEncheres" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+        </div>
+        <div>
+          <label for="dateFinEncheres" class="block text-sm font-medium text-gray-700">Date et heure de fin</label>
+          <input type="datetime-local" id="dateFinEncheres" name="dateFinEncheres" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+        </div>
+      </div>
+  
+      <!-- Adresse de retrait -->
+      <div>
+        <label for="retrait" class="block text-sm font-medium text-gray-700">Adresse de retrait</label>
+        <input type="text" id="retrait" name="retrait" required placeholder="Ex: 123 Rue Exemple, 75000 Paris" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+        <p class="text-sm text-gray-500 mt-1">Par défaut, l'adresse de retrait est celle du vendeur.</p>
+      </div>
+  
+      <!-- Bouton de soumission -->
+      <div class="flex justify-end">
+        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Mettre en vente</button>
+      </div>
+  
+    </form>
+  </div>
+</section>
+</body>
+</html>
