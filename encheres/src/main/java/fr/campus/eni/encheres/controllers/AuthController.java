@@ -50,4 +50,11 @@ public class AuthController {
         // Redirection login
         return "redirect:/login";
     }
+
+    @GetMapping("/logout")
+    public String deconnexion(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
+
 }
