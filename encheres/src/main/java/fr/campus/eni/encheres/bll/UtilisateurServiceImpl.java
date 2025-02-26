@@ -45,7 +45,6 @@ public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
         if (clientOpt.isPresent()) {
             UtilisateurRepositoryImpl.update(client);
         } else {
-            //TODO gerer l'erreur
             throw new ExeptionEchere();
         }
     }
@@ -64,11 +63,10 @@ public class UtilisateurServiceImpl implements ICrudService<Utilisateur> {
                 String hashed = passwordEncoder.encode(entity.getMotDePasse());
                 entity.setMotDePasse(hashed);
             }
-            this.add(entity);
+            UtilisateurRepositoryImpl.add(entity);
         } else {
-            this.update(entity);
+            UtilisateurRepositoryImpl.update(entity);
         }
-        this.update(entity);
     }
 
     public Optional<Utilisateur> getByPseudoAndMdp(String username, String mdp) throws Exception {
