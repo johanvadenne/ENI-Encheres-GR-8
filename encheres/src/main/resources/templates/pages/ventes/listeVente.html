@@ -1,41 +1,40 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout.html">
 <head>
-    <meta charset="UTF-8">
-    <title>Liste des Ventes</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title layout:fragment="title">Liste des Ventes</title>
 </head>
 <body>
-
-<h1>Liste des Ventes</h1>
-
-<table>
-    <thead>
-        <tr>
-            <th>Nom de l'Article</th>
-            <th>Description</th>
-            <th>Catégorie</th>
-            <th>Mise à Prix</th>
-            <th>Début des Enchères</th>
-            <th>Fin des Enchères</th>
-            <th>Vendeur</th>
-            <th>Lieu de la vente</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Parcours de la liste des articles -->
-        <tr th:each="article : ${lesArticlesVendus}">
-            <td th:text="${article.nomArticle}"></td>
-            <td th:text="${article.description}"></td>
-            <td th:text="${article.categorie.libelle}"></td>
-            <td th:text="${article.miseAPrix}"></td>
-            <td th:text="${article.dateDebutEncheres}"></td>
-            <td th:text="${article.dateFinEncheres}"></td>
-            <td th:text="${article.vendeur.prenom + ' ' + article.vendeur.nom}"></td>
-            <td th:text="${article.retrait.rue + ' ' + article.retrait.codePostal + ' ' + article.retrait.ville}"></td>
-        </tr>
-    </tbody>
-</table>
-
+<section layout:fragment="content" class="max-w-7xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Liste des Ventes</h1>
+    <table class="min-w-full border-collapse border border-gray-300">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="border border-gray-300 p-2">Nom de l'Article</th>
+                <th class="border border-gray-300 p-2">Description</th>
+                <th class="border border-gray-300 p-2">Catégorie</th>
+                <th class="border border-gray-300 p-2">Mise à Prix</th>
+                <th class="border border-gray-300 p-2">Début des Enchères</th>
+                <th class="border border-gray-300 p-2">Fin des Enchères</th>
+                <th class="border border-gray-300 p-2">Vendeur</th>
+                <th class="border border-gray-300 p-2">Lieu de la vente</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="article : ${lesArticlesVendus}" class="hover:bg-gray-50">
+                <td class="border border-gray-300 p-2" th:text="${article.nomArticle}"></td>
+                <td class="border border-gray-300 p-2" th:text="${article.description}"></td>
+                <td class="border border-gray-300 p-2" th:text="${article.categorie.libelle}"></td>
+                <td class="border border-gray-300 p-2" th:text="${article.miseAPrix}"></td>
+                <td class="border border-gray-300 p-2" th:text="${article.dateDebutEncheres}"></td>
+                <td class="border border-gray-300 p-2" th:text="${article.dateFinEncheres}"></td>
+                <td class="border border-gray-300 p-2" th:text="${article.vendeur.prenom + ' ' + article.vendeur.nom}"></td>
+                <td class="border border-gray-300 p-2" th:text="${article.retrait.rue + ' ' + article.retrait.codePostal + ' ' + article.retrait.ville}"></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
 </body>
 </html>
