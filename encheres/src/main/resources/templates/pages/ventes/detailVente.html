@@ -4,36 +4,74 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout.html">
 <head>
-    <title layout:fragment="title">Page d'accueil</title>
+    <title layout:fragment="title">Détails de la Vente</title>
 </head>
 <body>
-<section layout:fragment="content" class="max-w-7xl mx-auto p-6">
-<h1>Détails de la vente</h1>
+<section layout:fragment="content" class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Détails de la Vente</h1>
 
     <div th:if="${article != null}">
-        <p><strong>Nom de l'article :</strong> <span th:text="${article.nomArticle}"></span></p>
-        <p><strong>Description :</strong> <span th:text="${article.description}"></span></p>
-        <p><strong>Date de début :</strong> <span th:text="${#dates.format(article.dateDebutEncheres, 'dd/MM/yyyy')}"></span></p>
-        <p><strong>Date de fin :</strong> <span th:text="${#dates.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span></p>
-        <p><strong>Prix initial :</strong> <span th:text="${article.prixInitial} + ' €'"></span></p>
-        <p><strong>Prix de vente :</strong> <span th:text="${article.prixVente} + ' €'"></span></p>
-    
-        <!-- 🌟 Formulaire pour créer une enchère -->
-        <form th:action="@{'/vente/' + ${article.noArticle} + '/encherir'}" method="post" class="mt-4">
-            <label for="montantEnchere" class="block font-medium">Votre enchère (€) :</label>
-            <input type="number" id="montantEnchere" name="montantEnchere" min="1" required
-                   class="border p-2 rounded w-full mt-1" placeholder="Entrez votre enchère">
-            <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                Placer une enchère
-            </button>
-        </form>
+        <!-- Card container -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <!-- Image placeholder -->
+            <div class="h-64 bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-500">Image de l'article</span>
+            </div>
+            <!-- Card content -->
+            <div class="p-6">
+                <h2 class="text-2xl font-bold mb-2" th:text="${article.nomArticle}">Nom de l'article</h2>
+                <p class="text-gray-700 mb-2">
+                    <strong>Description :</strong>
+                    <span th:text="${article.description}"></span>
+                </p>
+                <p class="text-gray-700 mb-2">
+                    <strong>Date de début :</strong>
+                    <span th:text="${#dates.format(article.dateDebutEncheres, 'dd/MM/yyyy')}"></span>
+                </p>
+                <p class="text-gray-700 mb-2">
+                    <strong>Date de fin :</strong>
+                    <span th:text="${#dates.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span>
+                </p>
+                <p class="text-gray-700 mb-2">
+                    <strong>Prix initial :</strong>
+                    <span th:text="${article.prixInitial + ' €'}"></span>
+                </p>
+                <p class="text-gray-700 mb-4">
+                    <strong>Prix de vente :</strong>
+                    <span th:text="${article.prixVente + ' €'}"></span>
+                </p>
+                <p class="text-gray-700 mb-4">
+                    <strong>Vendeur :</strong>
+                    <span th:text="${article.vendeur != null ? article.vendeur.prenom + ' ' + article.vendeur.nom : 'Inconnu'}"></span>
+                </p>
+                <p class="text-gray-700 mb-4">
+                    <strong>Lieu de la vente :</strong>
+                    <span th:text="${article.retrait != null ? article.retrait.rue + ' ' + article.retrait.codePostal + ' ' + article.retrait.ville : 'Lieu inconnu'}"></span>
+                </p>
+
+                <!-- Formulaire pour créer une enchère -->
+                <form th:action="@{'/vente/' + ${article.noArticle} + '/encherir'}" method="post" class="mt-6">
+                    <label for="montantEnchere" class="block text-lg font-medium text-gray-700 mb-2">
+                        Votre enchère (€) :
+                    </label>
+                    <input type="number" id="montantEnchere" name="montantEnchere" min="1" required
+                           class="w-full p-2 border border-gray-300 rounded" placeholder="Entrez votre enchère">
+                    <button type="submit"
+                            class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+                        Placer une enchère
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div th:if="${article == null}">
-        <p>Aucun article trouvé pour cet ID.</p>
+        <p class="text-red-500">Aucun article trouvé pour cet ID.</p>
     </div>
 
-    <a th:href="@{/listeVentes}">Retour à la liste des ventes</a>
+    <div class="mt-6">
+        <a th:href="@{/listeVentes}" class="text-blue-500 hover:underline">Retour à la liste des ventes</a>
+    </div>
 </section>
 </body>
 </html>
