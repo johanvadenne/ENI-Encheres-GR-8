@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,6 +14,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import fr.campus.eni.encheres.bo.ArticleVendu;
+import fr.campus.eni.encheres.bo.Categorie;
+import fr.campus.eni.encheres.bo.Retrait;
+import fr.campus.eni.encheres.bo.Utilisateur;
 
 @Repository
 public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu> {
@@ -21,6 +25,12 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private CategorieRepositoryImpl categorieRepositoryImpl;
+    @Autowired
+    private RetraitRepositoryImpl retraitRepositoryImpl;
+    @Autowired
+    private UtilisateurRepositoryImpl utilisateurRepositoryImpl;
 
     public ArticleVenduRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = namedParameterJdbcTemplate.getJdbcTemplate();
@@ -30,7 +40,7 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
     @Override
     public void add(ArticleVendu unArticleVendu) {
         String sql = """
-            INSERT INTO articleVendus
+            INSERT INTO articles_vendus
                 (no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie)
              VALUES
                 (:no_article, :nom_article, :description, :date_debut_encheres, :date_fin_encheres, :prix_initial, :prix_vente, :no_utilisateur, :no_categorie)
@@ -44,9 +54,23 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
         select 
           no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
 				from 
-          articleVendus""";
+          articles_vendus""";
         List<ArticleVendu> articleVendus = namedParameterJdbcTemplate.query(sql,
                 new BeanPropertyRowMapper<>(ArticleVendu.class));
+        for (ArticleVendu articleVendu : articleVendus) {
+            String idCategorieSQL = "select no_categorie from articles_vendus where no_article = ?";
+            int idCat = jdbcTemplate.queryForObject(idCategorieSQL, Integer.class, articleVendu.getNoArticle());
+            Categorie categorie = categorieRepositoryImpl.getById(idCat).get();
+            articleVendu.setCategorie(categorie);
+
+            Retrait retrait = retraitRepositoryImpl.getById(articleVendu.getNoArticle()).get();
+            articleVendu.setRetrait(retrait);
+
+            String idUtilisateurSQL = "select no_utilisateur from articles_vendus where no_article = ?";
+            int idUtil = jdbcTemplate.queryForObject(idUtilisateurSQL, Integer.class, articleVendu.getNoArticle());
+            Utilisateur utilisateur = utilisateurRepositoryImpl.getById(idUtil).get();
+            articleVendu.setVendeur(utilisateur);
+        }
 
         return articleVendus;
     }
@@ -57,7 +81,7 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
         select 
           no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
         from 
-          articleVendus where no_article = ?
+          articles_vendus where no_article = ?
         """;
         ArticleVendu articleVendu = null;
         try {
@@ -75,7 +99,7 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
     public void update(ArticleVendu articleVendu) {
         String sql = """
         update 
-          articleVendus 
+          articles_vendus 
             set 
 	          nom_article=:nom_article,
 	          description=:description,
@@ -95,7 +119,7 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
 
     @Override
     public void delete(int id) {
-        String sql = "delete from articleVendus where no_article = ? ";
+        String sql = "delete from articles_vendus where no_article = ? ";
         int nbRows = jdbcTemplate.update(sql, id);
         if (nbRows != 1) {
             throw new RuntimeException("La suppression de l'articleVendu a échouée : id= " + id);
