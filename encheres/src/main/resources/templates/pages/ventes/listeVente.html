@@ -32,16 +32,17 @@
     </form>
     <table class="min-w-full border-collapse border border-gray-300">
         <thead>
-            <tr class="bg-gray-100">
-                <th class="border border-gray-300 p-2">Nom de l'Article</th>
-                <th class="border border-gray-300 p-2">Description</th>
-                <th class="border border-gray-300 p-2">Catégorie</th>
-                <th class="border border-gray-300 p-2">Mise à Prix</th>
-                <th class="border border-gray-300 p-2">Début des Enchères</th>
-                <th class="border border-gray-300 p-2">Fin des Enchères</th>
-                <th class="border border-gray-300 p-2">Vendeur</th>
-                <th class="border border-gray-300 p-2">Lieu de la vente</th>
-            </tr>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 p-2">Nom de l'Article</th>
+                    <th class="border border-gray-300 p-2">Description</th>
+                    <th class="border border-gray-300 p-2">Catégorie</th>
+                    <th class="border border-gray-300 p-2">Mise à Prix</th>
+                    <th class="border border-gray-300 p-2">Début des Enchères</th>
+                    <th class="border border-gray-300 p-2">Fin des Enchères</th>
+                    <th class="border border-gray-300 p-2">Vendeur</th>
+                    <th class="border border-gray-300 p-2">Lieu de la vente</th>
+                    <th class="border border-gray-300 p-2">Détails</th>
+                </tr>
         </thead>
         <tbody>
             <tr th:each="article : ${lesArticlesVendus}" class="hover:bg-gray-50">
@@ -53,6 +54,9 @@
                 <td class="border border-gray-300 p-2" th:text="${article.dateFinEncheres}"></td>
                 <td class="border border-gray-300 p-2" th:text="${article.vendeur.prenom + ' ' + article.vendeur.nom}"></td>
                 <td class="border border-gray-300 p-2" th:text="${article.retrait.rue + ' ' + article.retrait.codePostal + ' ' + article.retrait.ville}"></td>
+                <td class="border border-gray-300 p-2 text-center">
+                    <a th:href="@{'/vente/' + ${article.noArticle}}" class="text-blue-500 hover:underline">Voir détails</a>
+                </td>
             </tr>
         </tbody>
     </table>
