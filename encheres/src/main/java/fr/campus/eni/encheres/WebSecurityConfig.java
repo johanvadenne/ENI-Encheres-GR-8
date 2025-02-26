@@ -19,29 +19,32 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/utilisateurs/login", "/utilisateurs/register", "/utilisateurs/test").permitAll()
-				.anyRequest().authenticated()
-			)
-			.formLogin((form) -> form
-				.loginPage("/utilisateurs/login")
-				.defaultSuccessUrl("/", true) 
-				.permitAll()
-			)
-			.logout((logout) -> logout.permitAll());
+				.authorizeHttpRequests((requests) -> requests
+						.requestMatchers(
+								"/login",
+								"/logout",
+								"/register",
+								"/utilisateurs/inscrire"
+
+						).permitAll()
+						.anyRequest().authenticated())
+				.formLogin((form) -> form
+						.loginPage("/login")
+						.defaultSuccessUrl("/", true)
+						.permitAll())
+				.logout((logout) -> logout.permitAll());
 
 		return http.build();
 	}
 
 	@Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();  // Utilisation de BCrypt pour encoder les mots de passe
-    }
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder(); // Utilisation de BCrypt pour encoder les mots de passe
+	}
 
 	@Bean
 	public UserDetailsService userDetailsService() {
-		UserDetails user =
-			 User.withDefaultPasswordEncoder()
+		UserDetails user = User.withDefaultPasswordEncoder()
 				.username("user")
 				.password("password")
 				.roles("USER")
