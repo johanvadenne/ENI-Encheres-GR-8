@@ -27,8 +27,8 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String afficherFormulaireRegister() {
-        // Retourne la vue Thymeleaf du formulaire de connexion
+    public String afficherFormulaireRegister(Model model) {
+        model.addAttribute("utilisateur", new Utilisateur());
         return "pages/utilisateurs/formulaire-inscription";
     }
 
