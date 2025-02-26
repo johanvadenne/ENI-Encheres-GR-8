@@ -41,9 +41,9 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
     public void add(ArticleVendu unArticleVendu) {
         String sql = """
             INSERT INTO articles_vendus
-                (no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie)
+                (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie)
              VALUES
-                (:no_article, :nom_article, :description, :date_debut_encheres, :date_fin_encheres, :prix_initial, :prix_vente, :no_utilisateur, :no_categorie)
+                (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, 17, :no_categorie)
         """;
         namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(unArticleVendu));
     }
@@ -54,7 +54,8 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
         select 
           no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
 				from 
-          articles_vendus""";
+          articles_vendus
+          """;
         List<ArticleVendu> articleVendus = namedParameterJdbcTemplate.query(sql,
                 new BeanPropertyRowMapper<>(ArticleVendu.class));
         for (ArticleVendu articleVendu : articleVendus) {
@@ -63,8 +64,13 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
             Categorie categorie = categorieRepositoryImpl.getById(idCat).get();
             articleVendu.setCategorie(categorie);
 
-            Retrait retrait = retraitRepositoryImpl.getById(articleVendu.getNoArticle()).get();
-            articleVendu.setRetrait(retrait);
+            Optional<Retrait> retrait = retraitRepositoryImpl.getById(articleVendu.getNoArticle());
+            if (retrait.isPresent()) {
+                articleVendu.setRetrait(retrait.get());
+            } else {
+                articleVendu.setRetrait(new Retrait("", "", ""));
+                logger.warn("Retrait non trouvé pour l'article " + articleVendu.getNoArticle());
+            }
 
             String idUtilisateurSQL = "select no_utilisateur from articles_vendus where no_article = ?";
             int idUtil = jdbcTemplate.queryForObject(idUtilisateurSQL, Integer.class, articleVendu.getNoArticle());
