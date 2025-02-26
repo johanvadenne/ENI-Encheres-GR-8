@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,16 +24,18 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
-    @Autowired
     private CategorieRepositoryImpl categorieRepositoryImpl;
-    @Autowired
     private RetraitRepositoryImpl retraitRepositoryImpl;
-    @Autowired
     private UtilisateurRepositoryImpl utilisateurRepositoryImpl;
 
-    public ArticleVenduRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.jdbcTemplate = namedParameterJdbcTemplate.getJdbcTemplate();
+    public ArticleVenduRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate, JdbcTemplate jdbcTemplate,
+            CategorieRepositoryImpl categorieRepositoryImpl, RetraitRepositoryImpl retraitRepositoryImpl,
+            UtilisateurRepositoryImpl utilisateurRepositoryImpl) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.jdbcTemplate = jdbcTemplate;
+        this.categorieRepositoryImpl = categorieRepositoryImpl;
+        this.retraitRepositoryImpl = retraitRepositoryImpl;
+        this.utilisateurRepositoryImpl = utilisateurRepositoryImpl;
     }
 
     @Override
