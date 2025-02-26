@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +23,6 @@ import fr.campus.eni.encheres.bo.Retrait;
 @Controller
 public class ArticleVenduController {
 
-    @Autowired
-    private ArticleVenduServiceImpl articleVenduServiceImpl;
-
     private final ArticleVenduServiceImpl articleService;
     private final CategorieServiceImpl categorieService;
     private final RetraitServiceImpl retraitServiceImpl;
@@ -42,7 +38,7 @@ public class ArticleVenduController {
     public String listerVentes(@RequestParam(required = false) String nomArticle,
             @RequestParam(required = false) Integer categorie,
             Model model) {
-        List<ArticleVendu> articles = articleVenduServiceImpl.getAll();
+        List<ArticleVendu> articles = articleService.getAll();
         List<ArticleVendu> lesArticles = new ArrayList<ArticleVendu>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
