@@ -11,4 +11,10 @@ public class AuthController {
         // Retourne la vue Thymeleaf du formulaire de connexion
         return "pages/utilisateurs/formulaire-connexion";
     }
+
+    @GetMapping("/register")
+    public String afficherFormulaireRegister() {
+        // Retourne la vue Thymeleaf du formulaire de connexion
+        return "pages/utilisateurs/formulaire-inscription";
+    }
 }
