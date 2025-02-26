@@ -10,7 +10,7 @@
 
     <h2>Inscription</h2>
 
-    <form th:action="@{/utilisateurs/enregistrer}" method="post"
+    <form th:action="@{/utilisateurs/register}" method="post"
           th:object="${utilisateur}">
 
         <div>
@@ -48,6 +48,14 @@
         <div>
             <label for="motDePasse">Mot de passe :</label>
             <input id="motDePasse" th:field="*{motDePasse}" type="password"/>
+        </div>
+        <div>
+            <label for="credit">crédit :</label>
+            <input id="credit" th:field="*{credit}" type="number"/>
+        </div>
+        <div>
+            <label for="administrateur">administarteur :</label>
+            <input id="administrateur" th:field="*{administrateur}" type="checkbox"/>
         </div>
 
         <button type="submit">Créer mon compte</button>
