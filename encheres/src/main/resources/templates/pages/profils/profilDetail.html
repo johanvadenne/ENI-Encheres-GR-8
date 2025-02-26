@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout.html">
+<head>
+    <title layout:fragment="title">Profil utilisateur</title>
+</head>
+<body>
+<section layout:fragment="content" class="max-w-7xl mx-auto p-6">
+    <h1>Profil de l'utilisateur</h1>
+
+    <div th:if="${utilisateur != null}">
+        <p><strong>Pseudo :</strong> <span th:text="${utilisateur.pseudo}"></span></p>
+        <p><strong>Nom :</strong> <span th:text="${utilisateur.nom}"></span></p>
+        <p><strong>Prénom :</strong> <span th:text="${utilisateur.prenom}"></span></p>
+        <p><strong>Email :</strong> <span th:text="${utilisateur.email}"></span></p>
+        <p><strong>Téléphone :</strong> <span th:text="${utilisateur.telephone}"></span></p>
+        <p><strong>Adresse :</strong> <span th:text="${utilisateur.rue}"></span>, 
+                                   <span th:text="${utilisateur.codePostal}"></span> 
+                                   <span th:text="${utilisateur.ville}"></span></p>
+        <p><strong>Crédit :</strong> <span th:text="${utilisateur.credit} + ' €'"></span></p>
+        <p><strong>Administrateur :</strong> 
+            <span th:text="${utilisateur.administrateur ? 'Oui' : 'Non'}"></span>
+        </p>
+    </div>
+
+    <div th:if="${utilisateur == null}">
+        <p>Aucun utilisateur connecté.</p>
+    </div>
+
+    <a th:href="@{/listeVentes}">Retour à la liste des ventes</a>
+</section>
+</body>
+</html>
