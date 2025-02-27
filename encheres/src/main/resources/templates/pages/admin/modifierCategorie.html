@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier une catégorie</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1>Modifier une catégorie</h1>
+
+    <!-- Formulaire de modification de catégorie -->
+    <form th:action="@{/admin/modifierCategorie/{id}(id=${categorie.noCategorie})}" th:object="${categorie}" method="post">
+        <div class="mb-3">
+            <label for="libelle" class="form-label">Libellé</label>
+            <input type="text" id="libelle" class="form-control" th:field="*{libelle}" required>
+        </div>
+
+        <!-- Boutons pour envoyer le formulaire -->
+        <button type="submit" class="btn btn-success">Modifier</button>
+        <a href="/admin/gestionCategorie" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
