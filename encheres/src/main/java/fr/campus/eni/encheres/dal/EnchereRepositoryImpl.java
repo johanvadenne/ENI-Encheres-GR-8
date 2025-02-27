@@ -98,6 +98,24 @@ public class EnchereRepositoryImpl implements ICrudRepository<Enchere> {
 
     return Optional.ofNullable(enchere);
   }
+  
+  public Optional<Enchere> getLastEnchereByArticle(Integer no_article) {
+    String sql ="""
+        select no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur
+        from encheres where no_article = ?
+        ORDER BY date_enchere DESC
+        LIMIT 1	
+        """;
+    Enchere enchere = null;
+    try {
+      enchere = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Enchere.class), no_article);
+    } catch (DataAccessException exc) {
+      exc.printStackTrace();
+      logger.warn(exc.getMessage());
+    }
+
+    return Optional.ofNullable(enchere);
+  }
 
   @Override
   public void update(Enchere enchere) {
