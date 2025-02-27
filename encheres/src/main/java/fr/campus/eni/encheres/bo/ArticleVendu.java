@@ -21,6 +21,7 @@ public class ArticleVendu {
   private Integer noUtilisateur;
   private Utilisateur vendeur;
   private Retrait retrait;
+  private Boolean etatvente;
 
   public ArticleVendu() {
     // constructeur par défaut
@@ -35,7 +36,8 @@ public class ArticleVendu {
       Date dateDebutEncheres,
       Date dateFinEncheres,
       Utilisateur vendeur,
-      Retrait retrait) {
+      Retrait retrait,
+      Boolean etatvente) {
     this.noArticle = noArticle;
     this.nomArticle = nomArticle;
     this.description = description;
@@ -45,6 +47,7 @@ public class ArticleVendu {
     this.dateFinEncheres = dateFinEncheres;
     this.vendeur = vendeur;
     this.retrait = retrait;
+    this.etatvente = etatvente;
   }
 
   public Integer getNoArticle() {
@@ -164,5 +167,13 @@ public class ArticleVendu {
 
   public void setNoUtilisateur(Integer noUtilisateur) {
     this.noUtilisateur = noUtilisateur;
+  }
+
+  public Boolean getEtatvente() {
+    return etatvente;
+  }
+
+  public void setEtatvente(Boolean etatvente) {
+    this.etatvente = etatvente;
   }
 }
