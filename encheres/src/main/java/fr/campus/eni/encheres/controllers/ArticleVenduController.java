@@ -123,12 +123,12 @@ public class ArticleVenduController {
                                @RequestParam Integer montantEnchere,
                                Principal principal) {
         ArticleVendu article = articleService.getById(noArticle).get();
-        Utilisateur utilisateur = utilisateurService.getById(17).get();
+        Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
 
         Enchere enchere = new Enchere();
         enchere.setArticle(article);
         enchere.setNoArticle(noArticle);
-        enchere.setNoUtilisateur(17);
+        enchere.setNoUtilisateur(utilisateur.getNoUtilisateur());
         enchere.setUtilisateur(utilisateur);
         enchere.setMontantEnchere(montantEnchere);
         enchere.setDateEnchere(new Date());
