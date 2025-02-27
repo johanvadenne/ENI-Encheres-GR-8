@@ -8,28 +8,56 @@
 </head>
 <body>
 <section layout:fragment="content" class="max-w-7xl mx-auto p-6">
-    <h1>Profil de l'utilisateur</h1>
+    <h1 class="text-2xl font-bold mb-6">Profil de l'utilisateur</h1>
 
-    <div th:if="${utilisateur != null}">
-        <p><strong>Pseudo :</strong> <span th:text="${utilisateur.pseudo}"></span></p>
-        <p><strong>Nom :</strong> <span th:text="${utilisateur.nom}"></span></p>
-        <p><strong>Prénom :</strong> <span th:text="${utilisateur.prenom}"></span></p>
-        <p><strong>Email :</strong> <span th:text="${utilisateur.email}"></span></p>
-        <p><strong>Téléphone :</strong> <span th:text="${utilisateur.telephone}"></span></p>
-        <p><strong>Adresse :</strong> <span th:text="${utilisateur.rue}"></span>, 
-                                   <span th:text="${utilisateur.codePostal}"></span> 
-                                   <span th:text="${utilisateur.ville}"></span></p>
-        <p><strong>Crédit :</strong> <span th:text="${utilisateur.credit} + ' Crédit'"></span></p>
-        <p><strong>Administrateur :</strong> 
-            <span th:text="${utilisateur.administrateur ? 'Oui' : 'Non'}"></span>
+    <div th:if="${utilisateur != null}" class="bg-white p-6 rounded shadow space-y-2">
+        <p>
+            <strong class="font-semibold text-gray-700">Pseudo :</strong>
+            <span class="ml-1" th:text="${utilisateur.pseudo}">JohnDoe</span>
+        </p>
+        <p>
+            <strong class="font-semibold text-gray-700">Nom :</strong>
+            <span class="ml-1" th:text="${utilisateur.nom}">Doe</span>
+        </p>
+        <p>
+            <strong class="font-semibold text-gray-700">Prénom :</strong>
+            <span class="ml-1" th:text="${utilisateur.prenom}">John</span>
+        </p>
+        <p>
+            <strong class="font-semibold text-gray-700">Email :</strong>
+            <span class="ml-1" th:text="${utilisateur.email}">john.doe@example.com</span>
+        </p>
+        <p>
+            <strong class="font-semibold text-gray-700">Téléphone :</strong>
+            <span class="ml-1" th:text="${utilisateur.telephone}">0600000000</span>
+        </p>
+        <p>
+            <strong class="font-semibold text-gray-700">Adresse :</strong>
+            <span class="ml-1" th:text="${utilisateur.rue}">1 Rue de la Paix</span>,
+            <span th:text="${utilisateur.codePostal}">44000</span>
+            <span th:text="${utilisateur.ville}">Nantes</span>
+        </p>
+        <p>
+            <strong class="font-semibold text-gray-700">Crédit :</strong>
+            <span class="ml-1" th:text="${utilisateur.credit}">100</span>
+            <span>points</span>
+        </p>
+        <p>
+            <strong class="font-semibold text-gray-700">Administrateur :</strong>
+            <span class="ml-1" th:text="${utilisateur.administrateur ? 'Oui' : 'Non'}">Non</span>
         </p>
     </div>
 
-    <div th:if="${utilisateur == null}">
-        <p>Aucun utilisateur connecté.</p>
+    <div th:if="${utilisateur == null}" class="text-red-600 font-semibold">
+        Aucun utilisateur connecté.
     </div>
 
-    <a th:href="@{/listeVentes}">Retour à la liste des ventes</a>
+
+    <!-- Bouton pour modifier le profil -->
+    <a th:href="@{/utilisateurs/profil/modifier}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6 inline-block">
+        Modifier le profil
+    </a>
+
 </section>
 </body>
 </html>
