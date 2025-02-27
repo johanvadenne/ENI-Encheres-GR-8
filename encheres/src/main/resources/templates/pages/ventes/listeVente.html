@@ -44,7 +44,7 @@
             <div class="p-4">
                 <h2 class="text-xl font-semibold" th:text="${article.nomArticle}"></h2>
                 <p class="text-gray-600" th:text="${article.description}"></p>
-                <p class="font-bold mt-2">Prix: <span th:text="${article.prixInitial} + ' €'"></span></p>
+                <p class="font-bold mt-2">Prix: <span th:text="${article.prixInitial} + ' points'"></span></p>
                 <p class="text-sm text-gray-500">Fin des enchères: <span th:text="${article.dateFinEncheres}"></span></p>
                 <p class="text-sm text-gray-500">Vendeur: <span th:text="${article.vendeur.prenom + ' ' + article.vendeur.nom}"></span></p>
                 <a th:href="@{'/vente/' + ${article.noArticle}}" 
