@@ -43,21 +43,20 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
     @Override
     public void add(ArticleVendu unArticleVendu) {
         String sql = """
-            INSERT INTO articles_vendus
-                (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie)
-             VALUES
-                (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, :noUtilisateur, :no_categorie)
-            RETURNING no_article
-        """;
+                    INSERT INTO articles_vendus
+                        (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie)
+                     VALUES
+                        (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, :noUtilisateur, :no_categorie)
+                    RETURNING no_article
+                """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        
+
         namedParameterJdbcTemplate.update(
                 sql,
                 new BeanPropertySqlParameterSource(unArticleVendu),
                 keyHolder,
-                new String[]{"no_article"}
-        );
+                new String[] { "no_article" });
 
         // Récupère l'ID généré et le définit dans l'objet
         Number generatedId = keyHolder.getKey();
@@ -69,11 +68,11 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
     @Override
     public List<ArticleVendu> getAll() {
         String sql = """
-        select 
-          no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
-				from 
-          articles_vendus
-          """;
+                    select
+                      no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
+                from
+                      articles_vendus
+                      """;
         List<ArticleVendu> articleVendus = namedParameterJdbcTemplate.query(sql,
                 new BeanPropertyRowMapper<>(ArticleVendu.class));
         for (ArticleVendu articleVendu : articleVendus) {
@@ -102,11 +101,11 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
     @Override
     public Optional<ArticleVendu> getById(int id) {
         String sql = """
-        select 
-          no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
-        from 
-          articles_vendus where no_article = ?
-        """;
+                select
+                  no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
+                from
+                  articles_vendus where no_article = ?
+                """;
         ArticleVendu articleVendu = null;
         try {
             articleVendu = jdbcTemplate.queryForObject(sql,
@@ -122,18 +121,18 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
     @Override
     public void update(ArticleVendu articleVendu) {
         String sql = """
-        update 
-          articles_vendus 
-            set 
-	          nom_article=:nomArticle,
-	          description=:description,
-	          date_debut_encheres=:dateDebutEncheres,
-	          date_fin_encheres=:dateFinEncheres,
-	          prix_initial=:prixInitial,
-	          prix_vente=:prixVente,
-	          no_utilisateur=:noUtilisateur
-          where no_articleVendu = :noArticleVendu
-        """;
+                update
+                  articles_vendus
+                    set
+                   nom_article=:nomArticle,
+                   description=:description,
+                   date_debut_encheres=:dateDebutEncheres,
+                   date_fin_encheres=:dateFinEncheres,
+                   prix_initial=:prixInitial,
+                   prix_vente=:prixVente,
+                   no_utilisateur=:noUtilisateur
+                  where no_articleVendu = :noArticleVendu
+                """;
         int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(articleVendu));
         if (nbRows != 1) {
             throw new RuntimeException("La modification du client a échouée : " + articleVendu);

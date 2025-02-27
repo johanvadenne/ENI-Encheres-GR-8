@@ -101,7 +101,9 @@ public class ArticleVenduController {
     }
 
     @PostMapping("/creer-vente")
-    public String soumettreArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute("retrait") Retrait retrait, @RequestParam("image") MultipartFile image, Principal principal) throws IOException  {
+    public String soumettreArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu,
+            @ModelAttribute("retrait") Retrait retrait, @RequestParam("image") MultipartFile image, Principal principal)
+            throws IOException {
 
         String pseudo = principal.getName();
         Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(pseudo).get();
@@ -110,7 +112,7 @@ public class ArticleVenduController {
 
         String originalFileName = image.getOriginalFilename();
         String extension = StringUtils.getFilenameExtension(originalFileName);
-        
+
         if (extension == null || extension.isEmpty()) {
             throw new IllegalArgumentException("Format de fichier invalide !");
         }
@@ -118,7 +120,7 @@ public class ArticleVenduController {
         String uploadDir = "D:/uploads"; // Dossier où stocker les images
         String fileName = articleVendu.getNoArticle().toString() + "-" + utilisateur.getPseudo() + "." + extension;
         Path filePath = Paths.get(uploadDir, fileName);
-        
+
         // Sauvegarder le fichier sur le disque
         Files.createDirectories(filePath.getParent());
         Files.write(filePath, image.getBytes());
@@ -128,7 +130,6 @@ public class ArticleVenduController {
         return "redirect:/listeVentes";
     }
 
-    
     @GetMapping("/vente/{id}")
     public String afficherDetailsVente(@PathVariable("id") int id, Model model, Principal principal) {
         ArticleVendu article = articleService.getById(id).get();
@@ -141,13 +142,12 @@ public class ArticleVenduController {
         return "pages/ventes/detailVente";
     }
 
-    
     // 💰 Traitement de l'enchère
     @PostMapping("/vente/{noArticle}/encherir")
 
     public String creerEnchere(@PathVariable Integer noArticle,
-                               @RequestParam Integer montantEnchere,
-                               Principal principal) {
+            @RequestParam Integer montantEnchere,
+            Principal principal) {
         ArticleVendu article = articleService.getById(noArticle).get();
         Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
 
@@ -163,4 +163,42 @@ public class ArticleVenduController {
 
         return "redirect:/vente/" + noArticle; // 🔄 Redirection vers la page de détails
     }
+
+    @GetMapping("/vente/{noArticle}/modifier")
+    public String afficherFormulaireModification(@PathVariable Integer noArticle, Model model) {
+        ArticleVendu article = articleService.getById(noArticle).get();
+        List<Categorie> categories = categorieService.getAll();
+        model.addAttribute("articleVendu", article);
+        model.addAttribute("categories", categories);
+        return "pages/ventes/modifierVente";
+    }
+
+    @PostMapping("/vente/{noArticle}/modifier")
+    public String soumettreModification(@PathVariable Integer noArticle,
+            @ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute("retrait") Retrait retrait,
+            @RequestParam("image") MultipartFile image) throws IOException {
+        articleVendu.setNoArticle(noArticle);
+        articleService.save(articleVendu);
+
+        String originalFileName = image.getOriginalFilename();
+        String extension = StringUtils.getFilenameExtension(originalFileName);
+
+        if (extension == null || extension.isEmpty()) {
+            throw new IllegalArgumentException("Format de fichier invalide !");
+        }
+
+        String uploadDir = "D:/uploads"; // Dossier où stocker les images
+        String fileName = articleVendu.getNoArticle().toString() + "-" + articleVendu.getVendeur().getPseudo() + "."
+                + extension;
+        Path filePath = Paths.get(uploadDir, fileName);
+
+        // Sauvegarder le fichier sur le disque
+        Files.createDirectories(filePath.getParent());
+        Files.write(filePath, image.getBytes());
+
+        retrait.setNoCategorie(articleVendu.getNoArticle());
+        retraitServiceImpl.save(retrait);
+        return "redirect:/vente/" + noArticle;
+    }
+
 }
