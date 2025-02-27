@@ -34,6 +34,10 @@ public class EnchereServiceImpl implements ICrudService<Enchere> {
     return EnchereRepositoryImpl.getByNoArticle(noArticle);
   }
 
+  public List<Enchere> getEnhereValidByNoUtilisateur(Integer noUtilisateur) {
+    return EnchereRepositoryImpl.getEnhereValidByNoUtilisateur(noUtilisateur);
+  }
+
   @Override
   public Optional<Enchere> getById(int id) {
     return EnchereRepositoryImpl.getById(id);
@@ -45,7 +49,6 @@ public class EnchereServiceImpl implements ICrudService<Enchere> {
     if (clientOpt.isPresent()) {
       EnchereRepositoryImpl.update(client);
     } else {
-      // TODO gerer l'erreur
       throw new ExeptionEchere();
     }
   }
