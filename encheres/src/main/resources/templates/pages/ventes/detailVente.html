@@ -14,8 +14,15 @@
         <!-- Card container -->
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <!-- Image placeholder -->
-            <div class="h-64 bg-gray-200 flex items-center justify-center">
-                <span class="text-gray-500">Image de l'article</span>
+            <div class="bg-gray-200 flex items-center justify-center">
+                <picture>
+                    <source th:srcset="@{'/images/' + ${article.noArticle} + '-' + ${pseudo} + '.jpg'}" type="image/jpg">
+                    <source th:srcset="@{'/images/' + ${article.noArticle} + '-' + ${pseudo} + '.webp'}" type="image/webp">
+                    <source th:srcset="@{'/images/' + ${article.noArticle} + '-' + ${pseudo} + '.png'}" type="image/png">
+                    <source th:srcset="@{'/images/' + ${article.noArticle} + '-' + ${pseudo} + '.jpeg'}" type="image/jpeg">
+                    <img th:src="@{'/images/' + ${article.noArticle} + '-' + ${pseudo} + '.jpg'}" alt="Image de l'article">
+                </picture>
+            
             </div>
             <!-- Card content -->
             <div class="p-6">
