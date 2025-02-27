@@ -23,7 +23,7 @@ public class EnchereServiceImpl implements ICrudService<Enchere> {
 
     private final EnchereRepositoryImpl EnchereRepositoryImpl;
     private final PasswordEncoder passwordEncoder;
-    
+
     @Autowired
     private ArticleVenduRepositoryImpl articleRepository;
 
@@ -89,23 +89,29 @@ public class EnchereServiceImpl implements ICrudService<Enchere> {
         List<ArticleVendu> articlesACloturer = articleRepository.findByDateFinEncheres();
 
         for (ArticleVendu article : articlesACloturer) {
-            Optional<Enchere> meilleureEnchereOpt = EnchereRepositoryImpl.getLastEnchereByArticle(article.getNoArticle());
 
-            if (meilleureEnchereOpt.isPresent()) {
-                Enchere meilleureEnchere = meilleureEnchereOpt.get();
-                Utilisateur vendeur = article.getVendeur();
-                Utilisateur acheteur = UtilisateurRepository.getById(meilleureEnchere.getNoUtilisateur()).get();
+            if (article.getEtatvente() != true) {
+                Optional<Enchere> meilleureEnchereOpt = EnchereRepositoryImpl.getLastEnchereByArticle(article.getNoArticle());
 
-                vendeur.setCredit(vendeur.getCredit()+meilleureEnchere.getMontantEnchere());
-              article.setPrixVente(meilleureEnchere.getMontantEnchere());
-              acheteur.setCredit(acheteur.getCredit() - meilleureEnchere.getMontantEnchere());
+                if (meilleureEnchereOpt.isPresent()) {
+                    Enchere meilleureEnchere = meilleureEnchereOpt.get();
+                    Utilisateur vendeur = article.getVendeur();
+                    Utilisateur acheteur = UtilisateurRepository.getById(meilleureEnchere.getNoUtilisateur()).get();
 
-            UtilisateurRepository.updateCredit(vendeur);
-            UtilisateurRepository.updateCredit(acheteur);
-            
-            }
-            else {
-              article.setPrixVente(0);
+                    vendeur.setCredit(vendeur.getCredit() + meilleureEnchere.getMontantEnchere());
+                    article.setPrixVente(meilleureEnchere.getMontantEnchere());
+                    acheteur.setCredit(acheteur.getCredit() - meilleureEnchere.getMontantEnchere());
+                    article.setEtatvente(true);
+
+                    UtilisateurRepository.updateCredit(vendeur);
+                    UtilisateurRepository.updateCredit(acheteur);
+                    articleRepository.update(article);
+
+                } else {
+                    article.setPrixVente(0);
+                    article.setEtatvente(true);
+                    articleRepository.update(article);
+                }
             }
         }
     }
