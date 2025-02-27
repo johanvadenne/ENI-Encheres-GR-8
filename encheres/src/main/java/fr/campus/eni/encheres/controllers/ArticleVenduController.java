@@ -57,7 +57,8 @@ public class ArticleVenduController {
   public String listerVentes(
       @RequestParam(required = false) String nomArticle,
       @RequestParam(required = false) Integer categorie,
-      Model model) {
+      Model model,
+      Principal principal) {
     List<ArticleVendu> articles = articleService.getAll();
     List<ArticleVendu> lesArticles = new ArrayList<ArticleVendu>();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -84,6 +85,11 @@ public class ArticleVenduController {
         lesArticles.add(article);
       }
     }
+
+    
+    Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
+
+    model.addAttribute("pseudo", utilisateur.getPseudo());
 
     model.addAttribute("lesArticlesVendus", lesArticles);
     model.addAttribute("categories", categorieService.getAll());
