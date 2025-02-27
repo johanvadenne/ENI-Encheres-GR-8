@@ -93,10 +93,40 @@ from
         logger.warn("Retrait non trouvé pour l'article " + articleVendu.getNoArticle());
       }
 
-      String idUtilisateurSQL = "select no_utilisateur from articles_vendus where no_article = ?";
-      int idUtil =
-          jdbcTemplate.queryForObject(idUtilisateurSQL, Integer.class, articleVendu.getNoArticle());
-      Utilisateur utilisateur = utilisateurRepositoryImpl.getById(idUtil).get();
+      Utilisateur utilisateur = utilisateurRepositoryImpl.getById(articleVendu.getNoUtilisateur()).get();
+      articleVendu.setVendeur(utilisateur);
+    }
+
+    return articleVendus;
+  }
+
+  public List<ArticleVendu> findByDateFinEncheres() {
+    String sql =
+        """
+    select
+      no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
+      from
+      articles_vendus
+      WHERE date_fin_encheres < NOW()
+""";
+    List<ArticleVendu> articleVendus =
+        namedParameterJdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleVendu.class));
+    for (ArticleVendu articleVendu : articleVendus) {
+      String idCategorieSQL = "select no_categorie from articles_vendus where no_article = ?";
+      int idCat =
+          jdbcTemplate.queryForObject(idCategorieSQL, Integer.class, articleVendu.getNoArticle());
+      Categorie categorie = categorieRepositoryImpl.getById(idCat).get();
+      articleVendu.setCategorie(categorie);
+
+      Optional<Retrait> retrait = retraitRepositoryImpl.getById(articleVendu.getNoArticle());
+      if (retrait.isPresent()) {
+        articleVendu.setRetrait(retrait.get());
+      } else {
+        articleVendu.setRetrait(new Retrait("", "", ""));
+        logger.warn("Retrait non trouvé pour l'article " + articleVendu.getNoArticle());
+      }
+
+      Utilisateur utilisateur = utilisateurRepositoryImpl.getById(articleVendu.getNoUtilisateur()).get();
       articleVendu.setVendeur(utilisateur);
     }
 
