@@ -17,6 +17,8 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -138,6 +140,7 @@ public class ArticleVenduController {
     ArticleVendu article = articleService.getById(id).get();
     Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
     List<Enchere> liste = enchereServiceImpl.getByNoArticle(id);
+    Collections.sort(liste, Comparator.comparing(Enchere::getMontantEnchere).reversed());   
 
     model.addAttribute("listeEncheres", liste);
     model.addAttribute("article", article);
@@ -151,6 +154,37 @@ public class ArticleVenduController {
       @PathVariable Integer noArticle, @RequestParam Integer montantEnchere, Principal principal) {
     ArticleVendu article = articleService.getById(noArticle).get();
     Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
+    List<Enchere> liste = enchereServiceImpl.getByNoArticle(noArticle);
+    List<Enchere> listeEnchereUtilisateur = enchereServiceImpl.getEnhereValidByNoUtilisateur(utilisateur.getNoUtilisateur());
+
+    if (liste.size() > 0) {
+        Enchere derniereEnchere = liste.get(0);
+
+        for (Enchere enchere : liste) {
+          if (enchere.getMontantEnchere() > derniereEnchere.getMontantEnchere()) {
+            derniereEnchere = enchere;
+          }
+        }
+
+      if (montantEnchere <= derniereEnchere.getMontantEnchere()) {
+        return "redirect:/vente/" + noArticle; // 🔄 Redirection vers la page de détails
+      }
+    }
+
+    if (listeEnchereUtilisateur.size() > 0) {
+
+        for (Enchere enchere : listeEnchereUtilisateur) {
+          if (enchere.getNoUtilisateur() == utilisateur.getNoUtilisateur()) {
+            return "redirect:/vente/" + noArticle;
+          }
+        }
+        
+      int sommeEnchereUtilisateur = liste.stream().mapToInt(Enchere::getMontantEnchere).sum(); 
+
+      if (montantEnchere > utilisateur.getCredit() - sommeEnchereUtilisateur) {
+        return "redirect:/vente/" + noArticle;
+      }
+    }
 
     Enchere enchere = new Enchere();
     enchere.setArticle(article);
