@@ -16,6 +16,7 @@ public class ArticleVendu {
     private Date dateDebutEncheres;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateFinEncheres;
+    private Integer noUtilisateur;
     private Utilisateur vendeur;
     private Retrait retrait;
 
@@ -130,6 +131,14 @@ public class ArticleVendu {
 
     public void setPrixVente(Integer prixVente) {
         this.prixVente = prixVente;
+    }
+
+    public Integer getNoUtilisateur() {
+        return noUtilisateur;
+    }
+
+    public void setNoUtilisateur(Integer noUtilisateur) {
+        this.noUtilisateur = noUtilisateur;
     }
 }
 
