@@ -68,10 +68,34 @@ public class UtilisateurRepositoryImpl implements ICrudRepository<Utilisateur> {
 
   @Override
   public void update(Utilisateur utilisateur) {
-    String sql =
-        "update utilisateurs set pseudo=:pseudo, nom=:nom, prenom=:prenom, email=:email,"
-            + " telephone=:telephone, rue=:rue, code_postal=:codePostal, ville=:ville,"
-            + " mot_de_passe=:motDePasse where no_utilisateur = :noUtilisateur";
+    String sql ="""
+        update utilisateurs 
+        set 
+        pseudo=:pseudo, 
+        nom=:nom, 
+        prenom=:prenom, 
+        email=:email,
+        telephone=:telephone, 
+        rue=:rue, 
+        code_postal=:codePostal, 
+        ville=:ville,
+        mot_de_passe=:motDePasse 
+        where no_utilisateur = :noUtilisateur
+        """;
+    int nbRows =
+        namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(utilisateur));
+    if (nbRows != 1) {
+      throw new RuntimeException("La modification du client a échouée : " + utilisateur);
+    }
+  }
+
+  public void updateCredit(Utilisateur utilisateur) {
+    String sql ="""
+        update utilisateurs 
+        set 
+        credit=:credit
+        where no_utilisateur = :noUtilisateur
+        """;
     int nbRows =
         namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(utilisateur));
     if (nbRows != 1) {
