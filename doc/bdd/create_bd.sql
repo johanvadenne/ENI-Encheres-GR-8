@@ -33,6 +33,7 @@ CREATE TABLE ARTICLES_VENDUS (
     prix_vente        INTEGER,
     no_utilisateur    INTEGER NOT NULL,
     no_categorie      INTEGER NOT NULL,
+    etatVente BIT,
     CONSTRAINT articles_vendus_categories_fk FOREIGN KEY (no_categorie) REFERENCES CATEGORIES (no_categorie) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT ventes_utilisateur_fk FOREIGN KEY (no_utilisateur) REFERENCES UTILISATEURS (no_utilisateur) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
