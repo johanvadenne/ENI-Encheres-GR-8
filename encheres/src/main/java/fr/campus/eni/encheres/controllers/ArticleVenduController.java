@@ -41,17 +41,15 @@ public class ArticleVenduController {
     private final CategorieServiceImpl categorieService;
     private final RetraitServiceImpl retraitServiceImpl;
     private final EnchereServiceImpl enchereServiceImpl;
-    private UtilisateurServiceImpl utilisateurService;
     private final UtilisateurRepositoryImpl utilisateurRepositoryImpl;
 
-    public ArticleVenduController(ArticleVenduServiceImpl articleService, CategorieServiceImpl categorieService,
-            UtilisateurServiceImpl utilisateurService, RetraitServiceImpl retraitServiceImpl, EnchereServiceImpl enchereServiceImpl
+    public ArticleVenduController(ArticleVenduServiceImpl articleService, CategorieServiceImpl categorieService, 
+            RetraitServiceImpl retraitServiceImpl, EnchereServiceImpl enchereServiceImpl
             , UtilisateurRepositoryImpl utilisateurRepositoryImpl) {
         this.articleService = articleService;
         this.categorieService = categorieService;
         this.retraitServiceImpl = retraitServiceImpl;
         this.enchereServiceImpl = enchereServiceImpl;
-        this.utilisateurService = utilisateurService;
         this.utilisateurRepositoryImpl = utilisateurRepositoryImpl;
     }
 
@@ -135,9 +133,12 @@ public class ArticleVenduController {
     public String afficherDetailsVente(@PathVariable("id") int id, Model model, Principal principal) {
         ArticleVendu article = articleService.getById(id).get();
         Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
+        List<Enchere> liste = enchereServiceImpl.getByNoArticle(id);
+
+        model.addAttribute("listeEncheres", liste);
         model.addAttribute("article", article);
         model.addAttribute("pseudo", utilisateur.getPseudo());
-        return "pages/ventes/detailVente"; // Nom du template HTML (detailsVente.html)
+        return "pages/ventes/detailVente";
     }
 
     
