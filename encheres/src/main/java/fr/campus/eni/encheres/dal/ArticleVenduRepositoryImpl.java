@@ -72,7 +72,7 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
     String sql =
         """
     select
-      no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
+      no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie, etatvente
 from
       articles_vendus
 """;
@@ -104,7 +104,7 @@ from
     String sql =
         """
     select
-      no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
+      no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie, etatvente
       from
       articles_vendus
       WHERE date_fin_encheres < NOW()
@@ -137,7 +137,7 @@ from
     String sql =
         """
 select
-  no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie
+  no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie, etatvente
 from
   articles_vendus where no_article = ?
 """;
@@ -167,6 +167,7 @@ from
            prix_initial=:prixInitial,
            prix_vente=:prixVente,
            no_utilisateur=:noUtilisateur
+           etatvente=:etatVente
           where no_articleVendu = :noArticleVendu
         """;
     int nbRows =
