@@ -34,6 +34,10 @@ public class EnchereServiceImpl implements ICrudService<Enchere> {
         return EnchereRepositoryImpl.getAll();
     }
 
+    public List<Enchere> getByNoArticle(Integer noArticle) {
+        return EnchereRepositoryImpl.getByNoArticle(noArticle);
+    }
+
     @Override
     public Optional<Enchere> getById(int id) {
         return EnchereRepositoryImpl.getById(id);
