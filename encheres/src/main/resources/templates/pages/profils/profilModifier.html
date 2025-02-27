@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout.html">
+<head>
+    <title layout:fragment="title">Modifier le profil</title>
+</head>
+<body>
+<section layout:fragment="content" class="max-w-7xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-6">Modifier le profil</h1>
+
+    <!-- Formulaire de modification -->
+    <form th:action="@{/utilisateurs/modifier}" method="post"
+          th:object="${utilisateur}"
+          class="bg-white p-6 rounded shadow space-y-4">
+
+        <!-- Pseudo -->
+        <div>
+            <label for="pseudo" class="block text-gray-700 font-semibold">Pseudo :</label>
+            <input id="pseudo" type="text" th:field="*{pseudo}"
+                   class="mt-1 w-full p-2 border border-gray-300 rounded" />
+        </div>
+
+        <!-- Nom -->
+        <div>
+            <label for="nom" class="block text-gray-700 font-semibold">Nom :</label>
+            <input id="nom" type="text" th:field="*{nom}"
+                   class="mt-1 w-full p-2 border border-gray-300 rounded" />
+        </div>
+
+        <!-- Prénom -->
+        <div>
+            <label for="prenom" class="block text-gray-700 font-semibold">Prénom :</label>
+            <input id="prenom" type="text" th:field="*{prenom}"
+                   class="mt-1 w-full p-2 border border-gray-300 rounded" />
+        </div>
+
+        <!-- Email -->
+        <div>
+            <label for="email" class="block text-gray-700 font-semibold">Email :</label>
+            <input id="email" type="email" th:field="*{email}"
+                   class="mt-1 w-full p-2 border border-gray-300 rounded" />
+        </div>
+
+        <!-- Téléphone -->
+        <div>
+            <label for="telephone" class="block text-gray-700 font-semibold">Téléphone :</label>
+            <input id="telephone" type="text" th:field="*{telephone}"
+                   class="mt-1 w-full p-2 border border-gray-300 rounded" />
+        </div>
+
+        <!-- Rue -->
+        <div>
+            <label for="rue" class="block text-gray-700 font-semibold">Rue :</label>
+            <input id="rue" type="text" th:field="*{rue}"
+                   class="mt-1 w-full p-2 border border-gray-300 rounded" />
+        </div>
+
+        <!-- Code Postal -->
+        <div>
+            <label for="codePostal" class="block text-gray-700 font-semibold">Code Postal :</label>
+            <input id="codePostal" type="text" th:field="*{codePostal}"
+                   class="mt-1 w-full p-2 border border-gray-300 rounded" />
+        </div>
+
+        <!-- Ville -->
+        <div>
+            <label for="ville" class="block text-gray-700 font-semibold">Ville :</label>
+            <input id="ville" type="text" th:field="*{ville}"
+                   class="mt-1 w-full p-2 border border-gray-300 rounded" />
+        </div>
+
+        <!-- Mot de passe -->
+        <div>
+            <label for="motDePasse" class="block text-gray-700 font-semibold">Nouveau mot de passe :</label>
+            <input id="motDePasse" type="password" th:field="*{motDePasse}"
+                   class="mt-1 w-full p-2 border border-gray-300 rounded"
+                   placeholder="Laissez vide pour ne pas changer" />
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="flex space-x-4 mt-6">
+            <button type="submit"
+                    class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                Enregistrer
+            </button>
+            <a th:href="@{/profil}"
+               class="text-blue-600 hover:text-blue-800 hover:underline py-2 px-4">
+                Annuler
+            </a>
+        </div>
+    </form>
+</section>
+</body>
+</html>
