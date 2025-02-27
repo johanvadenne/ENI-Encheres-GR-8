@@ -1,6 +1,8 @@
 package fr.campus.eni.encheres.dal;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -30,20 +32,20 @@ public class CategorieRepositoryImpl implements ICrudRepository<Categorie> {
     @Override
     public void add(Categorie unCategorie) {
         String sql = """
-            INSERT INTO categories
-                (no_categorie, libelle)
-             VALUES
-                (:no_categorie, :libelle)
-        """;
+                    INSERT INTO categories
+                        (libelle)
+                     VALUES
+                        (:libelle)
+                """;
         namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(unCategorie));
     }
 
     @Override
     public List<Categorie> getAll() {
         String sql = """
-        select no_categorie, libelle
-				from categories
-        """;
+                    select no_categorie, libelle
+                from categories
+                    """;
         List<Categorie> categories = namedParameterJdbcTemplate.query(sql,
                 new BeanPropertyRowMapper<>(Categorie.class));
 
@@ -53,10 +55,10 @@ public class CategorieRepositoryImpl implements ICrudRepository<Categorie> {
     @Override
     public Optional<Categorie> getById(int id) {
         String sql = """
-        select 
-          no_categorie, libelle
-				from categories where no_categorie = ?
-        """;
+                    select
+                      no_categorie, libelle
+                from categories where no_categorie = ?
+                    """;
         Categorie categorie = null;
         try {
             categorie = jdbcTemplate.queryForObject(sql,
@@ -72,9 +74,13 @@ public class CategorieRepositoryImpl implements ICrudRepository<Categorie> {
     @Override
     public void update(Categorie categorie) {
         String sql = "update categories set libelle=:libelle where no_categorie = :no_categorie";
-        int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(categorie));
+        Map<String, Object> params = new HashMap<>();
+        params.put("libelle", categorie.getLibelle());
+        params.put("no_categorie", categorie.getNoCategorie()); // Utilisez le nom de méthode getter adapté
+
+        int nbRows = namedParameterJdbcTemplate.update(sql, params);
         if (nbRows != 1) {
-            throw new RuntimeException("La modification du client a échouée : " + categorie);
+            throw new RuntimeException("La modification de la catégorie a échoué : " + categorie);
         }
     }
 
