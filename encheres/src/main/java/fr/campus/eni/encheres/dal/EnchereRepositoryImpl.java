@@ -60,6 +60,29 @@ public class EnchereRepositoryImpl implements ICrudRepository<Enchere> {
     return encheres;
   }
 
+  public List<Enchere> getEnhereValidByNoUtilisateur(Integer noUtilisateur) {
+    String sql =
+        """
+        SELECT e1.no_enchere, e1.date_enchere, e1.montant_enchere, e1.no_article, e1.no_utilisateur
+        FROM encheres e1
+        JOIN (
+            SELECT no_article, 
+                   MAX(montant_enchere) AS max_montant, 
+                   MAX(date_enchere) AS max_date
+            FROM encheres
+            GROUP BY no_article
+        ) e2
+        ON e1.no_article = e2.no_article
+        AND e1.montant_enchere = e2.max_montant
+        AND e1.date_enchere = e2.max_date
+        AND no_utilisateur = ?;
+        """;
+    List<Enchere> encheres =
+        jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Enchere.class), noUtilisateur);
+
+    return encheres;
+  }
+
   @Override
   public Optional<Enchere> getById(int id) {
     String sql =
