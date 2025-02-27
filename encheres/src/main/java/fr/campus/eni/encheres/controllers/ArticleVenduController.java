@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import fr.campus.eni.encheres.bo.Categorie;
 import fr.campus.eni.encheres.bo.Enchere;
 import fr.campus.eni.encheres.bo.Retrait;
 import fr.campus.eni.encheres.bo.Utilisateur;
+import fr.campus.eni.encheres.dal.UtilisateurRepositoryImpl;
 
 @Controller
 public class ArticleVenduController {
@@ -33,14 +35,17 @@ public class ArticleVenduController {
     private final RetraitServiceImpl retraitServiceImpl;
     private final EnchereServiceImpl enchereServiceImpl;
     private UtilisateurServiceImpl utilisateurService;
+    private final UtilisateurRepositoryImpl utilisateurRepositoryImpl;
 
     public ArticleVenduController(ArticleVenduServiceImpl articleService, CategorieServiceImpl categorieService,
-            UtilisateurServiceImpl utilisateurService, RetraitServiceImpl retraitServiceImpl, EnchereServiceImpl enchereServiceImpl) {
+            UtilisateurServiceImpl utilisateurService, RetraitServiceImpl retraitServiceImpl, EnchereServiceImpl enchereServiceImpl
+            , UtilisateurRepositoryImpl utilisateurRepositoryImpl) {
         this.articleService = articleService;
         this.categorieService = categorieService;
         this.retraitServiceImpl = retraitServiceImpl;
         this.enchereServiceImpl = enchereServiceImpl;
         this.utilisateurService = utilisateurService;
+        this.utilisateurRepositoryImpl = utilisateurRepositoryImpl;
     }
 
     @GetMapping("/listeVentes")
@@ -49,7 +54,7 @@ public class ArticleVenduController {
             Model model) {
         List<ArticleVendu> articles = articleService.getAll();
         List<ArticleVendu> lesArticles = new ArrayList<ArticleVendu>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         if (nomArticle != null) {
             nomArticle = nomArticle.trim();
@@ -91,7 +96,11 @@ public class ArticleVenduController {
     }
 
     @PostMapping("/creer-vente")
-    public String soumettreArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute("retrait") Retrait retrait) {
+    public String soumettreArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute("retrait") Retrait retrait, Principal principal) {
+        
+        String pseudo = principal.getName();
+        Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(pseudo).get();
+        articleVendu.setNoUtilisateur(utilisateur.getNoUtilisateur());
         articleService.save(articleVendu);
         retrait.setNoCategorie(articleVendu.getNoArticle());
         retraitServiceImpl.save(retrait);

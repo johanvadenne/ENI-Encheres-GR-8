@@ -46,7 +46,7 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
             INSERT INTO articles_vendus
                 (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie)
              VALUES
-                (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, 17, :no_categorie)
+                (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, :noUtilisateur, :no_categorie)
             RETURNING no_article
         """;
 
@@ -125,14 +125,13 @@ public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu>
         update 
           articles_vendus 
             set 
-	          nom_article=:nom_article,
+	          nom_article=:nomArticle,
 	          description=:description,
-	          date_debut_encheres=:date_debut_encheres,
-	          date_fin_encheres=:date_fin_encheres,
-	          prix_initial=:prix_initial,
-	          prix_vente=:prix_vente,
-	          no_utilisateur=:no_utilisateur,
-	          no_categorie=:no_categorie
+	          date_debut_encheres=:dateDebutEncheres,
+	          date_fin_encheres=:dateFinEncheres,
+	          prix_initial=:prixInitial,
+	          prix_vente=:prixVente,
+	          no_utilisateur=:noUtilisateur
           where no_articleVendu = :noArticleVendu
         """;
         int nbRows = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(articleVendu));
