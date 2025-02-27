@@ -75,3 +75,4 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE ENCHERES TO admin;
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE utilisateurs_no_utilisateur_seq TO admin;
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE articles_vendus_no_article_seq TO admin;
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE encheres_no_enchere_seq TO admin;
+GRANT USAGE, SELECT, UPDATE ON SEQUENCE categories_no_categorie_seq TO admin;
