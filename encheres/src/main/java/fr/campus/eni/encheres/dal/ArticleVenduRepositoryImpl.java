@@ -123,7 +123,6 @@ from
         articleVendu.setRetrait(retrait.get());
       } else {
         articleVendu.setRetrait(new Retrait("", "", ""));
-        logger.warn("Retrait non trouvé pour l'article " + articleVendu.getNoArticle());
       }
 
       Utilisateur utilisateur = utilisateurRepositoryImpl.getById(articleVendu.getNoUtilisateur()).get();
