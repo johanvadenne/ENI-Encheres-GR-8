@@ -7,14 +7,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Servir le dossier "static" par défaut
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/");
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    // Servir le dossier "static" par défaut
+    registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 
-        // Servir le dossier "D:/uploads/"
-        registry.addResourceHandler("/images-enchere/**")
-                .addResourceLocations("file:D:/uploads/");
-    }
+    // Servir le dossier "D:/uploads/"
+    registry.addResourceHandler("/images-enchere/**").addResourceLocations("file:D:/uploads/");
+  }
 }

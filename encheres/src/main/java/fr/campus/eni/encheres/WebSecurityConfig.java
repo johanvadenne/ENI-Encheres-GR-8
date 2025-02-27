@@ -12,42 +12,40 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-				.authorizeHttpRequests((requests) -> requests
-						.requestMatchers(
-								"/login",
-								"/logout",
-								"/register",
-								"/images/**")
-						.permitAll()
-						.anyRequest().authenticated())
-				.formLogin(form -> form
-						.loginPage("/login")
-						.loginProcessingUrl("/auth/login")
-						.failureUrl("/login?error=true")
-						.defaultSuccessUrl("/", true)
-						.permitAll())
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests(
+            (requests) ->
+                requests
+                    .requestMatchers("/login", "/logout", "/register", "/images/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .formLogin(
+            form ->
+                form.loginPage("/login")
+                    .loginProcessingUrl("/auth/login")
+                    .failureUrl("/login?error=true")
+                    .defaultSuccessUrl("/", true)
+                    .permitAll())
+        .logout((logout) -> logout.permitAll());
 
-				.logout((logout) -> logout.permitAll());
+    return http.build();
+  }
 
-		return http.build();
-	}
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(); // Utilisation de BCrypt pour encoder les mots de passe
+  }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder(); // Utilisation de BCrypt pour encoder les mots de passe
-	}
+  // @Bean
+  // public UserDetailsService userDetailsService() {
+  // UserDetails user = User.withDefaultPasswordEncoder()
+  // .username("user")
+  // .password("password")
+  // .roles("USER")
+  // .build();
 
-	// @Bean
-	// public UserDetailsService userDetailsService() {
-	// UserDetails user = User.withDefaultPasswordEncoder()
-	// .username("user")
-	// .password("password")
-	// .roles("USER")
-	// .build();
-
-	// return new InMemoryUserDetailsManager(user);
-	// }
+  // return new InMemoryUserDetailsManager(user);
+  // }
 }
