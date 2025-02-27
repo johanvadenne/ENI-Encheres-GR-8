@@ -15,19 +15,18 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(
-            (requests) ->
-                requests
-                    .requestMatchers("/login", "/logout", "/register", "/images/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated())
+        (requests) -> requests
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .requestMatchers("/login", "/logout", "/register", "/images/**")
+            .permitAll()
+            .anyRequest()
+            .authenticated())
         .formLogin(
-            form ->
-                form.loginPage("/login")
-                    .loginProcessingUrl("/auth/login")
-                    .failureUrl("/login?error=true")
-                    .defaultSuccessUrl("/", true)
-                    .permitAll())
+            form -> form.loginPage("/login")
+                .loginProcessingUrl("/auth/login")
+                .failureUrl("/login?error=true")
+                .defaultSuccessUrl("/", true)
+                .permitAll())
         .logout((logout) -> logout.permitAll());
 
     return http.build();

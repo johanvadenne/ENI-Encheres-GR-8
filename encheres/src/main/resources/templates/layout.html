@@ -25,7 +25,9 @@
               <a href="/utilisateurs/profil" class="py-5 px-3 text-gray-700 hover:text-gray-900">Profil</a>
               <a href="/listeVentes" class="py-5 px-3 text-gray-700 hover:text-gray-900">Ventes</a>
               <a href="/creer-vente" class="py-5 px-3 text-gray-700 hover:text-gray-900">Ajouter une vente</a>
-              <a href="/admin/gestionCategorie" class="py-5 px-3 text-gray-700 hover:text-gray-900">Admin</a>
+              <div sec:authorize="hasRole('ADMIN')">
+                <a href="/admin/gestionCategorie" class="py-5 px-3 text-gray-700 hover:text-gray-900">Admin</a>
+              </div>
             </div>
           </div>
           <!-- Liens secondaires -->
