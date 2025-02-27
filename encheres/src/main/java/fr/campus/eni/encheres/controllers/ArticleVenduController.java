@@ -1,19 +1,26 @@
 package fr.campus.eni.encheres.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import fr.campus.eni.encheres.bll.ArticleVenduServiceImpl;
 import fr.campus.eni.encheres.bll.CategorieServiceImpl;
@@ -96,12 +103,28 @@ public class ArticleVenduController {
     }
 
     @PostMapping("/creer-vente")
-    public String soumettreArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute("retrait") Retrait retrait, Principal principal) {
-        
+    public String soumettreArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute("retrait") Retrait retrait, @RequestParam("image") MultipartFile image, Principal principal) throws IOException  {
+
         String pseudo = principal.getName();
         Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(pseudo).get();
         articleVendu.setNoUtilisateur(utilisateur.getNoUtilisateur());
         articleService.save(articleVendu);
+
+        String originalFileName = image.getOriginalFilename();
+        String extension = StringUtils.getFilenameExtension(originalFileName);
+        
+        if (extension == null || extension.isEmpty()) {
+            throw new IllegalArgumentException("Format de fichier invalide !");
+        }
+
+        String uploadDir = "D:/uploads"; // Dossier où stocker les images
+        String fileName = articleVendu.getNoArticle().toString() + "-" + utilisateur.getPseudo() + "." + extension;
+        Path filePath = Paths.get(uploadDir, fileName);
+        
+        // Sauvegarder le fichier sur le disque
+        Files.createDirectories(filePath.getParent());
+        Files.write(filePath, image.getBytes());
+
         retrait.setNoCategorie(articleVendu.getNoArticle());
         retraitServiceImpl.save(retrait);
         return "redirect:/listeVentes";
@@ -109,9 +132,11 @@ public class ArticleVenduController {
 
     
     @GetMapping("/vente/{id}")
-    public String afficherDetailsVente(@PathVariable("id") int id, Model model) {
+    public String afficherDetailsVente(@PathVariable("id") int id, Model model, Principal principal) {
         ArticleVendu article = articleService.getById(id).get();
+        Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
         model.addAttribute("article", article);
+        model.addAttribute("pseudo", utilisateur.getPseudo());
         return "pages/ventes/detailVente"; // Nom du template HTML (detailsVente.html)
     }
 
