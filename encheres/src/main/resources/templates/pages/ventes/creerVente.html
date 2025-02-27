@@ -11,7 +11,7 @@
 <!-- Formulaire de vente d'article ENI-Enchères avec Tailwind CSS -->
 <div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
     <h2 class="text-2xl font-bold mb-6 text-center">Vendre un article</h2>
-    <form th:action="@{/creer-vente}" method="POST" class="space-y-4">
+    <form th:action="@{/creer-vente}" method="POST" class="space-y-4" enctype="multipart/form-data">
   
       <!-- Nom de l'article -->
       <div>
@@ -63,10 +63,16 @@
         <input type="text" id="codePostal" name="codePostal" required placeholder="75000" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
         <p class="text-sm text-gray-500 mt-1">code postal</p>
       </div>
+
       <div>
         <label for="ville" class="block text-sm font-medium text-gray-700">Ville de retrait</label>
         <input type="text" id="ville" name="ville" required placeholder="Paris" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
         <p class="text-sm text-gray-500 mt-1">ville</p>
+      </div>
+      
+      <div>
+        <label for="image" class="block text-sm font-medium text-gray-700">Image :</label>
+        <input class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2" type="file" id="image" name="image" accept="image/*" required>
       </div>
   
       <!-- Bouton de soumission -->
