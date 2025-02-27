@@ -1,0 +1,33 @@
+<configuration>
+    <!-- Définition des niveaux de logs -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- Log en console -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Log dans un fichier -->
+    <appender name="FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/application-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Configuration des niveaux de logs -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="com.ton.application" level="DEBUG"/>
+
+    <!-- Activation des logs -->
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="FileAppender"/>
+    </root>
+</configuration>

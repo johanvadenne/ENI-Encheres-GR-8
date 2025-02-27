@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout.html">
+<head>
+    <title layout:fragment="title">Modifier la vente</title>
+</head>
+<body>
+<section layout:fragment="content" class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Modifier la vente</h1>
+
+    <div th:if="${article != null}">
+        <form th:action="@{'/vente/' + ${article.noArticle} + '/modifier'}" method="post"
+              th:object="${article}"
+              class="bg-white p-6 rounded-lg shadow space-y-4">
+
+            <!-- Nom de l'article -->
+            <div>
+                <label for="nomArticle" class="block text-gray-700 font-semibold">Nom de l'article :</label>
+                <input id="nomArticle" type="text" th:field="*{nomArticle}"
+                       placeholder="Nom de l'article"
+                       class="mt-1 w-full p-2 border border-gray-300 rounded">
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label for="description" class="block text-gray-700 font-semibold">Description :</label>
+                <textarea id="description" th:field="*{description}"
+                          placeholder="Description de l'article"
+                          class="mt-1 w-full p-2 border border-gray-300 rounded"></textarea>
+            </div>
+
+            <!-- Date de début d'enchères -->
+            <div>
+                <label for="dateDebutEncheres" class="block text-gray-700 font-semibold">Date de début d'enchères :</label>
+                <input id="dateDebutEncheres" type="date" th:field="*{dateDebutEncheres}"
+                       class="mt-1 w-full p-2 border border-gray-300 rounded">
+            </div>
+
+            <!-- Date de fin d'enchères -->
+            <div>
+                <label for="dateFinEncheres" class="block text-gray-700 font-semibold">Date de fin d'enchères :</label>
+                <input id="dateFinEncheres" type="date" th:field="*{dateFinEncheres}"
+                       class="mt-1 w-full p-2 border border-gray-300 rounded">
+            </div>
+
+            <!-- Prix initial -->
+            <div>
+                <label for="prixInitial" class="block text-gray-700 font-semibold">Prix initial (€) :</label>
+                <input id="prixInitial" type="number" step="0.01" th:field="*{prixInitial}"
+                       class="mt-1 w-full p-2 border border-gray-300 rounded">
+            </div>
+
+            <!-- Prix de vente -->
+            <div>
+                <label for="prixVente" class="block text-gray-700 font-semibold">Prix de vente (€) :</label>
+                <input id="prixVente" type="number" step="0.01" th:field="*{prixVente}"
+                       class="mt-1 w-full p-2 border border-gray-300 rounded">
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="flex space-x-4 mt-6">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                    Enregistrer
+                </button>
+                <a th:href="@{'/vente/' + ${article.noArticle}}"
+                   class="text-blue-500 hover:underline py-2 px-4">
+                    Annuler
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div th:if="${article == null}">
+        <p class="text-red-500">Aucun article trouvé pour cette vente.</p>
+        <p class="text-red-500">ID de la vente : [[${id}]]</p>
+        <p class="text-red-500">ID de l'article : [[${article.noArticle}]]</p>
+        <p class="text-red-500">ID de l'utilisateur : [[${article.vendeur.noUtilisateur}]]</p>
+        <p class="text-red-500">Nom de l'utilisateur : [[${article.vendeur.prenom}]]</p>
+        <p class="text-red-500">Nom de l'article : [[${article.nomArticle}]]</p>
+    </div>
+</section>
+</body>
+</html>
