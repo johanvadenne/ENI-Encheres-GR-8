@@ -74,7 +74,7 @@ public class ArticleVendu {
         return prixInitial;
     }
 
-    public void setPrixInitial(Integer miseAPrix) {
+    public void setPrixInitial(Integer prixInitial) {
         this.prixInitial = prixInitial;
     }
 
