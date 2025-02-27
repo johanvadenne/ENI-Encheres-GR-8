@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,7 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UtilisateurRepositoryImpl utilisateurRepositoryImpl;
 
-    @Autowired
     public CustomUserDetailsService(UtilisateurRepositoryImpl utilisateurRepositoryImpl) {
         this.utilisateurRepositoryImpl = utilisateurRepositoryImpl;
     }
