@@ -20,14 +20,11 @@ public class EnchereController {
 
   @GetMapping
   public String listeEncheres(Model model) {
-    // 1) Récupérer la liste des enchères
+    
     List<Enchere> liste = enchereService.getAll();
-
-    // 2) Ajouter cette liste au modèle
+    
     model.addAttribute("listeEncheres", liste);
-
-    // 3) Retourner le nom de la vue Thymeleaf
-    // (adapte le chemin si besoin, ex: "pages/encheres/liste-encheres")
+    
     return "pages/encheres/liste-encheres";
   }
 }
