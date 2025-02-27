@@ -1,48 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-layout:decorate="layout.html">
-
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Gestion des catégories</title>
-    
 </head>
-
 <body>
     <section layout:fragment="content" class="max-w-4xl mx-auto p-6">
-        <div class="container mt-5">
-            <h1>Gestion des catégories</h1>
+        <div class="mt-5">
+            <h1 class="text-3xl font-bold mb-6">Gestion des catégories</h1>
 
             <!-- Bouton Ajouter -->
-            <a href="/admin/ajouterCategorie" class="btn btn-primary mb-3">Ajouter une catégorie</a>
+            <a href="/admin/ajouterCategorie" class="mb-3 inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+                Ajouter une catégorie
+            </a>
 
             <!-- Tableau des catégories -->
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Libellé</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Itération sur les catégories -->
-                    <tr th:each="categorie : ${categories}">
-                        <td th:text="${categorie.libelle}"></td>
-                        <td>
-                            <!-- Bouton Modifier -->
-                            <a th:href="@{'/admin/modifierCategorie/' + ${categorie.noCategorie}}"
-                                class="btn btn-warning btn-sm">Modifier</a>
-                            <!-- Bouton Supprimer -->
-                            <a th:href="@{'/admin/supprimerCategorie/' + ${categorie.noCategorie}}"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">Supprimer</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Libellé
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" th:each="categorie : ${categories}">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${categorie.libelle}"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <!-- Bouton Modifier -->
+                                <a th:href="@{'/admin/modifierCategorie/' + ${categorie.noCategorie}}"
+                                   class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-3 rounded mr-2">
+                                    Modifier
+                                </a>
+                                <!-- Bouton Supprimer -->
+                                <a th:href="@{'/admin/supprimerCategorie/' + ${categorie.noCategorie}}"
+                                   class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded"
+                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">
+                                    Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </section>
 </body>
-
 </html>
