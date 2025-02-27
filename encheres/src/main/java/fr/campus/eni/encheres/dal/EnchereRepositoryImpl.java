@@ -48,6 +48,17 @@ public class EnchereRepositoryImpl implements ICrudRepository<Enchere> {
         return encheres;
     }
 
+    public List<Enchere> getByNoArticle(Integer noArticle) {
+        String sql = """
+        select no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur from encheres
+        where no_article = ?
+        """;
+        List<Enchere> encheres = jdbcTemplate.query(sql,
+                new BeanPropertyRowMapper<>(Enchere.class), noArticle);
+        
+        return encheres;
+    }
+
     @Override
     public Optional<Enchere> getById(int id) {
         String sql = "select no_enchere, date_enchere, montant_enchere, no_article, no_utilisateur"
