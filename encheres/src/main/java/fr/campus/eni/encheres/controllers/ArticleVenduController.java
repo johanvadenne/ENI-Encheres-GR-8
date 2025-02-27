@@ -89,8 +89,9 @@ public class ArticleVenduController {
     
     Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
 
+    Collections.sort(lesArticles, Comparator.comparing(ArticleVendu::getNoArticle).reversed()); 
+    
     model.addAttribute("pseudo", utilisateur.getPseudo());
-
     model.addAttribute("lesArticlesVendus", lesArticles);
     model.addAttribute("categories", categorieService.getAll());
     model.addAttribute("selectedCategorie", categorie);
@@ -129,7 +130,7 @@ public class ArticleVenduController {
 
     String uploadDir = "D:/uploads"; // Dossier où stocker les images
     String fileName =
-        articleVendu.getNoArticle().toString() + "-" + utilisateur.getPseudo() + "." + extension;
+        articleVendu.getNoArticle().toString() + "." + extension;
     Path filePath = Paths.get(uploadDir, fileName);
 
     // Sauvegarder le fichier sur le disque
@@ -180,7 +181,7 @@ public class ArticleVenduController {
     if (listeEnchereUtilisateur.size() > 0) {
 
         for (Enchere enchere : listeEnchereUtilisateur) {
-          if (enchere.getNoUtilisateur() == utilisateur.getNoUtilisateur()) {
+          if (enchere.getNoUtilisateur() == utilisateur.getNoUtilisateur() && enchere.getNoArticle() == noArticle) {
             return "redirect:/vente/" + noArticle;
           }
         }
