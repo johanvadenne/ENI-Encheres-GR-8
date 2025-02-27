@@ -31,33 +31,27 @@
         </div>
     </form>
     <table class="min-w-full border-collapse border border-gray-300">
-        <thead>
-                <tr class="bg-gray-100">
-                    <th class="border border-gray-300 p-2">Nom de l'Article</th>
-                    <th class="border border-gray-300 p-2">Description</th>
-                    <th class="border border-gray-300 p-2">Catégorie</th>
-                    <th class="border border-gray-300 p-2">Mise à Prix</th>
-                    <th class="border border-gray-300 p-2">Début des Enchères</th>
-                    <th class="border border-gray-300 p-2">Fin des Enchères</th>
-                    <th class="border border-gray-300 p-2">Vendeur</th>
-                    <th class="border border-gray-300 p-2">Lieu de la vente</th>
-                    <th class="border border-gray-300 p-2">Détails</th>
-                </tr>
-        </thead>
-        <tbody>
-            <tr th:each="article : ${lesArticlesVendus}" class="hover:bg-gray-50">
-                <td class="border border-gray-300 p-2" th:text="${article.nomArticle}"></td>
-                <td class="border border-gray-300 p-2" th:text="${article.description}"></td>
-                <td class="border border-gray-300 p-2" th:text="${article.categorie.libelle}"></td>
-                <td class="border border-gray-300 p-2" th:text="${article.prixInitial}"></td>
-                <td class="border border-gray-300 p-2" th:text="${article.dateDebutEncheres}"></td>
-                <td class="border border-gray-300 p-2" th:text="${article.dateFinEncheres}"></td>
-                <td class="border border-gray-300 p-2" th:text="${article.vendeur.prenom + ' ' + article.vendeur.nom}"></td>
-                <td class="border border-gray-300 p-2" th:text="${article.retrait.rue + ' ' + article.retrait.codePostal + ' ' + article.retrait.ville}"></td>
-                <td class="border border-gray-300 p-2 text-center">
-                    <a th:href="@{'/vente/' + ${article.noArticle}}" class="text-blue-500 hover:underline">Voir détails</a>
-                </td>
-            </tr>
+        
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div th:each="article : ${lesArticlesVendus}" class="border rounded-lg shadow-md p-4 bg-white">
+            <picture class="w-full h-48 object-cover rounded-t-lg">
+                <source th:srcset="@{'/images-enchere/' + ${article.noArticle} + '-' + ${pseudo} + '.jpg'}" type="image/jpg">
+                <source th:srcset="@{'/images-enchere/' + ${article.noArticle} + '-' + ${pseudo} + '.webp'}" type="image/webp">
+                <source th:srcset="@{'/images-enchere/' + ${article.noArticle} + '-' + ${pseudo} + '.png'}" type="image/png">
+                <source th:srcset="@{'/images-enchere/' + ${article.noArticle} + '-' + ${pseudo} + '.jpeg'}" type="image/jpeg">
+                <img th:src="@{'/images-enchere/' + ${article.noArticle} + '-' + ${pseudo} + '.jpg'}" alt="Image de l'article">
+            </picture>
+            <div class="p-4">
+                <h2 class="text-xl font-semibold" th:text="${article.nomArticle}"></h2>
+                <p class="text-gray-600" th:text="${article.description}"></p>
+                <p class="font-bold mt-2">Prix: <span th:text="${article.prixInitial} + ' €'"></span></p>
+                <p class="text-sm text-gray-500">Fin des enchères: <span th:text="${article.dateFinEncheres}"></span></p>
+                <p class="text-sm text-gray-500">Vendeur: <span th:text="${article.vendeur.prenom + ' ' + article.vendeur.nom}"></span></p>
+                <a th:href="@{'/vente/' + ${article.noArticle}}" 
+                   class="block text-center bg-blue-500 text-white p-2 rounded mt-4">Voir détails</a>
+            </div>
+        </div>
+    </div>
         </tbody>
     </table>
 </section>
