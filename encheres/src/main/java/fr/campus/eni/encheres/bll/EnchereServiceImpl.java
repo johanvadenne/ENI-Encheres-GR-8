@@ -113,4 +113,8 @@ public class EnchereServiceImpl implements ICrudService<Enchere> {
             }
         }
     }
+
+    public Optional<Enchere> getLastEnchereByArticle(Integer noArticle) {
+        return EnchereRepositoryImpl.getLastEnchereByArticle(noArticle);
+    }
 }
