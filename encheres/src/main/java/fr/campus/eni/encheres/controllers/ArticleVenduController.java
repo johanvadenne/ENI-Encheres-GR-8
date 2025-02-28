@@ -135,7 +135,7 @@ public class ArticleVenduController {
     Files.createDirectories(filePath.getParent());
     Files.write(filePath, image.getBytes());
 
-    retrait.setNoCategorie(articleVendu.getNoArticle());
+    retrait.setNoArticle(articleVendu.getNoArticle());
     retraitServiceImpl.save(retrait);
     return "redirect:/listeVentes";
   }
@@ -253,8 +253,7 @@ public class ArticleVenduController {
     Files.createDirectories(filePath.getParent());
     Files.write(filePath, image.getBytes());
 
-    // Vous pouvez aussi gérer le retrait, comme précédemment
-    retrait.setNoCategorie(articleVendu.getNoArticle());
+    retrait.setNoArticle(articleVendu.getNoArticle());
     retraitServiceImpl.save(retrait);
     return "redirect:/vente/" + noArticle;
   }
