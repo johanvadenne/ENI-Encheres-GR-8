@@ -27,8 +27,8 @@
   
       <!-- Catégorie -->
       <div>
-        <label for="no_categorie" class="block text-sm font-medium text-gray-700">Catégorie</label>
-        <select id="no_categorie" name="no_categorie" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+        <label for="noCategorie" class="block text-sm font-medium text-gray-700">Catégorie</label>
+        <select id="noCategorie" name="noCategorie" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
           <option value="" disabled selected>Choisissez une catégorie</option>
           <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
         </select>
