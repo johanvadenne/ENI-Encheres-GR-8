@@ -1,23 +1,22 @@
 package fr.campus.eni.encheres.bll;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import fr.campus.eni.encheres.bo.ArticleVendu;
 import fr.campus.eni.encheres.dal.ArticleVenduRepositoryImpl;
 import fr.campus.eni.encheres.exceptions.ExeptionEchere;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ArticleVenduServiceImpl implements ICrudService<ArticleVendu> {
 
   private final ArticleVenduRepositoryImpl ArticleVenduRepositoryImpl;
-  private final PasswordEncoder passwordEncoder;
 
   public ArticleVenduServiceImpl(
-      ArticleVenduRepositoryImpl articleVenduRepositoryImpl, PasswordEncoder passwordEncoder) {
+      ArticleVenduRepositoryImpl articleVenduRepositoryImpl) {
     this.ArticleVenduRepositoryImpl = articleVenduRepositoryImpl;
-    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
