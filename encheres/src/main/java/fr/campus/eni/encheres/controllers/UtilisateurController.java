@@ -93,4 +93,17 @@ public class UtilisateurController {
 
     return "redirect:/utilisateurs/profil";
   }
+
+  @PostMapping("/supprimer")
+  public String supprimerProfil(Principal principal) {
+    String pseudo = principal.getName();
+    Optional<Utilisateur> utilisateurOpt = utilisateurRepositoryImpl.getByPseudo(pseudo);
+
+    if (utilisateurOpt.isPresent()) {
+      utilisateurRepositoryImpl.delete(utilisateurOpt.get().getNoUtilisateur());
+    }
+
+    return "redirect:/logout";
+  }
+
 }
