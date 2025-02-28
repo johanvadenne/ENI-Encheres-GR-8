@@ -283,15 +283,18 @@ public class ArticleVenduController {
     if (extension == null || extension.isEmpty()) {
       throw new IllegalArgumentException("Format de fichier invalide !");
     }
+    
     String uploadDir = "D:/uploads"; // Dossier où stocker les images
-    String fileName = articleVendu.getNoArticle().toString() + "-"
-        + articleVendu.getVendeur().getPseudo() + "." + extension;
+    String fileName = articleVendu.getNoArticle().toString() + "." + extension;
     Path filePath = Paths.get(uploadDir, fileName);
     Files.createDirectories(filePath.getParent());
     Files.write(filePath, image.getBytes());
 
-    retrait.setNoArticle(articleVendu.getNoArticle());
-    retraitServiceImpl.save(retrait);
+    if (retrait.getCodePostal().length() != 0 && retrait.getRue().length() != 0 && retrait.getVille().length() != 0) {
+      retrait.setNoArticle(articleVendu.getNoArticle());
+      retraitServiceImpl.save(retrait);
+    }
+
     return "redirect:/vente/" + noArticle;
   }
 
