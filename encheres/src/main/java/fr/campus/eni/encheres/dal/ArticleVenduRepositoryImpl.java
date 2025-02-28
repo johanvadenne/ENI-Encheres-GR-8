@@ -1,11 +1,8 @@
 package fr.campus.eni.encheres.dal;
 
-import fr.campus.eni.encheres.bo.ArticleVendu;
-import fr.campus.eni.encheres.bo.Categorie;
-import fr.campus.eni.encheres.bo.Retrait;
-import fr.campus.eni.encheres.bo.Utilisateur;
 import java.util.List;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -16,6 +13,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import fr.campus.eni.encheres.bo.ArticleVendu;
+import fr.campus.eni.encheres.bo.Categorie;
+import fr.campus.eni.encheres.bo.Retrait;
+import fr.campus.eni.encheres.bo.Utilisateur;
 
 @Repository
 public class ArticleVenduRepositoryImpl implements ICrudRepository<ArticleVendu> {
@@ -166,9 +168,9 @@ from
            date_fin_encheres=:dateFinEncheres,
            prix_initial=:prixInitial,
            prix_vente=:prixVente,
-           no_utilisateur=:noUtilisateur
-           etatvente=:etatVente
-          where no_articleVendu = :noArticleVendu
+           no_utilisateur=:noUtilisateur,
+           etatvente=:etatvente
+          where no_article = :noArticle
         """;
     int nbRows =
         namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(articleVendu));
