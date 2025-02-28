@@ -59,11 +59,14 @@
     </a>
 
     <!-- Bouton pour supprimer le profil avec une confirmation -->
-    <form th:action="@{/utilisateurs/profil/supprimer}" method="post" class="inline-block">
-        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-6">
-            Supprimer le profil
+    <form th:action="@{/utilisateurs/supprimer}" method="post" class="inline-block">
+        <button type="submit"
+                onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre profil ?');"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-6">
+          Supprimer le profil
         </button>
-    </form>
+      </form>
+
 
 
 
