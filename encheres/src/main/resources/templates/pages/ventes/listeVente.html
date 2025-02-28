@@ -1,59 +1,104 @@
 <!DOCTYPE html>
-<html lang="fr"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout.html">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="layout.html">
+
 <head>
     <title layout:fragment="title">Liste des Ventes</title>
 </head>
+
 <body>
-<section layout:fragment="content" class="max-w-7xl mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-6">Liste des Ventes</h1>
-    <form method="get" action="/listeVentes" class="mb-6">
-        <div class="flex gap-4">
-            <div>
-                <label for="nomArticle" class="block font-medium">Nom de l'Article</label>
-                <input type="text" id="nomArticle" name="nomArticle" 
-                       th:value="${param.nomArticle}" class="border p-2 rounded">
-            </div>
-            <div>
-                <label for="categorie" class="block font-medium">Catégorie</label>
-                <select id="categorie" name="categorie" class="border p-2 rounded">
-                    <option value="">--Toutes les catégories--</option>
-                    <th:block th:each="cat : ${categories}">
-                        <option th:value="${cat.noCategorie}" 
-                                th:text="${cat.libelle}"
+    <section layout:fragment="content" class="max-w-7xl mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6">Liste des Ventes</h1>
+        <form method="get" action="/listeVentes" class="mb-6">
+            <div class="grid gap-4">
+                <div>
+                    <label for="nomArticle" class="block font-medium">Nom de l'Article</label>
+                    <input type="text" id="nomArticle" name="nomArticle" th:value="${param.nomArticle}"
+                        class="border p-2 rounded">
+                </div>
+                <div>
+                    <label for="categorie" class="block font-medium">Catégorie</label>
+                    <select id="categorie" name="categorie" class="border p-2 rounded">
+                        <option value="">--Toutes les catégories--</option>
+                        <th:block th:each="cat : ${categories}">
+                            <option th:value="${cat.noCategorie}" th:text="${cat.libelle}"
                                 th:selected="${cat.noCategorie == selectedCategorie}"></option>
-                    </th:block>
-                </select>
+                        </th:block>
+                    </select>
+                </div>
+                <div class="flex">
+                    <div class="grid mr-8">
+                        <div>
+                            <input type="radio" name="typeVente" id="achat" value="achat">
+                            <label for="typeVente">Achats</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="enchereOuvert" id="enchereOuvert">
+                            <label for="achatImmediat">Ouvertes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="mesEncheres" id="mesEncheres">
+                            <label for="achatImmediat">Mes ventes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="mesEncheresRemporter" id="mesEncheresRemporter">
+                            <label for="achatImmediat">Mes enchères remportées</label>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div>
+                            <input type="radio" name="typeVente" id="achat" value="mesVentes">
+                            <label for="typeVente">Mes ventes</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="EnCours" id="EnCours">
+                            <label for="EnCours">En cours</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="nonDebutees" id="nonDebutees">
+                            <label for="nonDebutees">Non débutées</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="terminee" id="terminee">
+                            <label for="terminee">Terminées</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-6">Filtrer</button>
             </div>
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-6">Filtrer</button>
-        </div>
-    </form>
-    <table class="min-w-full border-collapse border border-gray-300">
-        
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div th:each="article : ${lesArticlesVendus}" class="border rounded-lg shadow-md bg-white">
-            <picture class="w-full h-48 object-cover rounded-t-lg">
-                <source class="w-full h-48 object-cover rounded-t-lg" th:srcset="@{'/images-enchere/' + ${article.noArticle} + '.jpg'}" type="image/jpg">
-                <source class="w-full h-48 object-cover rounded-t-lg" th:srcset="@{'/images-enchere/' + ${article.noArticle} + '.webp'}" type="image/webp">
-                <source class="w-full h-48 object-cover rounded-t-lg" th:srcset="@{'/images-enchere/' + ${article.noArticle} + '.png'}" type="image/png">
-                <source class="w-full h-48 object-cover rounded-t-lg" th:srcset="@{'/images-enchere/' + ${article.noArticle} + '.jpeg'}" type="image/jpeg">
-                <img class="w-full h-48 object-cover rounded-t-lg" th:src="@{'/images-enchere/' + ${article.noArticle} +'.jpg'}" alt="Image de l'article">
-            </picture>
-            <div class="p-4">
-                <h2 class="text-xl font-semibold" th:text="${article.nomArticle}"></h2>
-                <p class="text-gray-600" th:text="${article.description}"></p>
-                <p class="font-bold mt-2">Prix: <span th:text="${article.prixInitial} + ' points'"></span></p>
-                <p class="text-sm text-gray-500">Fin des enchères: <span th:text="${article.dateFinEncheres}"></span></p>
-                <p class="text-sm text-gray-500">Vendeur: <span th:text="${article.vendeur.prenom + ' ' + article.vendeur.nom}"></span></p>
-                <a th:href="@{'/vente/' + ${article.noArticle}}" 
-                   class="block text-center bg-blue-500 text-white p-2 rounded mt-4">Voir détails</a>
+        </form>
+        <table class="min-w-full border-collapse border border-gray-300">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div th:each="article : ${lesArticlesVendus}" class="border rounded-lg shadow-md bg-white">
+                    <picture class="w-full h-48 object-cover rounded-t-lg">
+                        <source class="w-full h-48 object-cover rounded-t-lg"
+                            th:srcset="@{'/images-enchere/' + ${article.noArticle} + '.jpg'}" type="image/jpg">
+                        <source class="w-full h-48 object-cover rounded-t-lg"
+                            th:srcset="@{'/images-enchere/' + ${article.noArticle} + '.webp'}" type="image/webp">
+                        <source class="w-full h-48 object-cover rounded-t-lg"
+                            th:srcset="@{'/images-enchere/' + ${article.noArticle} + '.png'}" type="image/png">
+                        <source class="w-full h-48 object-cover rounded-t-lg"
+                            th:srcset="@{'/images-enchere/' + ${article.noArticle} + '.jpeg'}" type="image/jpeg">
+                        <img class="w-full h-48 object-cover rounded-t-lg"
+                            th:src="@{'/images-enchere/' + ${article.noArticle} +'.jpg'}" alt="Image de l'article">
+                    </picture>
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold" th:text="${article.nomArticle}"></h2>
+                        <p class="text-gray-600" th:text="${article.description}"></p>
+                        <p class="font-bold mt-2">Prix: <span th:text="${article.prixInitial} + ' points'"></span></p>
+                        <p class="text-sm text-gray-500">Fin des enchères: <span
+                                th:text="${article.dateFinEncheres}"></span></p>
+                        <p class="text-sm text-gray-500">Vendeur: <span
+                                th:text="${article.vendeur.prenom + ' ' + article.vendeur.nom}"></span></p>
+                        <a th:href="@{'/vente/' + ${article.noArticle}}"
+                            class="block text-center bg-blue-500 text-white p-2 rounded mt-4">Voir détails</a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-        </tbody>
-    </table>
-</section>
+            </tbody>
+        </table>
+    </section>
 </body>
+
 </html>

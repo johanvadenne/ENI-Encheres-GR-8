@@ -1,15 +1,5 @@
 package fr.campus.eni.encheres.controllers;
 
-import fr.campus.eni.encheres.bll.ArticleVenduServiceImpl;
-import fr.campus.eni.encheres.bll.CategorieServiceImpl;
-import fr.campus.eni.encheres.bll.EnchereServiceImpl;
-import fr.campus.eni.encheres.bll.RetraitServiceImpl;
-import fr.campus.eni.encheres.bo.ArticleVendu;
-import fr.campus.eni.encheres.bo.Categorie;
-import fr.campus.eni.encheres.bo.Enchere;
-import fr.campus.eni.encheres.bo.Retrait;
-import fr.campus.eni.encheres.bo.Utilisateur;
-import fr.campus.eni.encheres.dal.UtilisateurRepositoryImpl;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +11,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -30,6 +22,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import fr.campus.eni.encheres.bll.ArticleVenduServiceImpl;
+import fr.campus.eni.encheres.bll.CategorieServiceImpl;
+import fr.campus.eni.encheres.bll.EnchereServiceImpl;
+import fr.campus.eni.encheres.bll.RetraitServiceImpl;
+import fr.campus.eni.encheres.bo.ArticleVendu;
+import fr.campus.eni.encheres.bo.Categorie;
+import fr.campus.eni.encheres.bo.Enchere;
+import fr.campus.eni.encheres.bo.Retrait;
+import fr.campus.eni.encheres.bo.Utilisateur;
+import fr.campus.eni.encheres.dal.UtilisateurRepositoryImpl;
 
 @Controller
 public class ArticleVenduController {
@@ -57,10 +60,18 @@ public class ArticleVenduController {
   public String listerVentes(
       @RequestParam(required = false) String nomArticle,
       @RequestParam(required = false) Integer categorie,
+      @RequestParam(required = false) String typeVente,
+      @RequestParam(required = false, defaultValue = "false") Boolean enchereOuvert,
+      @RequestParam(required = false, defaultValue = "false") Boolean mesEncheres,
+      @RequestParam(required = false, defaultValue = "false") Boolean mesEncheresRemporter,
+      @RequestParam(required = false, defaultValue = "false") Boolean EnCours,
+      @RequestParam(required = false, defaultValue = "false") Boolean nonDebutees,
+      @RequestParam(required = false, defaultValue = "false") Boolean terminee,
       Model model,
       Principal principal) {
     List<ArticleVendu> articles = articleService.getAll();
     List<ArticleVendu> lesArticles = new ArrayList<ArticleVendu>();
+    Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     if (nomArticle != null) {
@@ -80,13 +91,34 @@ public class ArticleVenduController {
       }
 
       if (matchNom && matchCategorie) {
-        // article.setDateDebutEncheres(article.getDateDebutEncheres().formatted(formatter));
-        // article.setDateFinEncheres(article.getDateFinEncheres().formatted(formatter));
         lesArticles.add(article);
       }
-    }
 
-    Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
+      if (typeVente != null) {
+        if (typeVente.equals("achat")) {
+          // garde seulement les ventes selon les paramètre enchereOuvert, mesEncheres, mesEncheresRemporter
+                Optional<Enchere> meilleureEnchereOpt = enchereServiceImpl.getLastEnchereByArticle(article.getNoArticle());
+                if (meilleureEnchereOpt.isPresent()) {
+                  Enchere meilleureEnchere = meilleureEnchereOpt.get();
+
+                  lesArticles.removeIf(articleVendu -> (enchereOuvert && articleVendu.getDateDebutEncheres().after(new Date()))); 
+                  lesArticles.removeIf(articleVendu -> 
+                    (articleVendu.getNoUtilisateur() != utilisateur.getNoUtilisateur() && mesEncheres) 
+                    || (mesEncheresRemporter && 
+                          (articleVendu.getNoArticle() != meilleureEnchere.getNoArticle() 
+                          || utilisateur.getNoUtilisateur() != meilleureEnchere.getNoUtilisateur()) 
+                        && articleVendu.getEtatVente() == false));
+                }
+                else {
+                  lesArticles.removeIf(articleVendu -> (articleVendu.getNoUtilisateur() == utilisateur.getNoUtilisateur() && mesEncheres) || (enchereOuvert && articleVendu.getDateDebutEncheres().after(new Date())) );
+                }
+        } else if (typeVente.equals("mesVentes")) {
+          // garde seulement mes vente
+          lesArticles.removeIf(articleVendu -> articleVendu.getNoUtilisateur() != utilisateur.getNoUtilisateur() || articleVendu.getEtatVente() == EnCours || articleVendu.getEtatVente() != terminee || (articleVendu.getDateDebutEncheres().after(new Date()) && nonDebutees));
+          
+        }
+      }
+    }
 
     Collections.sort(lesArticles, Comparator.comparing(ArticleVendu::getNoArticle).reversed());
 
@@ -190,6 +222,11 @@ public class ArticleVenduController {
       if (montantEnchere > utilisateur.getCredit() - sommeEnchereUtilisateur) {
         return "redirect:/vente/" + noArticle;
       }
+    }
+
+    // si le vendeur de l'acticle est le m^me que celui qui enchère alors on ne peut pas enchérir
+    if (article.getVendeur().getNoUtilisateur() == utilisateur.getNoUtilisateur()) {
+      return "redirect:/vente/" + noArticle;
     }
 
     Enchere enchere = new Enchere();
