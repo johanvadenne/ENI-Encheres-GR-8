@@ -1,13 +1,5 @@
 package fr.campus.eni.encheres.bll;
 
-import fr.campus.eni.encheres.bo.ArticleVendu;
-import fr.campus.eni.encheres.bo.Enchere;
-import fr.campus.eni.encheres.bo.Utilisateur;
-import fr.campus.eni.encheres.dal.ArticleVenduRepositoryImpl;
-import fr.campus.eni.encheres.dal.EnchereRepositoryImpl;
-import fr.campus.eni.encheres.exceptions.ExeptionEchere;
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +8,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.campus.eni.encheres.bo.ArticleVendu;
+import fr.campus.eni.encheres.bo.Enchere;
+import fr.campus.eni.encheres.bo.Utilisateur;
+import fr.campus.eni.encheres.dal.ArticleVenduRepositoryImpl;
+import fr.campus.eni.encheres.dal.EnchereRepositoryImpl;
 import fr.campus.eni.encheres.dal.UtilisateurRepositoryImpl;
+import fr.campus.eni.encheres.exceptions.ExeptionEchere;
 
 @Service
 public class EnchereServiceImpl implements ICrudService<Enchere> {
@@ -90,7 +88,7 @@ public class EnchereServiceImpl implements ICrudService<Enchere> {
 
         for (ArticleVendu article : articlesACloturer) {
 
-            if (article.getEtatvente() != true) {
+            if (article.getEtatVente() != true) {
                 Optional<Enchere> meilleureEnchereOpt = EnchereRepositoryImpl.getLastEnchereByArticle(article.getNoArticle());
 
                 if (meilleureEnchereOpt.isPresent()) {
@@ -101,7 +99,7 @@ public class EnchereServiceImpl implements ICrudService<Enchere> {
                     vendeur.setCredit(vendeur.getCredit() + meilleureEnchere.getMontantEnchere());
                     article.setPrixVente(meilleureEnchere.getMontantEnchere());
                     acheteur.setCredit(acheteur.getCredit() - meilleureEnchere.getMontantEnchere());
-                    article.setEtatvente(true);
+                    article.setEtatVente(true);
 
                     UtilisateurRepository.updateCredit(vendeur);
                     UtilisateurRepository.updateCredit(acheteur);
@@ -109,7 +107,7 @@ public class EnchereServiceImpl implements ICrudService<Enchere> {
 
                 } else {
                     article.setPrixVente(0);
-                    article.setEtatvente(true);
+                    article.setEtatVente(true);
                     articleRepository.update(article);
                 }
             }
