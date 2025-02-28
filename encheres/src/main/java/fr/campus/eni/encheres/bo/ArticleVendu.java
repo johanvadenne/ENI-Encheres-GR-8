@@ -170,11 +170,13 @@ public class ArticleVendu {
     this.noUtilisateur = noUtilisateur;
   }
 
-  public Boolean getEtatvente() {
+  public Boolean getEtatVente() {
     return etatVente;
   }
 
-  public void setEtatvente(Boolean etatVente) {
+  public void setEtatVente(Boolean etatVente) {
     this.etatVente = etatVente;
   }
+
+  
 }
