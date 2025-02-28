@@ -16,7 +16,7 @@
             <!-- Nom de l'article -->
             <div>
                 <label for="nomArticle" class="block text-gray-700 font-semibold">Nom de l'article :</label>
-                <input id="nomArticle" type="text" th:field="*{nomArticle}"
+                <input required id="nomArticle" type="text" th:field="*{nomArticle}"
                        placeholder="Nom de l'article"
                        class="mt-1 w-full p-2 border border-gray-300 rounded">
             </div>
@@ -31,8 +31,8 @@
 
             <!-- Catégorie -->
             <div>
-                <label for="categorie" class="block text-gray-700 font-semibold">Catégorie :</label>
-                <select id="categorie" th:field="*{categorie.noCategorie}" class="mt-1 w-full p-2 border border-gray-300 rounded">
+                <label for="noCategorie" class="block text-gray-700 font-semibold">Catégorie :</label>
+                <select required id="noCategorie" th:field="*{noCategorie}" class="mt-1 w-full p-2 border border-gray-300 rounded">
                   <option th:each="cat : ${categories}" th:value="${cat.noCategorie}" th:text="${cat.libelle}"></option>
                 </select>
             </div>
@@ -40,37 +40,48 @@
 
             <div>
                 <label for="image" class="block text-gray-700 font-semibold">Image :</label>
-                <input type="file" id="image" name="image" class="mt-1 w-full p-2 border border-gray-300 rounded">
+                <input accept="image/*" required type="file" id="image" name="image" class="mt-1 w-full p-2 border border-gray-300 rounded">
             </div>
 
             <!-- Date de début d'enchères -->
             <div>
                 <label for="dateDebutEncheres" class="block text-gray-700 font-semibold">Date de début d'enchères :</label>
-                <input id="dateDebutEncheres" type="date" th:field="*{dateDebutEncheres}"
+                <input required id="dateDebutEncheres" type="date" th:field="*{dateDebutEncheres}"
                        class="mt-1 w-full p-2 border border-gray-300 rounded">
             </div>
 
             <!-- Date de fin d'enchères -->
             <div>
                 <label for="dateFinEncheres" class="block text-gray-700 font-semibold">Date de fin d'enchères :</label>
-                <input id="dateFinEncheres" type="date" th:field="*{dateFinEncheres}"
+                <input required id="dateFinEncheres" type="date" th:field="*{dateFinEncheres}"
                        class="mt-1 w-full p-2 border border-gray-300 rounded">
             </div>
 
             <!-- Prix initial -->
             <div>
                 <label for="prixInitial" class="block text-gray-700 font-semibold">Prix initial (€) :</label>
-                <input id="prixInitial" type="number" step="0.01" th:field="*{prixInitial}"
+                <input required id="prixInitial" type="number" step="0.01" th:field="*{prixInitial}"
                        class="mt-1 w-full p-2 border border-gray-300 rounded">
             </div>
+            
+      <!-- Adresse de retrait -->
+        <div>
+          <label for="rue" class="block text-sm font-medium text-gray-700">Rue de retrait</label>
+          <input type="text" id="rue" name="rue" placeholder="7 Impasse du vigné" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+          <p class="text-sm text-gray-500 mt-1">rue</p>
+        </div>
 
-            <!-- Prix de vente -->
-            <div>
-                <label for="prixVente" class="block text-gray-700 font-semibold">Prix de vente (€) :</label>
-                <input id="prixVente" type="number" step="0.01" th:field="*{prixVente}"
-                       class="mt-1 w-full p-2 border border-gray-300 rounded">
-            </div>
+        <div>
+          <label for="codePostal" class="block text-sm font-medium text-gray-700">Code postal de retrait</label>
+          <input type="text" id="codePostal" name="codePostal" placeholder="75000" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+          <p class="text-sm text-gray-500 mt-1">code postal</p>
+        </div>
 
+        <div>
+          <label for="ville" class="block text-sm font-medium text-gray-700">Ville de retrait</label>
+          <input type="text" id="ville" name="ville" placeholder="Paris" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2">
+          <p class="text-sm text-gray-500 mt-1">ville</p>
+        </div>
             <!-- Boutons d'action -->
             <div class="flex space-x-4 mt-6">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
