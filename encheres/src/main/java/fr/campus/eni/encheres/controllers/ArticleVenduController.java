@@ -86,11 +86,10 @@ public class ArticleVenduController {
       }
     }
 
-    
     Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
 
-    Collections.sort(lesArticles, Comparator.comparing(ArticleVendu::getNoArticle).reversed()); 
-    
+    Collections.sort(lesArticles, Comparator.comparing(ArticleVendu::getNoArticle).reversed());
+
     model.addAttribute("pseudo", utilisateur.getPseudo());
     model.addAttribute("lesArticlesVendus", lesArticles);
     model.addAttribute("categories", categorieService.getAll());
@@ -129,8 +128,7 @@ public class ArticleVenduController {
     }
 
     String uploadDir = "D:/uploads"; // Dossier où stocker les images
-    String fileName =
-        articleVendu.getNoArticle().toString() + "." + extension;
+    String fileName = articleVendu.getNoArticle().toString() + "." + extension;
     Path filePath = Paths.get(uploadDir, fileName);
 
     // Sauvegarder le fichier sur le disque
@@ -147,7 +145,7 @@ public class ArticleVenduController {
     ArticleVendu article = articleService.getById(id).get();
     Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
     List<Enchere> liste = enchereServiceImpl.getByNoArticle(id);
-    Collections.sort(liste, Comparator.comparing(Enchere::getMontantEnchere).reversed());   
+    Collections.sort(liste, Comparator.comparing(Enchere::getMontantEnchere).reversed());
 
     model.addAttribute("listeEncheres", liste);
     model.addAttribute("article", article);
@@ -162,16 +160,17 @@ public class ArticleVenduController {
     ArticleVendu article = articleService.getById(noArticle).get();
     Utilisateur utilisateur = utilisateurRepositoryImpl.getByPseudo(principal.getName()).get();
     List<Enchere> liste = enchereServiceImpl.getByNoArticle(noArticle);
-    List<Enchere> listeEnchereUtilisateur = enchereServiceImpl.getEnhereValidByNoUtilisateur(utilisateur.getNoUtilisateur());
+    List<Enchere> listeEnchereUtilisateur = enchereServiceImpl
+        .getEnhereValidByNoUtilisateur(utilisateur.getNoUtilisateur());
 
     if (liste.size() > 0) {
-        Enchere derniereEnchere = liste.get(0);
+      Enchere derniereEnchere = liste.get(0);
 
-        for (Enchere enchere : liste) {
-          if (enchere.getMontantEnchere() > derniereEnchere.getMontantEnchere()) {
-            derniereEnchere = enchere;
-          }
+      for (Enchere enchere : liste) {
+        if (enchere.getMontantEnchere() > derniereEnchere.getMontantEnchere()) {
+          derniereEnchere = enchere;
         }
+      }
 
       if (montantEnchere <= derniereEnchere.getMontantEnchere()) {
         return "redirect:/vente/" + noArticle; // 🔄 Redirection vers la page de détails
@@ -180,13 +179,13 @@ public class ArticleVenduController {
 
     if (listeEnchereUtilisateur.size() > 0) {
 
-        for (Enchere enchere : listeEnchereUtilisateur) {
-          if (enchere.getNoUtilisateur() == utilisateur.getNoUtilisateur() && enchere.getNoArticle() == noArticle) {
-            return "redirect:/vente/" + noArticle;
-          }
+      for (Enchere enchere : listeEnchereUtilisateur) {
+        if (enchere.getNoUtilisateur() == utilisateur.getNoUtilisateur() && enchere.getNoArticle() == noArticle) {
+          return "redirect:/vente/" + noArticle;
         }
-        
-      int sommeEnchereUtilisateur = liste.stream().mapToInt(Enchere::getMontantEnchere).sum(); 
+      }
+
+      int sommeEnchereUtilisateur = liste.stream().mapToInt(Enchere::getMontantEnchere).sum();
 
       if (montantEnchere > utilisateur.getCredit() - sommeEnchereUtilisateur) {
         return "redirect:/vente/" + noArticle;
@@ -208,9 +207,14 @@ public class ArticleVenduController {
 
   @GetMapping("/vente/{noArticle}/modifier")
   public String afficherFormulaireModification(@PathVariable Integer noArticle, Model model) {
-    ArticleVendu article = articleService.getById(noArticle).get();
+    ArticleVendu article = articleService.getById(noArticle).orElse(null);
+    if (article == null) {
+      // Handle error (e.g., add an error attribute and redirect)
+      return "redirect:/error";
+    }
     List<Categorie> categories = categorieService.getAll();
-    model.addAttribute("articleVendu", article);
+    // Use "article" as the attribute name
+    model.addAttribute("article", article);
     model.addAttribute("categories", categories);
     return "pages/ventes/modifierVente";
   }
@@ -220,33 +224,39 @@ public class ArticleVenduController {
       @PathVariable Integer noArticle,
       @ModelAttribute("articleVendu") ArticleVendu articleVendu,
       @ModelAttribute("retrait") Retrait retrait,
-      @RequestParam("image") MultipartFile image)
-      throws IOException {
+      @RequestParam("image") MultipartFile image) throws IOException {
+
+    // Récupérer l'article existant pour conserver la catégorie, le vendeur, etc.
+    ArticleVendu existingArticle = articleService.getById(noArticle)
+        .orElseThrow(() -> new RuntimeException("Article non trouvé"));
+
+    // Conserver la catégorie (et éventuellement d'autres informations non
+    // modifiables)
+    articleVendu.setCategorie(existingArticle.getCategorie());
+    articleVendu.setVendeur(existingArticle.getVendeur());
+    articleVendu.setNoUtilisateur(existingArticle.getNoUtilisateur());
     articleVendu.setNoArticle(noArticle);
+
+    // Sauvegarder l'article mis à jour
     articleService.save(articleVendu);
 
+    // Traitement de l'image
     String originalFileName = image.getOriginalFilename();
     String extension = StringUtils.getFilenameExtension(originalFileName);
-
     if (extension == null || extension.isEmpty()) {
       throw new IllegalArgumentException("Format de fichier invalide !");
     }
-
     String uploadDir = "D:/uploads"; // Dossier où stocker les images
-    String fileName =
-        articleVendu.getNoArticle().toString()
-            + "-"
-            + articleVendu.getVendeur().getPseudo()
-            + "."
-            + extension;
+    String fileName = articleVendu.getNoArticle().toString() + "-"
+        + articleVendu.getVendeur().getPseudo() + "." + extension;
     Path filePath = Paths.get(uploadDir, fileName);
-
-    // Sauvegarder le fichier sur le disque
     Files.createDirectories(filePath.getParent());
     Files.write(filePath, image.getBytes());
 
+    // Vous pouvez aussi gérer le retrait, comme précédemment
     retrait.setNoCategorie(articleVendu.getNoArticle());
     retraitServiceImpl.save(retrait);
     return "redirect:/vente/" + noArticle;
   }
+
 }
