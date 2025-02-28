@@ -1,13 +1,14 @@
 package fr.campus.eni.encheres.bo;
 
 import java.util.Date;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class ArticleVendu {
   private Integer noArticle;
   private String nomArticle;
   private String description;
-  private Integer no_categorie;
+  private Integer noCategorie;
   private Categorie categorie;
   private Integer prixInitial;
   private Integer prixVente;
@@ -21,7 +22,7 @@ public class ArticleVendu {
   private Integer noUtilisateur;
   private Utilisateur vendeur;
   private Retrait retrait;
-  private Boolean etatvente;
+  private Boolean etatVente;
 
   public ArticleVendu() {
     // constructeur par défaut
@@ -37,7 +38,7 @@ public class ArticleVendu {
       Date dateFinEncheres,
       Utilisateur vendeur,
       Retrait retrait,
-      Boolean etatvente) {
+      Boolean etatVente) {
     this.noArticle = noArticle;
     this.nomArticle = nomArticle;
     this.description = description;
@@ -47,7 +48,7 @@ public class ArticleVendu {
     this.dateFinEncheres = dateFinEncheres;
     this.vendeur = vendeur;
     this.retrait = retrait;
-    this.etatvente = etatvente;
+    this.etatVente = etatVente;
   }
 
   public Integer getNoArticle() {
@@ -145,12 +146,12 @@ public class ArticleVendu {
         + "]";
   }
 
-  public Integer getNo_categorie() {
-    return no_categorie;
+  public Integer getNoCategorie() {
+    return noCategorie;
   }
 
-  public void setNo_categorie(Integer no_categorie) {
-    this.no_categorie = no_categorie;
+  public void setNoCategorie(Integer noCategorie) {
+    this.noCategorie = noCategorie;
   }
 
   public Integer getPrixVente() {
@@ -170,10 +171,10 @@ public class ArticleVendu {
   }
 
   public Boolean getEtatvente() {
-    return etatvente;
+    return etatVente;
   }
 
-  public void setEtatvente(Boolean etatvente) {
-    this.etatvente = etatvente;
+  public void setEtatvente(Boolean etatVente) {
+    this.etatVente = etatVente;
   }
 }
