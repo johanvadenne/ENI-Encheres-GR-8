@@ -1,8 +1,8 @@
 package fr.campus.eni.encheres.dal;
 
-import fr.campus.eni.encheres.bo.Enchere;
 import java.util.List;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import fr.campus.eni.encheres.bo.Enchere;
 
 @Repository
 public class EnchereRepositoryImpl implements ICrudRepository<Enchere> {
@@ -109,10 +111,7 @@ public class EnchereRepositoryImpl implements ICrudRepository<Enchere> {
     Enchere enchere = null;
     try {
       enchere = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Enchere.class), no_article);
-    } catch (DataAccessException exc) {
-      exc.printStackTrace();
-      logger.warn(exc.getMessage());
-    }
+    } catch (DataAccessException exc) {}
 
     return Optional.ofNullable(enchere);
   }
