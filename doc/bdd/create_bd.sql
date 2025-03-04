@@ -19,7 +19,8 @@ CREATE TABLE UTILISATEURS (
     ville          VARCHAR(50) NOT NULL,
     mot_de_passe   VARCHAR(256) NOT NULL,
     credit         INTEGER NOT NULL,
-    administrateur BOOLEAN NOT NULL -- Utilisation de BOOLEAN pour le type bit
+    administrateur BOOLEAN NOT NULL DEFAULT FALSE, -- Utilisation de BOOLEAN pour le type bit
+    desactive BOOLEAN DEFAULT FALSE
 );
 
 -- Création de la table ARTICLES_VENDUS
