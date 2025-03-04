@@ -1,8 +1,7 @@
 package fr.campus.eni.encheres.controllers;
 
-import fr.campus.eni.encheres.bll.CategorieServiceImpl;
-import fr.campus.eni.encheres.bo.Categorie;
 import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +10,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import fr.campus.eni.encheres.bll.CategorieServiceImpl;
+import fr.campus.eni.encheres.bll.UtilisateurServiceImpl;
+import fr.campus.eni.encheres.bo.Categorie;
+import fr.campus.eni.encheres.bo.Utilisateur;
+
 @RequestMapping("/admin")
 @Controller
 public class AdministrateurController {
   private CategorieServiceImpl categorieServiceImpl;
+  private UtilisateurServiceImpl utilisateurServiceImpl;
 
-  public AdministrateurController(CategorieServiceImpl categorieServiceImpl) {
+  public AdministrateurController(CategorieServiceImpl categorieServiceImpl, UtilisateurServiceImpl utilisateurServiceImpl) {
     this.categorieServiceImpl = categorieServiceImpl;
+    this.utilisateurServiceImpl = utilisateurServiceImpl;
   }
 
   @GetMapping("/gestionCategorie")
@@ -59,5 +65,24 @@ public class AdministrateurController {
     categorie.setNoCategorie(id); // Assurer que l'ID ne change pas
     categorieServiceImpl.update(categorie);
     return "redirect:/admin/gestionCategorie";
+  }
+
+  @GetMapping("/gestionUtilisateur")
+  public String gestionUtilisateur(Model model) {
+    List<Utilisateur> lesUtilisateurs = utilisateurServiceImpl.getAll();
+    model.addAttribute("lesUtilisateurs", lesUtilisateurs);
+    return "pages/admin/gestionUtilisateur";
+  }
+
+  @GetMapping("/supprimer/{id}")
+  public String supprimer(@PathVariable Integer id) {
+    utilisateurServiceImpl.delete(id);
+    return "redirect:/admin/gestionUtilisateur";
+  }
+
+  @GetMapping("/desactiver/{id}")
+  public String desactiver(@PathVariable Integer id) {
+    utilisateurServiceImpl.desactiverUtilisateur(id,true);
+    return "redirect:/admin/gestionUtilisateur";
   }
 }
