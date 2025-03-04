@@ -1,5 +1,5 @@
 /.vscode
 /logs
-/encheres/logs
-encheres/logs/application.log
-/encheres
+/encheres/build
+/encheres/.gradle
+encheres/.env
