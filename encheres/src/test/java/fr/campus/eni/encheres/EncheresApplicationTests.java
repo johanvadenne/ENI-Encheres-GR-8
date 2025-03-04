@@ -11,13 +11,13 @@ class EncheresApplicationTests {
 
   static Dotenv dotenv;
 
-    @BeforeAll
-    static void setup() {
-        dotenv = Dotenv.load(); // Charge le fichier .env automatiquement
-        System.setProperty("DATASOURCE_URL", dotenv.get("DATASOURCE_URL"));
-        System.setProperty("DATASOURCE_USERNAME", dotenv.get("DATASOURCE_USERNAME"));
-        System.setProperty("DATASOURCE_PASSWORD", dotenv.get("DATASOURCE_PASSWORD"));
-    }
+  @BeforeAll
+  static void setup() {
+      dotenv = Dotenv.load();
+      System.setProperty("DATASOURCE_URL", dotenv.get("DATASOURCE_URL"));
+      System.setProperty("DATASOURCE_USERNAME", dotenv.get("DATASOURCE_USERNAME"));
+      System.setProperty("DATASOURCE_PASSWORD", dotenv.get("DATASOURCE_PASSWORD"));
+  }
 
   @Test
   void contextLoads() {}
