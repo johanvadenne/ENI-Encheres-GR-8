@@ -13,6 +13,7 @@ public class Utilisateur {
   private String motDePasse;
   private Integer credit;
   private Boolean administrateur;
+  private Boolean desactive;
 
   public Utilisateur() {}
 
@@ -28,7 +29,8 @@ public class Utilisateur {
       String ville,
       String motDePasse,
       Integer credit,
-      Boolean administrateur) {
+      Boolean administrateur,
+      Boolean desactive) {
     this.noUtilisateur = noUtilisateur;
     this.pseudo = pseudo;
     this.nom = nom;
@@ -41,6 +43,15 @@ public class Utilisateur {
     this.motDePasse = motDePasse;
     this.credit = credit;
     this.administrateur = administrateur;
+    this.desactive = desactive;
+  }
+
+  public Boolean getDesactive() {
+    return desactive;
+  }
+
+  public void setDesactive(Boolean desactive) {
+    this.desactive = desactive;
   }
 
   public Integer getNoUtilisateur() {
