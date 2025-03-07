@@ -1,50 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout.html">
 <head>
     <meta charset="UTF-8">
     <title>Gestion des Utilisateurs</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container mt-4">
-        <h2 class="mb-4">Gestion des Utilisateurs</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Pseudo</th>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Email</th>
-                    <th>Téléphone</th>
-                    <th>Adresse</th>
-                    <th>Code Postal</th>
-                    <th>Ville</th>
-                    <th>Crédit</th>
-                    <th>Administrateur</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="utilisateur : ${lesUtilisateurs}">
-                    <td th:text="${utilisateur.noUtilisateur}"></td>
-                    <td th:text="${utilisateur.pseudo}"></td>
-                    <td th:text="${utilisateur.nom}"></td>
-                    <td th:text="${utilisateur.prenom}"></td>
-                    <td th:text="${utilisateur.email}"></td>
-                    <td th:text="${utilisateur.telephone}"></td>
-                    <td th:text="${utilisateur.rue}"></td>
-                    <td th:text="${utilisateur.codePostal}"></td>
-                    <td th:text="${utilisateur.ville}"></td>
-                    <td th:text="${utilisateur.credit}"></td>
-                    <td th:text="${utilisateur.administrateur ? 'Oui' : 'Non'}"></td>
-                    <td>
-                        <a th:href="@{'/admin/desactiver/' + ${utilisateur.noUtilisateur}}" class="btn btn-warning btn-sm">Désactiver</a>
-                        <a th:href="@{'/admin/supprimer/' + ${utilisateur.noUtilisateur}}" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <section layout:fragment="content" class="max-w-4xl mx-auto p-6 w-full">
+        <div class="flex space-x-4 p-5 bg-gray-100 shadow-md">
+            <a href="/admin/gestionUtilisateur" class="py-2 px-4 text-gray-700 hover:text-gray-900 font-semibold">Gestion des utilisateurs</a>
+            <a href="/admin/gestionCategorie" class="py-2 px-4 text-gray-700 hover:text-gray-900 font-semibold">Gestion des catégories</a>
+        </div>
+        
+        <div class="container mx-auto mt-6 p-6 bg-white shadow-lg rounded-lg">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Gestion des Utilisateurs</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-700">
+                            <th class="border border-gray-300 py-2">ID</th>
+                            <th class="border border-gray-300 py-2">Pseudo</th>
+                            <th class="border border-gray-300 py-2">Nom</th>
+                            <th class="border border-gray-300 py-2">Prénom</th>
+                            <th class="border border-gray-300 py-2">Email</th>
+                            <th class="border border-gray-300 py-2">Téléphone</th>
+                            <th class="border border-gray-300 py-2">Adresse</th>
+                            <th class="border border-gray-300 py-2">Code Postal</th>
+                            <th class="border border-gray-300 py-2">Ville</th>
+                            <th class="border border-gray-300 py-2">Crédit</th>
+                            <th class="border border-gray-300 py-2">Administrateur</th>
+                            <th class="border border-gray-300 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="utilisateur : ${lesUtilisateurs}" class="hover:bg-gray-100">
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.noUtilisateur}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.pseudo}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.nom}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.prenom}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.email}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.telephone}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.rue}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.codePostal}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.ville}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.credit}"></td>
+                            <td class="border border-gray-300 py-2" th:text="${utilisateur.administrateur ? 'Oui' : 'Non'}"></td>
+                            <td class="border border-gray-300 py-2 flex space-x-2">
+                                <a th:href="@{'/admin/desactiver/' + ${utilisateur.noUtilisateur}}" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Désactiver</a>
+                                <a th:href="@{'/admin/supprimer/' + ${utilisateur.noUtilisateur}}" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </section>
 </body>
 </html>
