@@ -4,60 +4,60 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout.html">
 <head>
-    <meta charset="UTF-8">
-    <title>Gestion des Utilisateurs</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>Gestion des Utilisateurs</title>
+  <!-- Utilisation de Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <section layout:fragment="content" class="max-w-4xl mx-auto p-6 w-full">
-        <div class="flex space-x-4 p-5 bg-gray-100 shadow-md">
-            <a href="/admin/gestionUtilisateur" class="py-2 px-4 text-gray-700 hover:text-gray-900 font-semibold">Gestion des utilisateurs</a>
-            <a href="/admin/gestionCategorie" class="py-2 px-4 text-gray-700 hover:text-gray-900 font-semibold">Gestion des catégories</a>
+  <section layout:fragment="content" class="container my-5">
+    <!-- Barre de navigation -->
+    <div class="d-flex justify-content-start mb-4">
+      <a href="/admin/gestionUtilisateur" class="btn btn-outline-primary me-2">Gestion des utilisateurs</a>
+      <a href="/admin/gestionCategorie" class="btn btn-outline-secondary">Gestion des catégories</a>
+    </div>
+
+    <h2 class="mb-4 text-center">Gestion des Utilisateurs</h2>
+
+    <!-- Message si aucun utilisateur n'est trouvé -->
+    <div th:if="${lesUtilisateurs == null || #lists.isEmpty(lesUtilisateurs)}" class="alert alert-info text-center">
+      Aucun utilisateur trouvé.
+    </div>
+
+    <!-- Grille de cartes pour les utilisateurs -->
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-4 mb-4" th:each="utilisateur : ${lesUtilisateurs}">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title" th:text="${utilisateur.pseudo}">Pseudo</h5>
+            <p class="card-text">
+              <strong>ID :</strong> <span th:text="${utilisateur.noUtilisateur}">1</span><br>
+              <strong>Nom :</strong> <span th:text="${utilisateur.nom}">Nom</span><br>
+              <strong>Prénom :</strong> <span th:text="${utilisateur.prenom}">Prénom</span><br>
+              <strong>Email :</strong> <span th:text="${utilisateur.email}">email@example.com</span><br>
+              <strong>Téléphone :</strong> <span th:text="${utilisateur.telephone}">0600000000</span><br>
+              <strong>Adresse :</strong>
+              <span th:text="${utilisateur.rue}">1 Rue de la Paix</span>,
+              <span th:text="${utilisateur.codePostal}">44000</span>
+              <span th:text="${utilisateur.ville}">Nantes</span><br>
+              <strong>Crédit :</strong> <span th:text="${utilisateur.credit}">100</span> points<br>
+              <strong>Administrateur :</strong>
+              <span th:text="${utilisateur.administrateur ? 'Oui' : 'Non'}">Non</span>
+            </p>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <a th:href="@{'/admin/desactiver/' + ${utilisateur.noUtilisateur}}" class="btn btn-warning btn-sm">
+              Désactiver
+            </a>
+            <a th:href="@{'/admin/supprimer/' + ${utilisateur.noUtilisateur}}"
+               class="btn btn-danger btn-sm"
+               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+              Supprimer
+            </a>
+          </div>
         </div>
-        
-        <div class="container mx-auto mt-6 p-6 bg-white shadow-lg rounded-lg">
-            <h2 class="text-2xl font-bold mb-4 text-gray-800">Gestion des Utilisateurs</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full border-collapse border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-200 text-gray-700">
-                            <th class="border border-gray-300 py-2">ID</th>
-                            <th class="border border-gray-300 py-2">Pseudo</th>
-                            <th class="border border-gray-300 py-2">Nom</th>
-                            <th class="border border-gray-300 py-2">Prénom</th>
-                            <th class="border border-gray-300 py-2">Email</th>
-                            <th class="border border-gray-300 py-2">Téléphone</th>
-                            <th class="border border-gray-300 py-2">Adresse</th>
-                            <th class="border border-gray-300 py-2">Code Postal</th>
-                            <th class="border border-gray-300 py-2">Ville</th>
-                            <th class="border border-gray-300 py-2">Crédit</th>
-                            <th class="border border-gray-300 py-2">Administrateur</th>
-                            <th class="border border-gray-300 py-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="utilisateur : ${lesUtilisateurs}" class="hover:bg-gray-100">
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.noUtilisateur}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.pseudo}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.nom}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.prenom}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.email}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.telephone}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.rue}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.codePostal}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.ville}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.credit}"></td>
-                            <td class="border border-gray-300 py-2" th:text="${utilisateur.administrateur ? 'Oui' : 'Non'}"></td>
-                            <td class="border border-gray-300 py-2 flex space-x-2">
-                                <a th:href="@{'/admin/desactiver/' + ${utilisateur.noUtilisateur}}" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Désactiver</a>
-                                <a th:href="@{'/admin/supprimer/' + ${utilisateur.noUtilisateur}}" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-    </section>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
